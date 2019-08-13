@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>工作信息</title>
+    <meta name="description" content=""> 
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0,user-scalable=no,shrink-to-fit=no">
+    <link rel="stylesheet" href="../css/WorkMsg.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.0/lib/index.css">
+
+    <!-- 引入组件,注意引入顺序 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vant@2.0/lib/vant.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div class="container">
+        <van-cell-group>
+            <van-cell title="工作信息" value="" />
+        </van-cell-group>
+
+        <van-cell-group>
+            <van-field v-model='value' label="单位名称" />
+        </van-cell-group>
+
+        <van-cell-group>
+                <van-field
+                readonly
+                is-link
+                label="单位性质"
+                v-model="dw"
+                placeholder="请选择"
+                @click="showPickerdanwei=!showPickerdanwei"
+              />
+        </van-cell-group>
+        
+        <!-- 单位性质选择弹出层 -->
+        <van-popup v-model="showPickerdanwei" position="bottom">
+            <van-picker
+                show-toolbar
+                :columns="columns1"
+                @cancel="showPickerdanwei = false"
+                @confirm="onConfirmdanwei"
+                @change="onChangedanwei"
+            />
+        </van-popup>
+
+        <van-cell-group>
+            <van-field v-model='value' label="单位地址" />
+        </van-cell-group>
+
+        <van-cell-group>
+                <van-field
+                readonly
+                is-link
+                label="收入区间"
+                v-model="money"
+                placeholder="请选择"
+                @click="showPickermon=!showPickermon"
+              />
+        </van-cell-group>
+
+        <!-- 收入区间选择弹出层 -->
+        <van-popup v-model="showPickermon" position="bottom">
+                <van-picker
+                    show-toolbar
+                    :columns="columns4"
+                    @cancel="showPickermon = false"
+                    @confirm="onConfirmmon"
+                    @change="onChangemon"
+                />
+            </van-popup>
+
+        <van-cell-group>
+                <van-field
+                readonly
+                is-link
+                label="工作类型"
+                v-model="worktype"
+                placeholder="请选择"
+                @click="showworktype=!showworktype"
+              />
+        </van-cell-group>
+
+        <!-- 工作类型选择弹出层 -->
+        <van-popup v-model="showworktype" position="bottom">
+            <van-picker
+                show-toolbar
+                :columns="columns2"
+                @cancel="showworktype = false"
+                @confirm="onConfirmwork"
+                @change="onChangework"
+            />
+        </van-popup>
+
+        <van-cell-group>
+            <van-field v-model='value' label="单位电话"  />
+        </van-cell-group>
+
+        <van-cell-group>
+                <van-field
+                readonly
+                is-link
+                label="社会身份"
+                v-model="soctype"
+                placeholder="请选择"
+                @click="showsoctype=!showsoctype"
+              />
+        </van-cell-group>
+
+        <!-- 社会身份选择弹出层 -->
+        <van-popup v-model="showsoctype" position="bottom">
+            <van-picker
+                show-toolbar
+                :columns="columns3"
+                @cancel="showsoctype = false"
+                @confirm="onConfirmsoc"
+                @change="onChangesoc"
+            />
+        </van-popup>
+
+        <van-cell-group>
+            <van-field v-model='value' label="工作年限" placeholder="填写" />
+        </van-cell-group>
+
+        <div class="next-button">
+            下一步
+        </div>
+        </div>
+    </div>
+    <div class="ms-msg">
+        版权公告 © 2018-2019 广州民盛互联网小额贷款有限公司<br>
+        粤ICP备18017476号-1
+    </div>
+</body>
+
+<script>
+    var app = new Vue({
+        el: "#app",
+        data: {
+            value: '',
+            dw:"",//单位性质
+            worktype:"",//工作类型
+            soctype:"",//社会身份
+            money:"",//收入区间
+            showPickerdanwei: false,//单位性质弹出层
+            showworktype:false,//工作类型弹出层
+            showsoctype:false,//社会身份弹出层
+            showPickermon:false,//收入区间弹出层
+            columns1: ['杭州', '宁波', '温州', '嘉兴', '湖州'],//单位性质
+            columns2: ['国企', '私营', '合资', '外企', '股份制'],//工作类型
+            columns3: ['农民', '军人', '商人', '艺术家', '无业游民'],//社会身份
+            columns4: ['小于5k', '大于5k'],//收入区间
+        },
+        methods: {
+            // 单位性质---------------------|
+            //变值
+            onChangedanwei(value,index) {
+                this.dw=index
+                console.log(index)
+            },
+            //弹出层确认
+            onConfirmdanwei(value,index){
+                console.log(value+index)
+                this.dw=value
+                this.showPickerdanwei=false
+            },
+
+
+            // 工作类型---------------------|
+            //变值
+            onChangework(value,index) {
+                this.worktype=index
+                console.log(index)
+            },
+            //弹出层确认
+            onConfirmwork(value,index){
+                console.log(value+index)
+                this.worktype=value
+                this.showworktype=false
+            },
+            
+
+            // 社会身份---------------------|
+            //变值
+            onChangesoc(value,index) {
+                this.soctype=index
+                console.log(index)
+            },
+            //弹出层确认
+            onConfirmsoc(value,index){
+                console.log(value+index)
+                this.soctype=value
+                this.showsoctype=false
+            },
+
+
+            // 收入区间---------------------|
+            //变值
+            onChangemon(value,index) {
+                this.money=index
+                console.log(index)
+            },
+            //弹出层确认
+            onConfirmmon(value,index){
+                console.log(value+index)
+                this.money=value
+                this.showPickermon=false
+            }
+
+        },
+    });
+</script>
+
+</html>
