@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>登录</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0,user-scalable=no,shrink-to-fit=no">
+    <link rel="stylesheet" href="../css/loginStyle.css"> 
+    <link rel="stylesheet" href="../css/common.css"> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.0/lib/index.css">  
+
+    <!-- 引入组件,注意引入顺序 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vant@2.0/lib/vant.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div class="login-form">
+                <div class="login-title"><b>登 录</b></div>
+                <div class="tio"></div>
+                <div class="form-o">
+                    <van-cell-group>
+                        <van-field v-model="form.phone" required type="number" focus=true placeholder="请输入手机号码" />
+                    </van-cell-group>
+
+                    <van-cell-group>
+                    <van-field v-model="form.sms" required center clearable placeholder="请输入短信验证码" use-button-slot>
+                        <van-button slot="button" size="small" round type="info">发送验证码</van-button>
+                    </van-field>
+                    </van-cell-group>
+                </div> 
+
+                    <div class="login-button" @click="login(form)">
+                        登录
+                    </div>
+        </div>
+        
+        <div class="ms-msg">
+            版权公告 © 2018-2019 广州民盛互联网小额贷款有限公司<br> 
+            粤ICP备18017476号-1
+        </div>
+    </div>
+</body>
+<script>
+    var app = new Vue({
+        el: "#app",
+        data: {
+            form:{
+                phone: '',
+                sms: '',
+            }
+        },
+        methods: {
+            //登录
+            login(form){
+                // console.log(form);
+                //跳转
+                window.location.href='./FirstPage.html';
+            }
+        },
+    });
+</script>
+
+</html>
