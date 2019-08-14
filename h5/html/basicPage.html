@@ -38,22 +38,51 @@
                     <van-field required :disabled="true" label="上传证件反面" />
                 </div>
             </div>
+            <van-cell-group>
+                <van-field v-model='value' label="姓名" required />
+            </van-cell-group>
+            <van-cell-group>
+                <van-field v-model='value' label="身份证号" required />
+            </van-cell-group>
+            <van-cell-group>
+                <van-field v-model='value' label="手机号" type="number" required/>
+            </van-cell-group>
+            <van-cell-group>
+                <van-field v-model='value' label="性别" />
+            </van-cell-group>
+            <van-cell-group>
+                <van-field v-model='value' label="年龄" type="number" />
+            </van-cell-group>
+            <van-cell-group>
+                <van-field v-model='value' label="民族" />
+            </van-cell-group>
+            <van-cell-group>
+                <van-field v-model='value' label="身份证地址" />
+            </van-cell-group>
+            <van-cell-group>
+                <van-field v-model='value' label="签发机关" />
+            </van-cell-group>
+            <van-cell-group>
+                <van-field v-model='value' label="身份证有效期" />
+            </van-cell-group>
             <div class="next-button">
                 下一步
             </div>
         </div>
     </div>
-    <div class="ms-msg">
+    <!-- <div class="ms-msg">
         版权公告 © 2018-2019 广州民盛互联网小额贷款有限公司<br>
         粤ICP备18017476号-1
-    </div>
+    </div> -->
 </body>
 
 <script>
     var app = new Vue({
         el: "#basic",
-        data: {
-
+        data() {
+            return {
+                value: ''
+            }
         },
         methods: {
 
