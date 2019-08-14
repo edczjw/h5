@@ -14,6 +14,7 @@
     <meta name="viewport"
         content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0,user-scalable=no,shrink-to-fit=no">
     <link rel="stylesheet" href="../css/CheckFace.css">
+    <link rel="stylesheet" href="../css/common.css">
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -26,56 +27,68 @@
 
 <body>
     <div id="app">
-        <!--bootstrap提示框-->
-        <div class="LivAlert">
-        </div>
-        <!--活体界面-->
-        <div class="Living" style="display:block">
-            <div class="sketch">
-                <div class="sketch-img"></div>
-                <p class="sketch-text">正面平视手机、保证光线充足<br>请勿遮挡面部</p>
+        <div class="container">
+            <!--bootstrap提示框-->
+            <div class="LivAlert">
             </div>
-            <div class="prompt">
-                <div class="prompt-box">
-                    <div class="prompt-box-text">
-                        <span class="prompt-box-text-number">1</span>
-                        <span class="prompt-box-text-content">牢记验证码，点击开始录制</span>
-                        <span class="prompt-box-text-border"></span></div>
-                    <div class="prompt-box-text">
-                        <span class="prompt-box-text-number">2</span>
-                        <span class="prompt-box-text-content">开启前置摄像头，普通话朗读数字</span>
-                        <span class="prompt-box-text-border"></span></div>
-                    <div class="prompt-box-text">
-                        <span class="prompt-box-text-number">3</span>
-                        <span class="prompt-box-text-content">完成录制，等待验证结果</span>
-                    </div>
+            <!--活体界面-->
+            <div class="Living" style="display:block">
+                <div class="sketch">
+                    <div class="sketch-img"></div>
+                    <p class="sketch-text">正面平视手机、保证光线充足<br>请勿遮挡面部</p>
                 </div>
-                <span class="prompt-next nextVideo">活体人脸认证</span>
-            </div>
-
-            <div class="modal-layer" style="display:none;">
-                <div class="modal-layer-mask"></div>
-                <div class="modal-layer-popup">
-                    <div class="modal-layer-success">
-                        <div class="modal-layer-popup-title">请牢记以下验证码</div>
-                        <div class="modal-layer-popup-content">
-                            此验证码将于<span>48</span>秒后过期<br>用普通话朗读数字，视频时长<span>3-6</span>秒最佳
-                        </div>
-                        <div class="modal-layer-popup-number"><span>4</span><span>6</span><span>9</span></div>
-                        <div class="modal-wrapper modal-point"><span class="modal-confirm-btn">
-                                记住了，开始录制
-                            </span>
-                            <input type="file" accept="video/*" capture="user" class="camera-input video" id="video">
+                <div class="prompt">
+                    <div class="prompt-box">
+                        <div class="prompt-box-text">
+                            <span class="prompt-box-text-number">1</span>
+                            <span class="prompt-box-text-content">牢记验证码，点击开始录制</span>
+                            <span class="prompt-box-text-border"></span></div>
+                        <div class="prompt-box-text">
+                            <span class="prompt-box-text-number">2</span>
+                            <span class="prompt-box-text-content">开启前置摄像头，普通话朗读数字</span>
+                            <span class="prompt-box-text-border"></span></div>
+                        <div class="prompt-box-text">
+                            <span class="prompt-box-text-number">3</span>
+                            <span class="prompt-box-text-content">完成录制，等待验证结果</span>
                         </div>
                     </div>
-                    <span class="modal-layer-close"></span>
+                    <span class="prompt-next nextVideo">活体人脸认证</span>
+                </div>
+
+                <div class="modal-layer" style="display:none;">
+                    <div class="modal-layer-mask"></div>
+                    <div class="modal-layer-popup">
+                        <div class="modal-layer-success">
+                            <div class="modal-layer-popup-title">请牢记以下验证码</div>
+                            <div class="modal-layer-popup-content">
+                                此验证码将于<span>48</span>秒后过期<br>用普通话朗读数字，视频时长<span>3-6</span>秒最佳
+                            </div>
+                            <div class="modal-layer-popup-number"><span>4</span><span>6</span><span>9</span></div>
+                            <div class="modal-wrapper modal-point"><span class="modal-confirm-btn">
+                                    记住了，开始录制
+                                </span>
+                                <input type="file" accept="video/*" capture="user" class="camera-input video"
+                                    id="video">
+                            </div>
+                        </div>
+                        <span class="modal-layer-close"></span>
+                    </div>
+                </div>
+
+                <div class="loading" style="display:none;">
+                    <div class="loading-icon">验证中...</div>
                 </div>
             </div>
-
-            <div class="loading" style="display:none;">
-                <div class="loading-icon">验证中...</div>
+            <a href="./WorkMsg.html">
+            <div class="next-button" >
+                下 一 步
             </div>
+            </a>
         </div>
+    </div>
+    <div class="ms-msg">
+        版权公告 © 2018-2019 广州民盛互联网小额贷款有限公司<br>
+        粤ICP备18017476号-1
     </div>
 </body>
 

@@ -1,8 +1,8 @@
 .login-form {
-  position: absolute;
   top: 22%;
   width: 100%;
   margin: 0 auto;
+  margin-bottom: 2rem;
   text-align: center;
 }
 .login-form .tio {
@@ -26,11 +26,12 @@
   font-weight: bolder;
   font-family: 'Times New Roman', Times, serif;
   background-image: -webkit-linear-gradient(left, #066ff8, #2893eb, #a3cff3);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 .login-form .form-o {
-  padding: 2rem 3rem;
+  padding: 2rem 1rem;
 }
 .login-form .login-button {
   width: 84%;
@@ -40,7 +41,7 @@
   color: aliceblue;
   font-size: 18px;
   font-weight: bold;
-  border-radius: .4rem;
+  border-radius: .5rem;
   background: -webkit-linear-gradient(left, #066ff8, #a3cff3);
   /* Safari 5.1 - 6.0 */
   background: -o-linear-gradient(right, #066ff8, #a3cff3);
