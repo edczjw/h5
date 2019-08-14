@@ -47,6 +47,7 @@
         <van-popup v-model="showPickerdanwei" position="bottom">
             <van-picker
                 show-toolbar
+                title="单位性质"
                 :columns="columns1"
                 @cancel="showPickerdanwei = false"
                 @confirm="onConfirmdanwei"
@@ -73,6 +74,7 @@
         <van-popup v-model="showPickermon" position="bottom">
                 <van-picker
                     show-toolbar
+                    title="收入区间"
                     :columns="columns4"
                     @cancel="showPickermon = false"
                     @confirm="onConfirmmon"
@@ -95,6 +97,7 @@
         <van-popup v-model="showworktype" position="bottom">
             <van-picker
                 show-toolbar
+                title="工作类型"
                 :columns="columns2"
                 @cancel="showworktype = false"
                 @confirm="onConfirmwork"
@@ -121,6 +124,7 @@
         <van-popup v-model="showsoctype" position="bottom">
             <van-picker
                 show-toolbar
+                title="社会身份"
                 :columns="columns3"
                 @cancel="showsoctype = false"
                 @confirm="onConfirmsoc"
@@ -132,7 +136,7 @@
             <van-field v-model='value' label="工作年限" placeholder="填写" />
         </van-cell-group>
 
-        <div class="next-button">
+        <div class="next-button" @click="next()">
             下 一 步
         </div>
         </div>
@@ -162,6 +166,10 @@
             columns4: ['小于5k', '大于5k'],//收入区间
         },
         methods: {
+            next(){
+                window.location.href='./Contract.html';
+            },
+
             // 单位性质---------------------|
             //变值
             onChangedanwei(value,index) {

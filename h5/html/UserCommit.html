@@ -79,7 +79,7 @@
                                         />
                                 </van-cell-group>
                     </div>
-                <div class="next-button">
+                <div class="next-button" @click="submit()">
                     提 交
                 </div>
             </div>
@@ -98,7 +98,9 @@
                 value:"认证中",
             },
             methods: {
-                
+                submit(){
+                    window.location.href='./index.html';
+                }
             }
         });
     </script>

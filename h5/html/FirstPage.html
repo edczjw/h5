@@ -44,7 +44,7 @@
                         @confirm="onConfirmTwo" />
                 </van-popup>
             </div>
-            <div class="login-button">
+            <div class="login-button" @click="next()">
                 提交
             </div>
         </div>
@@ -68,6 +68,10 @@
             }
         },
         methods: {
+            next(){
+                window.location.href='./basicPage.html';
+            },
+
             // 信息类别--------------------
             //信息类别弹窗确认赋值
             onConfirm(value) {

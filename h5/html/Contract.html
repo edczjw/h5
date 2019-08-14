@@ -43,6 +43,7 @@
                             <van-popup v-model="showPickerparent" position="bottom">
                                 <van-picker
                                     show-toolbar
+                                    title="直系联系人"
                                     :columns="columns1"
                                     @cancel="showPickerparent = false"
                                     @confirm="onConfirmparent"
@@ -74,6 +75,7 @@
                                 <van-popup v-model="showPickerparent" position="bottom">
                                     <van-picker
                                         show-toolbar
+                                        title="直系联系人"
                                         :columns="columns1"
                                         @cancel="showPickerparent = false"
                                         @confirm="onConfirmparent"
@@ -89,7 +91,7 @@
                                     <van-field v-model='value' label="电话" placeholder="填写"/>
                                 </van-cell-group>
                     </div>
-                <div class="next-button">
+                <div class="next-button" @click="next()">
                     下 一 步
                 </div>
             </div>
@@ -111,6 +113,10 @@
                 columns1: ['父亲', '母亲','儿子','女儿','爷爷','奶奶','其他'],//单位性质
             },
             methods: {
+                next(){
+                    window.location.href='./UserCommit.html';
+                },
+
                 // 直系联系人---------------------|
                 // 变值
                 onChangeparent(value,index) {

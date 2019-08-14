@@ -24,6 +24,7 @@
 
 <body>
     <div id="app">
+        <div class="container">
         <div class="login-form">
             <div class="login-title"><b>登 录</b></div>
             <div class="tio"></div>
@@ -40,6 +41,7 @@
             <div class="login-button" @click="login(form)">
                 登录
             </div>
+        </div>
         </div>
         <div class="ms-msg">
             版权公告 © 2018-2019 广州民盛互联网小额贷款有限公司<br>
@@ -61,7 +63,7 @@
             login(form) {
                 console.log(form);
                 //跳转
-                // window.location.href='./FirstPage.html';
+                window.location.href='./FirstPage.html';
             }
         },
     });
