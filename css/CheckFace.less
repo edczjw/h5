@@ -56,15 +56,54 @@
     padding: 0.8333rem 1.666rem 1.2rem;
   }
   .sketch-img {
-    width: 11.916rem;
-    height: 20.583rem;
+    width: 10.916rem;
+    height: 15.583rem;
     margin: 0 auto;
     background: url('../image/realface.png') 0 0 no-repeat;
     -moz-background-size: 100% auto;
     background-size: 100% auto;
   }
-  .sketch-text {
+
+  a{
+    text-decoration: none;
+  }
+  //活体检测的下一步按钮
+  .next-buttons{
+    margin: 0 auto;
+    text-align: center;
+    box-shadow: 0px 1px 0px rgb(226, 225, 225), 0px 1px 6px rgba(32, 32, 32, 0.7);
+    -webkit-box-shadow: 0px -2px 0px rgb(226, 225, 225), 0px 1px 6px rgba(32, 32, 32, 0.7);
+    -moz-box-shadow: 0px -2px 0px rgb(226, 225, 225), 0px 1px 6px rgba(32, 32, 32, 0.7);
+    background: -webkit-linear-gradient(left, rgb(141, 198, 245) , rgb(39, 126, 240)); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right, rgb(141, 198, 245), rgb(39, 126, 240)); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right, rgb(141, 198, 245), rgb(39, 126, 240)); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to right, rgb(141, 198, 245), rgb(39, 126, 240)); /* 标准的语法 */
+    -webkit-transition: all .1s ease;
+    -moz-transition: all .1s ease;
+    transition: all .1s ease;
+
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    color: #fff;
+    display: block;
+    width: 21.75rem;
     font-size: 14px;
+    outline: none;
+    border: none;
+
+    height: 3rem;
+    margin: 0 auto;
+    color: #fff;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    line-height: 3rem;
+    border-radius: 2rem;
+    
+  }
+  .sketch-text {
+    font-size: 12px;
     color: #999;
     letter-spacing: 0;
     line-height: 24px;
@@ -96,9 +135,9 @@
     text-align: center;
     color: #0073eb;
     display: inline-block;
-    width: 1.334rem;
-    height: 1.333rem;
-    line-height: 1.333rem;
+    width: 1.234rem;
+    height: 1.233rem;
+    line-height: 1.233rem;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -112,7 +151,7 @@
     letter-spacing: 0;
     white-space: nowrap;
     display: inline-block;
-    font-size: 1.333rem;
+    font-size: 1.233rem;
   }
   .prompt-box-text-border {
     height: 1.9rem;
@@ -135,7 +174,7 @@
     border-radius: 6px;
     color: #fff;
     display: block;
-    width: 25.75rem;
+    width: 21.75rem;
     font-size: 14px;
     outline: none;
     border: none;
@@ -258,7 +297,7 @@
     border-radius: 4px;
     line-height: 4.083rem;
     position: absolute;
-    width: 24rem;
+    width: 22.3rem;
     bottom: 0.84rem;
   }
   .modal-layer .modal-wrapper {
