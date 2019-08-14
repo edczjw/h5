@@ -28,15 +28,17 @@
             <div class="login-title"><b>首 页</b></div>
             <div class="tio"></div>
             <div class="home-select">
+                <!-- 信息类别 -->
                 <div class="select-one">
                     <van-cell title="信息类别" is-link arrow-direction="down" :value="value" @click="showPicker = true" />
-                </div>
-                <div class="select-one">
-                    <van-cell title="金融产品" is-link arrow-direction="down" :value="valueTwo" @click="handelTwo" />
                 </div>
                 <van-popup v-model="showPicker" position="bottom">
                     <van-picker show-toolbar title="信息类别" :columns="columns" @cancel="onCancel" @confirm="onConfirm" />
                 </van-popup>
+                <!-- 金融产品 -->
+                <div class="select-one">
+                    <van-cell title="金融产品" is-link arrow-direction="down" :value="valueTwo" @click="handelTwo" />
+                </div>
                 <van-popup v-model="showPickerTwo" position="bottom">
                     <van-picker show-toolbar title="金融产品" :columns="columnsTwo" @cancel="onCancelTwo"
                         @confirm="onConfirmTwo" />
@@ -57,15 +59,17 @@
         el: "#home",
         data() {
             return {
-                value: "",
-                columns: ['个人', '企业'],
-                showPicker: false,
-                valueTwo: "",
-                columnsTwo: ['测试产品1', '测试产品二'],
-                showPickerTwo: false,
+                value: "",//信息类别
+                valueTwo: "",//金融产品
+                columnsTwo: ['测试产品1', '测试产品二'],//金融产品选项
+                columns: ['个人', '企业'],//信息类别选项
+                showPickerTwo: false,//金融产品显示控制
+                showPicker: false,//信息类型显示控制
             }
         },
         methods: {
+            // 信息类别--------------------
+            //信息类别弹窗确认赋值
             onConfirm(value) {
                 this.value = value;
                 if (this.value === '企业') {
@@ -73,10 +77,12 @@
                 }
                 this.showPicker = false;
             },
+            //信息类别弹窗取消
             onCancel() {
                 this.showPicker = false;
-                console.log(this.showPicker)
             },
+            // 金融产品
+            //判断是否可以选择金融产品
             handelTwo() {
                 if (this.value) {
                     if (this.value === '企业') {
@@ -88,16 +94,14 @@
                     return
                 }
             },
+            //金融产品弹窗确认赋值
             onConfirmTwo(value) {
                 this.valueTwo = value;
-                if (value === '企业') {
-
-                }
                 this.showPickerTwo = false;
             },
+            //金融产品弹窗取消
             onCancelTwo() {
                 this.showPickerTwo = false;
-                console.log(this.showPickerTwo)
             }
         },
     });
