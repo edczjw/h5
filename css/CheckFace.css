@@ -38,6 +38,7 @@ html {
   height: 100%;
   margin: 0;
   font-size: 12px;
+  background: #f5f4f4;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: tahoma, arial, Hiragino Sans GB, Microsoft YaHei, sans-serif;
@@ -49,6 +50,7 @@ html {
   body,
   html {
     font-size: 9px;
+    background: #f5f4f4;
   }
 }
 .sketch {
@@ -116,9 +118,9 @@ a {
 }
 .prompt-box-text {
   margin: 0 auto 2.666rem;
-  height: 1.034rem;
-  line-height: 1.034rem;
-  width: 18.5rem;
+  height: 1.434rem;
+  line-height: 1.434rem;
+  width: 22.5rem;
 }
 .prompt-box-text:last-child {
   margin-bottom: 0;
