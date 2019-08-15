@@ -9,6 +9,8 @@
   justify-content: center;
   align-items: center;
   text-align: center;
+  background: #fff;
+  position: relative;
 }
 #basic .basic-idcard .idcardup .id-img {
   width: 86%;
@@ -17,4 +19,35 @@
 }
 #basic .basic-idcard .idcardup .van-cell {
   width: 63%;
+}
+body {
+  background: #f5f4f4;
+}
+.a-upload {
+  height: 100%;
+  position: absolute;
+  cursor: pointer;
+  color: #888;
+  background: transparent;
+  border-radius: 4px;
+  overflow: hidden;
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  width: 100%;
+}
+.a-upload input {
+  position: absolute;
+  font-size: 100px;
+  right: 0px;
+  top: 0;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  cursor: pointer;
+}
+.a-upload:hover {
+  color: #444;
+  background: transparent;
+  border-color: #ccc;
+  text-decoration: none;
 }

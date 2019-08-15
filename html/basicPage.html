@@ -20,21 +20,35 @@
     <!-- 引入组件,注意引入顺序 -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vant@2.0/lib/vant.min.js"></script>
+    <!-- <script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.4.4.min.js"></script> -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="../js/area.js"></script>
+    <script src="../js/exif.js"></script>
 </head>
 
 <body>
     <div id="basic">
+        <div class="top-step">
+            <van-steps :active="active">
+                <van-step>基本信息</van-step>
+                <van-step>活体检测</van-step>
+                <van-step>工作信息</van-step>
+                <van-step>联系人员</van-step>
+                <van-step>用户认证</van-step>
+            </van-steps>
+        </div>
         <div class="container">
             <van-cell-group>
                 <van-cell title="基本信息" />
             </van-cell-group>
             <div class="basic-idcard">
                 <div class="idcardup">
+                    <a href="javascript:;" class="a-upload">
+                        <input type="file" accept="image/*" @change="upload">
+                    </a>
                     <img :src="imgup" alt="" v-if="imgup.length>0">
                     <img v-else src="../image/idup.png" alt="" class="id-img">
                     <van-field required :disabled="true" label="上传证件正面" />
-                    <input type="file" accept="image/*" id="fileup" />
                 </div>
                 <div class="idcardup">
                     <img src="../image/iddown.png" alt="" class="id-img">
@@ -137,8 +151,9 @@
         el: "#basic",
         data() {
             return {
-                imgup: '',//
-                imgdown: '',//
+                active: 0,
+                imgup: '',//身份证正面
+                imgdown: '',//身份证反面
                 value: '',
                 hy: '',//婚姻
                 xb: '',//性别
@@ -146,6 +161,8 @@
                 xw: '',//学位
                 jz: '',//居住
                 shq: '',//省市区
+                picValue: '',
+                phone: '12345678911',
                 showPickerhunyin: false,//控制婚姻弹窗显示
                 showPickerxueli: false,//控制学历弹窗显示
                 showPickerxuewei: false,//控制学位弹窗显示
@@ -164,40 +181,123 @@
             this.area = area;
         },
         methods: {
-            test(event) {
-                let file = event.target.files[0];
-                let data = new FileReader();
-                let img = new Image();
-                let formatdata = "";
-                data.onload = e1 => {
-                    img.onload = e => {
-                        if (/^image\/([a-zA-Z]|\*)+$/.test(file.type)) {
-                            formatdata = this.getImgToBase64(e);//返回base64图片数据
-                            // formatdata = encodeURIComponent(formatdata);
-                            //id_card_info 代表请求地址，根据自己修改
-                            // this.$http.post("id_card_info", { 'access_token': this.access_token, 'image': formatdata, 'id_card_side': this.id_card_side }).then(res => {
-                            //     this.idNo = res.data.words_result.公民身份号码.words;
-                            // })
-                        }
-                    };
-                    img.src = e1.target.result;
-                };
-                data.readAsDataURL(file);
+            upload(e) {
+                let files = e.target.files || e.dataTransfer.files
+                if (!files.length) return
+                this.picValue = files[0]
+                this.imgPreview(this.picValue)
             },
-            getImgToBase64(url, callback) {//将图片转换为Base64
-                var canvas = document.createElement('canvas'),
-                    ctx = canvas.getContext('2d'),
-                    img = new Image;
-                img.crossOrigin = 'Anonymous';
-                img.onload = function () {
-                    canvas.height = img.height;
-                    canvas.width = img.width;
-                    ctx.drawImage(img, 0, 0);
-                    var dataURL = canvas.toDataURL('image/png');
-                    callback(dataURL);
-                    canvas = null;
-                };
-                img.src = url;
+            imgPreview(file) {
+                let self = this
+                let Orientation
+                var _that = this;
+                let _self = this;
+                var bucket; //OSS文件名称
+                var region;
+                var extranet;
+                var accessKeyId;
+                var accessKeySecret;
+                // 去获取拍照时的信息，解决拍出来的照片旋转问题
+                EXIF.getData(file, function () {
+                    Orientation = EXIF.getTag(this, 'Orientation')
+                })
+                // 看支持不支持FileReader
+                if (!file || !window.FileReader) return
+                if (/^image/.test(file.type)) {
+                    console.log('file', file)
+                    axios({
+                        method: "post",
+                        url: "http://dev.zxtouch.msxiaodai.com/app/getOssProperties"
+                    }).then(
+                        response => {
+                            console.log('response', response)
+                            // // 向后台发请求 拉取OSS相关配置
+                            // //后端提供数据
+                            // const client = new OSS.Wrapper({
+                            //     region: "oss-cn-shenzhen", // 服务器集群地区
+                            //     extranet: response.data.extranet,
+                            //     accessKeyId: response.data.secretId, // OSS帐号
+                            //     accessKeySecret: response.data.secretKey, // OSS 密码
+                            //     bucket: response.data.bucket // 阿里云上存储的 Bucket
+                            // });
+
+                            // // this.receivables.push(fileName);
+                            // var fileName = file.name;
+                            // //时间戳
+                            // const obj = this.timestamp();
+                            // //时间戳
+                            // const obj2 = this.timestamp1();
+                            // //后缀名
+                            // const suffix = fileName.substr(fileName.indexOf("."));
+
+                            // //获取企业编号
+                            // // const enterpriseNo = sessionStorage.getItem("enterpriseNo");
+                            // const storeAs =
+                            //     "test/sld/userinfo/" +
+                            //     this.phone +
+                            //     "/" +
+                            //     obj +
+                            //     "-" +
+                            //     obj2 +
+                            //     "-" +
+                            //     fileName;
+                            // //上传
+                            // client
+                            //     .multipartUpload(storeAs, file, {
+                            //     })
+                            //     .then(res => {
+                            //         if (res.url != null || res.url != "") {
+                            //             this.imgup = "http://appserbuc.oss-cn-shenzhen.aliyuncs.com/" + storeAs;
+                            //         }
+                            //     })
+                            //     .catch(err => {
+                            //     });
+                            //失败
+                        },
+                        //打印
+                        response => { }
+                    );
+                }
+            },
+            //  时间戳
+            timestamp() {
+                const time = new Date();
+                const y = time.getFullYear();
+                const m = time.getMonth() + 1;
+                const d = time.getDate();
+                const h = time.getHours();
+                const mm = time.getMinutes();
+                const s = time.getSeconds();
+                return "" + y + "-" + this.Add0(m) + "-" + this.Add0(d);
+            },
+            Add0: function (m) {
+                return m < 10 ? "0" + m : m;
+            },
+
+            //  时间戳1
+            timestamp1() {
+                const time = new Date();
+                const y = time.getFullYear();
+                const m = time.getMonth() + 1;
+                const d = time.getDate();
+                const h = time.getHours();
+                const mm = time.getMinutes();
+                const s = time.getSeconds();
+                return (
+                    "" +
+                    y +
+                    "-" +
+                    this.Add1(m) +
+                    "-" +
+                    this.Add1(d) +
+                    "_" +
+                    this.Add1(h) +
+                    this.Add1(mm) +
+                    this.Add1(s)
+                );
+            },
+            Add1: function (m) {
+                return m < 10 ? "0" + m : m;
             },
             // 性别---------------------|
             //变直
@@ -286,7 +386,7 @@
             },
             //提交
             next() {
-                window.location.href = './basicPage.html'
+                window.location.href = './CheckFace.html'
             }
         },
     });
