@@ -33,8 +33,7 @@
                     <van-cell title="信息类别" is-link arrow-direction="down" :value="value" @click="showPicker = true" />
                 </div>
                 <van-popup v-model="showPicker" position="bottom">
-                    <van-picker show-toolbar title="信息类别" :columns="columns" @cancel="onCancel" @confirm="onConfirm"
-                        @change="onChangexinxi" />
+                    <van-picker show-toolbar title="信息类别" :columns="columns" @cancel="onCancel" @confirm="onConfirm" />
                 </van-popup>
                 <!-- 金融产品 -->
                 <div class="select-one">
@@ -42,10 +41,10 @@
                 </div>
                 <van-popup v-model="showPickerTwo" position="bottom">
                     <van-picker show-toolbar title="金融产品" :columns="columnsTwo" @cancel="onCancelTwo"
-                        @confirm="onConfirmTwo" @change="onChangechanpin" />
+                        @confirm="onConfirmTwo" />
                 </van-popup>
             </div>
-            <div class="login-button" @click="toFirst">
+            <div class="login-button" @click="next()">
                 提交
             </div>
         </div>
@@ -62,7 +61,7 @@
             return {
                 value: "",//信息类别
                 valueTwo: "",//金融产品
-                columnsTwo: ['测试产品一', '测试产品二'],//金融产品选项
+                columnsTwo: ['测试产品1', '测试产品二'],//金融产品选项
                 columns: ['个人', '企业'],//信息类别选项
                 showPickerTwo: false,//金融产品显示控制
                 showPicker: false,//信息类型显示控制
@@ -86,12 +85,6 @@
             onCancel() {
                 this.showPicker = false;
             },
-            onChangexinxi(value, index) {
-                console.log('value', value)
-                console.log('index', index)
-                this.value = index
-                console.log(index)
-            },
             // 金融产品
             //判断是否可以选择金融产品
             handelTwo() {
@@ -110,16 +103,9 @@
                 this.valueTwo = value;
                 this.showPickerTwo = false;
             },
-            onChangechanpin(value, index) {
-                console.log(index)
-                this.valueTwo = index
-            },
             //金融产品弹窗取消
             onCancelTwo() {
                 this.showPickerTwo = false;
-            },
-            toFirst() {
-                window.location.href = './basicPage.html'
             }
         },
     });

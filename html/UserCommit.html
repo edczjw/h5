@@ -22,6 +22,15 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
         <div id="app">
+            <div class="top-step">
+                <van-steps :active="active">
+                    <van-step>基本信息</van-step>
+                    <van-step>活体检测</van-step>
+                    <van-step>工作信息</van-step>
+                    <van-step>联系人员</van-step>
+                    <van-step>用户认证</van-step>
+                </van-steps>
+            </div>
             <div class="container">
                     <div class="top-con">
                             <van-cell-group>
@@ -96,6 +105,7 @@
             el: "#app",
             data: {
                 value:"认证中",
+                active: 4,
             },
             methods: {
                 submit(){

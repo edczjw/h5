@@ -15,6 +15,11 @@
         content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0,user-scalable=no,shrink-to-fit=no">
     <link rel="stylesheet" href="../css/CheckFace.css">
     <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.0/lib/index.css">
+
+    <!-- 引入组件,注意引入顺序 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vant@2.0/lib/vant.min.js"></script>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -27,6 +32,15 @@
 
 <body>
     <div id="app">
+        <div class="top-step">
+            <van-steps :active="active">
+                <van-step>基本信息</van-step>
+                <van-step>活体检测</van-step>
+                <van-step>工作信息</van-step>
+                <van-step>联系人员</van-step>
+                <van-step>用户认证</van-step>
+            </van-steps>
+        </div>
         <div class="container">
             <!--bootstrap提示框-->
             <div class="LivAlert">
@@ -52,7 +66,8 @@
                             <span class="prompt-box-text-content">完成录制，等待验证结果</span>
                         </div>
                     </div>
-                    <span class="prompt-next nextVideo">活体人脸认证</span>
+                    <span class="prompt-next nextVideo">点击进入活体人脸认证</span>
+                    
                 </div>
 
                 <div class="modal-layer" style="display:none;">
@@ -79,20 +94,33 @@
                     <div class="loading-icon">验证中...</div>
                 </div>
             </div>
-            <a href="./WorkMsg.html">
-            <div class="next-button" >
+        </div>
+        
+        <a href="./WorkMsg.html">
+            <div class="next-buttons" >
                 下 一 步
             </div>
-            </a>
+        </a>
+        <div class="ms-msg">
+            版权公告 © 2018-2019 广州民盛互联网小额贷款有限公司<br>
+            粤ICP备18017476号-1
         </div>
-    </div>
-    <div class="ms-msg">
-        版权公告 © 2018-2019 广州民盛互联网小额贷款有限公司<br>
-        粤ICP备18017476号-1
     </div>
 </body>
 
 <script>
+    // vue
+    var app = new Vue({
+            el: "#app",
+            data: {
+                active: 1
+            },
+            methods: {
+                
+            }
+        });
+
+    // 纯JS
     //读秒60
     function settime(seconds) {
         if (seconds > 1) {

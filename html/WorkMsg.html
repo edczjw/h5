@@ -23,6 +23,15 @@
 
 <body>
     <div id="app">
+        <div class="top-step">
+            <van-steps :active="active">
+                <van-step>基本信息</van-step>
+                <van-step>活体检测</van-step>
+                <van-step>工作信息</van-step>
+                <van-step>联系人员</van-step>
+                <van-step>用户认证</van-step>
+            </van-steps>
+        </div>
         <div class="container">
         <van-cell-group>
             <van-cell title="工作信息" value="" />
@@ -152,6 +161,7 @@
         el: "#app",
         data: {
             value: '',
+            active: 2,
             dw:"",//单位性质
             worktype:"",//工作类型
             soctype:"",//社会身份
@@ -163,7 +173,7 @@
             columns1: ['杭州', '宁波', '温州', '嘉兴', '湖州'],//单位性质
             columns2: ['国企', '私营', '合资', '外企', '股份制'],//工作类型
             columns3: ['农民', '军人', '商人', '艺术家', '无业游民'],//社会身份
-            columns4: ['小于5k', '大于5k'],//收入区间
+            columns4: ['≤5K','5K-8K','8K-10K','≥10K'],//收入区间
         },
         methods: {
             next(){
