@@ -10,6 +10,7 @@ body {
   height: 100%;
 }
 .ms-msg {
+  display: none;
   text-align: center;
   width: 100%;
   bottom: .1rem;
@@ -19,7 +20,7 @@ body {
 }
 .container {
   width: 100%;
-  margin-top: 4rem;
+  margin-top: .4rem;
 }
 .next-button {
   width: 40%;
@@ -46,4 +47,7 @@ body {
   -webkit-transition: all .1s ease;
   -moz-transition: all .1s ease;
   transition: all .1s ease;
+}
+.top-step .van-step--horizontal .van-step__title {
+  font-size: xx-small !important;
 }

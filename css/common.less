@@ -13,6 +13,7 @@ body{
 
 //底部标识
 .ms-msg{
+    display: none;
     text-align: center;
     width: 100%;
     // position: fixed;
@@ -25,7 +26,7 @@ body{
 //框
 .container{
     width: 100%;
-    margin-top: 4rem;
+    margin-top: .4rem;
 }
 
 //下一步按钮样式
@@ -50,4 +51,11 @@ body{
     -webkit-transition: all .1s ease;
     -moz-transition: all .1s ease;
     transition: all .1s ease;
+}
+
+//顶部步骤条
+.top-step{
+    .van-step--horizontal .van-step__title {
+        font-size: xx-small !important;
+    }
 }
