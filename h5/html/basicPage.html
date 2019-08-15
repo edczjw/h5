@@ -121,7 +121,7 @@
             <van-cell-group>
                 <van-field v-model='value' label="QQ" type="number" />
             </van-cell-group>
-            <div class="next-button">
+            <div class="next-button" @click="next">
                 下一步
             </div>
         </div>
@@ -284,6 +284,10 @@
                 }
                 // this.showPickershengshiqu = false
             },
+            //提交
+            next() {
+                window.location.href = './basicPage.html'
+            }
         },
     });
 </script>
