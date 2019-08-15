@@ -16,6 +16,7 @@
             <!-- 引入组件,注意引入顺序 -->
             <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/vant@2.0/lib/vant.min.js"></script>
+            <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     </head>
     <body>
         <!--[if lt IE 7]>
@@ -33,6 +34,7 @@
             </div>
             <div class="container">
                     <div class="top-con">
+                            <input type="file" accept="image/*" id="fileup" @change="upload($event)"/>
                             <van-cell-group>
                                 <van-cell title="联系人信息" value="" />
                             </van-cell-group>
@@ -123,6 +125,9 @@
                 columns1: ['父亲', '母亲','儿子','女儿','爷爷','奶奶','其他'],//单位性质
             },
             methods: {
+                upload(e){
+                    console.log(e.target.value)
+                },
                 next(){
                     window.location.href='./UserCommit.html';
                 },

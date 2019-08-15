@@ -82,6 +82,7 @@
                             <div class="modal-wrapper modal-point"><span class="modal-confirm-btn">
                                     记住了，开始录制
                                 </span>
+                                <!-- 点击录制视频 -->
                                 <input type="file" accept="video/*" capture="user" class="camera-input video"
                                     id="video">
                             </div>
@@ -139,30 +140,42 @@
     }
     //活体下一步
     $(".nextVideo").click(function () {
+        //弹出随机数框
         $(".modal-layer").show();
+
+        //四位随机数计算
         $(".modal-layer-popup-number").html("<span>" + Math.floor(Math.random() * 10) + "</span><span>" + Math
             .floor(Math.random() * 10) + "</span><span>" + Math.floor(Math.random() * 10) +
             "</span><span>" + Math.floor(Math.random() * 10) + "</span>");
+
+        //倒计时
         settime(60);
     })
+
+    //关闭弹框
     $(".modal-layer-close").click(function () {
         $(".modal-layer").hide();
         window.clearTimeout(tmid);
     });
+
     //活体视频上传
     $("#video").change(function () {
         var file = $("#video").get(0).files[0];
         var fileSize = (this.files[0].size) / (1024 * 1024); //转换成M
         fileSize = fileSize.toFixed(0); //保留小数点后一位
+
+        //判断文件大小是否大于18M
         if (fileSize > 18) {
             $(".LivAlert").html(
                 "<div class='alert alert-danger alert-dismissable'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>视频时间，建议在3-6秒</div>"
             );
+            //隐藏
             $(".modal-layer").hide();
             window.clearTimeout(tmid);
             return;
         } else {
             // alert("发送");
+            //加载的动图显示
             $(".loading").show();
             var parameter = {};
             parameter["name"] = name;
@@ -171,9 +184,11 @@
             var formData = new FormData();
             formData.append("data", parameter);
             formData.append("video", file);
+
+            //ajax提交视频
             $.ajax({
                 type: "POST",
-                url: "###",
+                url: "###",     //后台接口
                 data: formData,
                 processData: false,
                 contentType: false,
@@ -181,11 +196,13 @@
                     myXhr = $.ajaxSettings.xhr();
                     return myXhr
                 },
+                //成功发送
                 success: function (data) {
                     //fileRequestData = data
                     alert("成功发送：" + data);
                     Submit(data);
                 },
+                //失败发送
                 error: function (jqXHR, textStatus, errorThrown) {
                     $(".LivAlert").html(
                         "<div class='alert alert-danger alert-dismissable'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>服务器异常:" +
