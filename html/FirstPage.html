@@ -33,7 +33,8 @@
                     <van-cell title="信息类别" is-link arrow-direction="down" :value="value" @click="showPicker = true" />
                 </div>
                 <van-popup v-model="showPicker" position="bottom">
-                    <van-picker show-toolbar title="信息类别" :columns="columns" @cancel="onCancel" @confirm="onConfirm" />
+                    <van-picker show-toolbar title="信息类别" :columns="columns" @cancel="onCancel" @change="onchangeOne"
+                        @confirm="onConfirm" value-key="informationCategories" />
                 </van-popup>
                 <!-- 金融产品 -->
                 <div class="select-one">
@@ -41,12 +42,12 @@
                 </div>
                 <van-popup v-model="showPickerTwo" position="bottom">
                     <van-picker show-toolbar title="金融产品" :columns="columnsTwo" @cancel="onCancelTwo"
-                        @confirm="onConfirmTwo" />
+                        @confirm="onConfirmTwo" value-key="financialProductsName" @change="onchangeTwo" />
                 </van-popup>
             </div>
-            <div class="login-button" @click="next()">
+            <van-button class="login-button" @click="next()" :disabled="is_sure">
                 提交
-            </div>
+            </van-button>
         </div>
         <div class="ms-msg">
             版权公告 © 2018-2019 广州民盛互联网小额贷款有限公司<br>
@@ -61,23 +62,36 @@
             return {
                 value: "",//信息类别
                 valueTwo: "",//金融产品
-                columnsTwo: ['测试产品1', '测试产品二'],//金融产品选项
-                columns: ['个人', '企业'],//信息类别选项
+                formData: {
+                    xinxiId: '',
+                    chanpinId: '',
+                    phone: ''
+                },
+                columnsTwo: [{ id: 1, financialProductsName: '测试产品1' }, { id: 2, financialProductsName: '测试产品二' }],//金融产品选项
+                columns: [{ id: 1, informationCategories: '个人' }, { id: 2, informationCategories: '企业' }],//信息类别选项
                 showPickerTwo: false,//金融产品显示控制
                 showPicker: false,//信息类型显示控制
             }
         },
+        computed: {
+            // 计算属性的 getter
+            is_sure() {
+                return this.value.length === 0 || this.valueTwo.length === 0
+            }
+        },
         methods: {
-            next(){
-                window.location.href='./basicPage.html';
+            next() {
+                window.location.href = './basicPage.html';
             },
 
             // 信息类别--------------------
             //信息类别弹窗确认赋值
             onConfirm(value) {
-                this.value = value;
-                if (this.value === '企业') {
+                this.value = value.informationCategories;
+                this.formData.xinxiId = value.id;
+                if (value.informationCategories === '企业') {
                     this.valueTwo = '';
+                    this.formData.chanpinId = ''
                 }
                 this.showPicker = false;
             },
@@ -85,12 +99,22 @@
             onCancel() {
                 this.showPicker = false;
             },
+            //改变值
+            onchangeOne(self, value) {
+                this.value = value.informationCategories;
+                this.formData.xinxiId = value.id;
+                if (value.informationCategories === '企业') {
+                    this.valueTwo = '';
+                    this.formData.chanpinId = ''
+                }
+            },
             // 金融产品
             //判断是否可以选择金融产品
             handelTwo() {
                 if (this.value) {
                     if (this.value === '企业') {
                         this.showPickerTwo = false;
+                        alert('企业信息暂未开放')
                     } else {
                         this.showPickerTwo = true;
                     }
@@ -100,13 +124,19 @@
             },
             //金融产品弹窗确认赋值
             onConfirmTwo(value) {
-                this.valueTwo = value;
+                this.valueTwo = value.financialProductsName;
+                this.formData.chanpinId = value.id
                 this.showPickerTwo = false;
             },
             //金融产品弹窗取消
             onCancelTwo() {
                 this.showPickerTwo = false;
-            }
+            },
+            //改变值
+            onchangeTwo(self, value) {
+                this.valueTwo = value.financialProductsName;
+                this.formData.chanpinId = value.id;
+            },
         },
     });
 </script>

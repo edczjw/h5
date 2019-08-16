@@ -1,18 +1,18 @@
-body{
+body {
     font-size: .75rem;
     padding: 0;
     margin: 0;
     overflow-y: scroll;
 }
 
-#app{
+#app {
     padding: 0;
     margin: 0;
     height: 100%;
 }
 
 //底部标识
-.ms-msg{
+.ms-msg {
     display: none;
     text-align: center;
     width: 100%;
@@ -24,13 +24,13 @@ body{
 }
 
 //框
-.container{
+.container {
     width: 100%;
     margin-top: .8rem;
 }
 
 //下一步按钮样式
-.next-button{
+.next-button {
     width: 40%;
     margin: 0 auto;
     color: #fff;
@@ -44,18 +44,27 @@ body{
     box-shadow: 0px 1px 0px rgb(226, 225, 225), 0px 1px 6px rgba(32, 32, 32, 0.7);
     -webkit-box-shadow: 0px -2px 0px rgb(226, 225, 225), 0px 1px 6px rgba(32, 32, 32, 0.7);
     -moz-box-shadow: 0px -2px 0px rgb(226, 225, 225), 0px 1px 6px rgba(32, 32, 32, 0.7);
-    background: -webkit-linear-gradient(left, rgb(141, 198, 245) , rgb(39, 126, 240)); /* Safari 5.1 - 6.0 */
-    background: -o-linear-gradient(right, rgb(141, 198, 245), rgb(39, 126, 240)); /* Opera 11.1 - 12.0 */
-    background: -moz-linear-gradient(right, rgb(141, 198, 245), rgb(39, 126, 240)); /* Firefox 3.6 - 15 */
-    background: linear-gradient(to right, rgb(141, 198, 245), rgb(39, 126, 240)); /* 标准的语法 */
+    background: -webkit-linear-gradient(left, rgb(141, 198, 245), rgb(39, 126, 240));
+    /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right, rgb(141, 198, 245), rgb(39, 126, 240));
+    /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right, rgb(141, 198, 245), rgb(39, 126, 240));
+    /* Firefox 3.6 - 15 */
+    background: linear-gradient(to right, rgb(141, 198, 245), rgb(39, 126, 240));
+    /* 标准的语法 */
     -webkit-transition: all .1s ease;
     -moz-transition: all .1s ease;
     transition: all .1s ease;
 }
 
 //顶部步骤条
-.top-step{
+.top-step {
     .van-step--horizontal .van-step__title {
         font-size: xx-small !important;
     }
+}
+
+.van-button--disabled {
+    opacity: 0.5 !important;
+    background: #999 !important;
 }

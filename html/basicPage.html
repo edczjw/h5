@@ -46,50 +46,56 @@
                     <a href="javascript:;" class="a-upload">
                         <input type="file" accept="image/*" @change="upload">
                     </a>
-                    <img :src="imgup" alt="" v-if="imgup.length>0">
+                    <img :src="formData.positive" alt="" v-if="formData.positive.length>0">
                     <img v-else src="../image/idup.png" alt="" class="id-img">
                     <van-field required :disabled="true" label="上传证件正面" />
                 </div>
                 <div class="idcardup">
-                    <img src="../image/iddown.png" alt="" class="id-img">
+                    <a href="javascript:;" class="a-upload">
+                        <input type="file" accept="image/*" @change="upload">
+                    </a>
+                    <img :src="formData.back" alt="" v-if="formData.back.length>0">
+                    <img v-else src="../image/iddown.png" alt="" class="id-img">
                     <van-field required :disabled="true" label="上传证件反面" />
                 </div>
             </div>
             <van-cell-group>
-                <van-field v-model='value' label="姓名" required />
+                <van-field v-model='formData.name' label="姓名" required />
             </van-cell-group>
             <van-cell-group>
-                <van-field v-model='value' label="身份证号" required />
+                <van-field v-model='formData.idCard' label="身份证号" required />
             </van-cell-group>
             <van-cell-group>
-                <van-field v-model='value' label="手机号" type="tel" required />
+                <van-field v-model='formData.phoneNumber' label="手机号" type="tel" required />
             </van-cell-group>
             <!-- 性别 -->
             <van-cell-group>
-                <van-field readonly is-link label="性别" v-model="xb" placeholder="请选择" @click="showPickerxinbie=true " />
+                <van-field readonly is-link label="性别" v-model="formData.sex" placeholder="请选择"
+                    @click="showPickerxinbie=true " />
             </van-cell-group>
             <van-popup v-model="showPickerxinbie" position="bottom">
                 <van-picker show-toolbar :columns="columnsxb" @cancel="showPickerxinbie = false"
-                    @confirm="onConfirmxinbie" @change="onChangexinbie" value-key="label" />
+                    @confirm="onConfirmxinbie" @change="onChangexinbie" />
             </van-popup>
             <van-cell-group>
-                <van-field v-model='value' label="年龄" type="number" />
+                <van-field v-model='formData.age' label="年龄" type="number" />
             </van-cell-group>
             <van-cell-group>
-                <van-field v-model='value' label="民族" />
+                <van-field v-model='formData.nation' label="民族" />
             </van-cell-group>
             <van-cell-group>
-                <van-field v-model='value' label="身份证地址" />
+                <van-field v-model='formData.idCardAddress' label="身份证地址" />
             </van-cell-group>
             <van-cell-group>
-                <van-field v-model='value' label="签发机关" />
+                <van-field v-model='formData.signingOffice' label="签发机关" />
             </van-cell-group>
             <van-cell-group>
-                <van-field v-model='value' label="身份证有效期" />
+                <van-field v-model='formData.certificateValidityPeriod' label="身份证有效期" />
             </van-cell-group>
             <!-- 婚姻 -->
             <van-cell-group>
-                <van-field readonly is-link label="婚姻" v-model="hy" placeholder="请选择" @click="showPickerhunyin=true " />
+                <van-field readonly is-link label="婚姻" v-model="formData.maritalStatus" placeholder="请选择"
+                    @click="showPickerhunyin=true " />
             </van-cell-group>
             <van-popup v-model="showPickerhunyin" position="bottom">
                 <van-picker show-toolbar :columns="columnshy" @cancel="showPickerhunyin = false"
@@ -97,7 +103,8 @@
             </van-popup>
             <!-- 学历 -->
             <van-cell-group>
-                <van-field readonly is-link label="学历" v-model="xl" placeholder="请选择" @click="showPickerxueli=true " />
+                <van-field readonly is-link label="学历" v-model="formData.education" placeholder="请选择"
+                    @click="showPickerxueli=true " />
             </van-cell-group>
             <van-popup v-model="showPickerxueli" position="bottom">
                 <van-picker show-toolbar :columns="columnsxl" @cancel="showPickerxueli = false"
@@ -105,7 +112,8 @@
             </van-popup>
             <!-- 学位 -->
             <van-cell-group>
-                <van-field readonly is-link label="学位" v-model="xw" placeholder="请选择" @click="showPickerxuewei=true " />
+                <van-field readonly is-link label="学位" v-model="formData.degree" placeholder="请选择"
+                    @click="showPickerxuewei=true " />
             </van-cell-group>
             <van-popup v-model="showPickerxuewei" position="bottom">
                 <van-picker show-toolbar :columns="columnsxw" @cancel="showPickerxuewei = false"
@@ -113,7 +121,7 @@
             </van-popup>
             <!-- 居住状况 -->
             <van-cell-group>
-                <van-field readonly is-link label="居住状况" v-model="jz" placeholder="请选择"
+                <van-field readonly is-link label="居住状况" v-model="formData.livingConditions" placeholder="请选择"
                     @click="showPickerjuzhu=true " />
             </van-cell-group>
             <van-popup v-model="showPickerjuzhu" position="bottom">
@@ -122,7 +130,7 @@
             </van-popup>
             <!-- 现居住省市区 -->
             <van-cell-group>
-                <van-field readonly is-link label="现居住省市区" v-model="shq" placeholder="请选择"
+                <van-field readonly is-link label="现居住省市区" v-model="formData.provincialAndUrbanAreas" placeholder="请选择"
                     @click="showPickershengshiqu=true" />
             </van-cell-group>
             <van-popup v-model="showPickershengshiqu" position="bottom">
@@ -130,20 +138,20 @@
                     @change="onChangeshengshiqu" />
             </van-popup>
             <van-cell-group>
-                <van-field v-model='value' label="电子邮箱" />
+                <van-field v-model='formData.email' label="电子邮箱" />
             </van-cell-group>
             <van-cell-group>
-                <van-field v-model='value' label="QQ" type="number" />
+                <van-field v-model='formData.qq' label="QQ" type="number" />
             </van-cell-group>
             <div class="next-button" @click="next">
                 下一步
             </div>
+            <div class="ms-msg">
+                版权公告 © 2018-2019 广州民盛互联网小额贷款有限公司<br>
+                粤ICP备18017476号-1
+            </div>
         </div>
     </div>
-    <!-- <div class="ms-msg">
-        版权公告 © 2018-2019 广州民盛互联网小额贷款有限公司<br>
-        粤ICP备18017476号-1
-    </div> -->
 </body>
 
 <script>
@@ -151,22 +159,32 @@
         el: "#basic",
         data() {
             return {
+                formData: {
+                    positive: '',//上传证件正面
+                    back: '',//上传证件反面
+                    name: '',//姓名
+                    idCard: '',//身份证号
+                    phoneNumber: '',//手机号
+                    sex: '',//性别
+                    age: '',//年龄
+                    nation: '',//民族
+                    idCardAddress: '',//身份证地址
+                    signingOffice: '',//签发机关
+                    certificateValidityPeriod: '',//身份证有效期
+                    maritalStatus: '',//婚姻
+                    education: '',//学历
+                    degree: '',//学位
+                    livingConditions: '',//居住状况
+                    provincialAndUrbanAreas: '',//现居住省市区
+                    email: '',//电子邮箱
+                    qq: '',//QQ
+                },
                 active: 0,
-                imgup: '',//身份证正面
-                imgdown: '',//身份证反面
-                value: '',
-                hy: '',//婚姻
-                xb: '',//性别
-                xl: '',//学历
-                xw: '',//学位
-                jz: '',//居住
-                shq: '',//省市区
-                picValue: '',
                 phone: '12345678911',
                 showPickerhunyin: false,//控制婚姻弹窗显示
                 showPickerxueli: false,//控制学历弹窗显示
                 showPickerxuewei: false,//控制学位弹窗显示
-                showPickerjuzhu: false,//控制学位弹窗显示
+                showPickerjuzhu: false,//控制居住弹窗显示
                 showPickerxinbie: false,//控制性别弹窗显示
                 showPickershengshiqu: false,//控制省市区弹窗显示
                 area: {},//省市区数据
@@ -174,7 +192,7 @@
                 columnsxl: ['小学及以下', '初中', '高中', '大专', '本科', '博客及以上'],//学历选择项
                 columnsxw: ['学士', '硕士', '博士', '其他'],//学位选择项
                 columnsjz: ['租用', '自有', '亲属房产', '其他'],//居住选择项
-                columnsxb: [{ key: 1, label: '男' }, { key: 2, label: '女' }]//性别选择项
+                columnsxb: ['男', '女']//性别选择项
             }
         },
         created() {
@@ -184,8 +202,7 @@
             upload(e) {
                 let files = e.target.files || e.dataTransfer.files
                 if (!files.length) return
-                this.picValue = files[0]
-                this.imgPreview(this.picValue)
+                this.imgPreview(files[0])
             },
             imgPreview(file) {
                 let self = this
@@ -206,6 +223,9 @@
                 if (/^image/.test(file.type)) {
                     console.log('file', file)
                     axios({
+                        header: {
+                            'Content-Type': 'multipart/form-data'
+                        },
                         method: "post",
                         url: "http://dev.zxtouch.msxiaodai.com/app/getOssProperties"
                     }).then(
@@ -220,7 +240,6 @@
                             //     accessKeySecret: response.data.secretKey, // OSS 密码
                             //     bucket: response.data.bucket // 阿里云上存储的 Bucket
                             // });
-
                             // // this.receivables.push(fileName);
                             // var fileName = file.name;
                             // //时间戳
@@ -301,76 +320,63 @@
             },
             // 性别---------------------|
             //变直
-            onChangexinbie(object, value) {
-                // console.log(index)
-                // console.log(value)
-                this.xb = value.label
+            onChangexinbie(value, index) {
+                this.formData.sex = index
             },
             //弹出层确认
             onConfirmxinbie(value, index) {
-                // console.log(index)
-                // console.log(value)
-                this.xb = value.label
+                this.formData.sex = value
                 this.showPickerxinbie = false
             },
             // 婚姻---------------------|
             //变直
             onChangehunyin(value, index) {
-                this.hy = index
-                console.log(index)
+                this.formData.maritalStatus = index
             },
             //弹出层确认
             onConfirmhunyin(value, index) {
-                console.log(value)
-                console.log(index)
-                this.hy = value
+                this.formData.maritalStatus = value
                 this.showPickerhunyin = false
             },
 
             // 学历---------------------|
             //变直
             onChangexueli(value, index) {
-                this.xl = index
-                console.log(index)
+                this.formData.education = index
             },
             //弹出层确认
             onConfirmxueli(value, index) {
-                console.log(value + index)
-                this.xl = value
+                this.formData.education = value
                 this.showPickerxueli = false
             },
             // 学位---------------------|
             //变直
             onChangexuewei(value, index) {
-                this.xw = index
-                console.log(index)
+                this.formData.degree = index
             },
             //弹出层确认
             onConfirmxuewei(value, index) {
-                console.log(value + index)
-                this.xw = value
+                this.formData.degree = value
                 this.showPickerxuewei = false
             },
             // 居住状况---------------------|
-            //变直
+            //变值
             onChangejuzhu(value, index) {
-                this.jz = index
-                console.log(index)
+                this.formData.livingConditions = index
             },
             //弹出层确认
             onConfirmjuzhu(value, index) {
-                console.log(value + index)
-                this.jz = value
+                this.formData.livingConditions = value
                 this.showPickerjuzhu = false
             },
             // 现居住省市区---------------------|
-            //变直
+            //变值
             onConfirmshengshiqu(value, index) {
                 var sum = '';
                 value.forEach((data) => {
                     sum += data.name
                 });
-                this.shq = sum;
+                this.provincialAndUrbanAreas = sum;
                 this.showPickershengshiqu = false
             },
             //弹出层确认
@@ -380,9 +386,8 @@
                     index.forEach((data) => {
                         sum += data.name
                     });
-                    this.shq = sum;
+                    this.provincialAndUrbanAreas = sum;
                 }
-                // this.showPickershengshiqu = false
             },
             //提交
             next() {
