@@ -63,12 +63,12 @@
                 value: "",//信息类别
                 valueTwo: "",//金融产品
                 formData: {
-                    xinxiId: '',
-                    chanpinId: '',
-                    phone: ''
+                    ICid: '',   //信息类别id
+                    FPCid: '',  //金融产品id
+                    account: '' //用户账号
                 },
-                columnsTwo: [{ id: 1, financialProductsName: '测试产品1' }, { id: 2, financialProductsName: '测试产品二' }],//金融产品选项
-                columns: [{ id: 1, informationCategories: '个人' }, { id: 2, informationCategories: '企业' }],//信息类别选项
+                columns: ['个人' ,'企业'],//信息类别选项
+                columnsTwo:[],  //金融产品
                 showPickerTwo: false,//金融产品显示控制
                 showPicker: false,//信息类型显示控制
             }
@@ -84,15 +84,38 @@
                 window.location.href = './basicPage.html';
             },
 
+            //获取产品
+            getproduct(){
+                this.form.account = sessionStorage.getItem('account');
+                axios({
+                        method: "post",
+                        data: form,
+                        url: "http://dev.zxtouch.msxiaodai.com/manage/get/financialProducts"
+                    }).then(
+                        response => {
+                            if (response.data.code == 0) {
+                                vant.Toast.success('登录成功')
+                                //跳转
+                                window.location.href = './FirstPage.html';
+                            } else {
+                                vant.Toast.fail('登录失败')
+                                console.log(response.data.msg)
+                                this.show = true;
+                                clearInterval(this.timer); // 清除定时器
+                                this.timer = null;
+                                this.form.verification = ''
+                            }
+                        }
+                    ).catch(function (error) {
+                        console.log(error);
+                    });
+            },
+
             // 信息类别--------------------
             //信息类别弹窗确认赋值
-            onConfirm(value) {
-                this.value = value.informationCategories;
-                this.formData.xinxiId = value.id;
-                if (value.informationCategories === '企业') {
-                    this.valueTwo = '';
-                    this.formData.chanpinId = ''
-                }
+            onConfirm(value,index) {
+                this.value=value
+                this.form.ICid = index
                 this.showPicker = false;
             },
             //信息类别弹窗取消
@@ -100,14 +123,11 @@
                 this.showPicker = false;
             },
             //改变值
-            onchangeOne(self, value) {
-                this.value = value.informationCategories;
-                this.formData.xinxiId = value.id;
-                if (value.informationCategories === '企业') {
-                    this.valueTwo = '';
-                    this.formData.chanpinId = ''
-                }
+            onchangeOne(all,value,index) {
+                this.value = value
+                this.form.ICid = index
             },
+
             // 金融产品
             //判断是否可以选择金融产品
             handelTwo() {
@@ -123,9 +143,9 @@
                 }
             },
             //金融产品弹窗确认赋值
-            onConfirmTwo(value) {
-                this.valueTwo = value.financialProductsName;
-                this.formData.chanpinId = value.id
+            onConfirmTwo(value,index) {
+                this.valueTwo=value
+                this.form.FPCid = index
                 this.showPickerTwo = false;
             },
             //金融产品弹窗取消
@@ -133,9 +153,9 @@
                 this.showPickerTwo = false;
             },
             //改变值
-            onchangeTwo(self, value) {
-                this.valueTwo = value.financialProductsName;
-                this.formData.chanpinId = value.id;
+            onchangeTwo(all,value,index) {
+                this.valueTwo = value
+                this.form.FPCid = index
             },
         },
     });

@@ -19,12 +19,13 @@
     <!-- 引入组件,注意引入顺序 -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vant@2.0/lib/vant.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
     <div id="app">
         <div class="top-step">
-            <van-steps :active="active">
+            <van-steps :active="form.currentPage">
                 <van-step>基本信息</van-step>
                 <van-step>活体检测</van-step>
                 <van-step>工作信息</van-step>
@@ -38,7 +39,12 @@
         </van-cell-group>
 
         <van-cell-group>
-            <van-field v-model='value' right-icon="question-o" label="单位名称" />
+            <van-field 
+            v-model='form.companyName' 
+            right-icon="question-o" 
+            label="单位名称" 
+            placeholder="请填写真实有效的单位名称"
+            @click-right-icon="$toast('必须是真实有效的单位名称')" />
         </van-cell-group>
 
         <van-cell-group>
@@ -46,8 +52,8 @@
                 readonly
                 is-link
                 label="单位性质"
-                v-model="dw"
-                placeholder="请选择"
+                v-model="NU"
+                placeholder="请选择单位性质"
                 @click="showPickerdanwei=!showPickerdanwei"
               />
         </van-cell-group>
@@ -65,7 +71,12 @@
         </van-popup>
 
         <van-cell-group>
-            <van-field v-model='value' right-icon="question-o" label="单位地址" />
+            <van-field 
+            v-model='form.unitAddress' 
+            right-icon="question-o" 
+            label="单位地址" 
+            placeholder="请填写真实有效的单位地址"
+            @click-right-icon="$toast('必须是真实准确的单位地址')" />
         </van-cell-group>
 
         <van-cell-group>
@@ -73,8 +84,8 @@
                 readonly
                 is-link
                 label="收入区间"
-                v-model="money"
-                placeholder="请选择"
+                v-model="IR"
+                placeholder="请选择收入区间"
                 @click="showPickermon=!showPickermon"
               />
         </van-cell-group>
@@ -96,8 +107,8 @@
                 readonly
                 is-link
                 label="工作类型"
-                v-model="worktype"
-                placeholder="请选择"
+                v-model="WT"
+                placeholder="请选择工作类型"
                 @click="showworktype=!showworktype"
               />
         </van-cell-group>
@@ -115,7 +126,12 @@
         </van-popup>
 
         <van-cell-group>
-            <van-field v-model='value' right-icon="question-o" label="单位电话"  />
+            <van-field 
+            v-model='form.workPhone' 
+            right-icon="question-o" 
+            label="单位电话" 
+            placeholder="请填写真实有效的单位电话"
+            @click-right-icon="$toast('必须是真实有效的单位电话')"  />
         </van-cell-group>
 
         <van-cell-group>
@@ -123,8 +139,8 @@
                 readonly
                 is-link
                 label="社会身份"
-                v-model="soctype"
-                placeholder="请选择"
+                v-model="SI"
+                placeholder="请选择社会身份"
                 @click="showsoctype=!showsoctype"
               />
         </van-cell-group>
@@ -142,7 +158,7 @@
         </van-popup>
 
         <van-cell-group>
-            <van-field v-model='value' label="工作年限" right-icon="question-o" placeholder="填写" />
+            <van-field v-model='form.workingYears' label="工作年限" right-icon="question-o" placeholder="请填写真实的工作年限" @click-right-icon="$toast('请填写真实年限')" />
         </van-cell-group>
 
         <div class="next-button" @click="next()">
@@ -160,78 +176,131 @@
     var app = new Vue({
         el: "#app",
         data: {
-            value: '',
-            active: 2,
-            dw:"",//单位性质
-            worktype:"",//工作类型
-            soctype:"",//社会身份
-            money:"",//收入区间
+            form:{
+                account:"13202909009",         //手机号
+                companyName:"",     //单位名称
+                natureUnit:"",      //单位性质
+                unitAddress:"",     //单位地址
+                incomeRange:"",     //收入区间
+                workType:"",        //工作类型
+                workPhone:"",       //单位电话
+                socialIdentity:"",  //社会身份
+                workingYears:"",    //工作年限
+                currentPage:2,     //当前页数
+            },
+
+            NU:"",      //单位性质
+            IR:"",     //收入区间
+            WT:"",        //工作类型
+            SI:"",  //社会身份
+
             showPickerdanwei: false,//单位性质弹出层
             showworktype:false,//工作类型弹出层
             showsoctype:false,//社会身份弹出层
             showPickermon:false,//收入区间弹出层
-            columns1: ['杭州', '宁波', '温州', '嘉兴', '湖州'],//单位性质
-            columns2: ['国企', '私营', '合资', '外企', '股份制'],//工作类型
-            columns3: ['农民', '军人', '商人', '艺术家', '无业游民'],//社会身份
-            columns4: ['≤5K','5K-8K','8K-10K','≥10K'],//收入区间
+
+            columns1: ['机关事', '个体', '国有股份', '合资', '其他','私营'],//单位性质
+            columns2: [
+                '农、林、牧、渔业', 
+                '采矿业', 
+                '制造业', 
+                '电力、热力、燃气及水生产和供应业', 
+                '建筑业', 
+                '批发和零售业', 
+                '交通运输、仓储和邮政业', 
+                '住宿和餐饮业', 
+                '信息传输、软件和信息技术服务业', 
+                '金融业', 
+                '房地产业', 
+                '租赁和商务服务业', 
+                '科学研究和技术服务业', 
+                '水利、环境和公共设施管理业', 
+                '居民服务、修理和其他服务业', 
+                '教育', 
+                '卫生和社会工作', 
+                '文化、体育和娱乐业', 
+                '公共管理、社会保障和社会组织', 
+                '国际组织', 
+                '其他'
+            ],//工作类型
+            columns3: ['企业事业单位', '专业技术人员', '在校学生', '待业人士'],//社会身份
+            columns4: ['≤3K','3K-5K','5K-8K','8K-10K','10K-15K','15K-20K','≥20K'],//收入区间
         },
         methods: {
             next(){
-                window.location.href='./Contract.html';
+                this.form.account = sessionStorage.getItem('account');
+                axios({
+                        method: 'post',
+                        url: "http://dev.zxtouch.msxiaodai.com/app/workInfo",
+                        data: this.form
+                    })
+                    .then(
+                        response => {
+                            if (response.data.code == 0) {
+                                vant.Toast('工作信息提交完成.');
+                                window.location.href='./Contract.html';
+                            }else{
+                                vant.Toast(response.data.msg);
+                            }
+                        },
+                        response => {
+                            console.log(response);
+                        }
+                    )
             },
 
             // 单位性质---------------------|
             //变值
-            onChangedanwei(value,index) {
-                this.dw=index
-                console.log(index)
+            onChangedanwei(all,value,index) {
+                this.NU = value
+                this.form.natureUnit = index
             },
             //弹出层确认
             onConfirmdanwei(value,index){
-                console.log(value+index)
-                this.dw=value
+                this.NU=value
+                this.form.natureUnit = index
                 this.showPickerdanwei=false
             },
 
 
             // 工作类型---------------------|
             //变值
-            onChangework(value,index) {
-                this.worktype=index
-                console.log(index)
+            onChangework(all,value,index) {
+                this.WT = value
+                this.form.workType = index
             },
             //弹出层确认
             onConfirmwork(value,index){
-                console.log(value+index)
-                this.worktype=value
+                this.WT=value
+                this.form.workType = index
                 this.showworktype=false
             },
             
 
             // 社会身份---------------------|
             //变值
-            onChangesoc(value,index) {
-                this.soctype=index
-                console.log(index)
+            onChangesoc(all,value,index) {
+                this.SI = value
+                this.form.socialIdentity = index
             },
             //弹出层确认
             onConfirmsoc(value,index){
-                console.log(value+index)
-                this.soctype=value
+                this.SI=value
+                this.form.socialIdentity = index
                 this.showsoctype=false
             },
 
 
             // 收入区间---------------------|
             //变值
-            onChangemon(value,index) {
-                this.money=index
-                console.log(index)
+            onChangemon(all,value,index) {
+                this.IR = value
+                this.form.incomeRange = index
             },
             //弹出层确认
             onConfirmmon(value,index){
-                console.log(value+index)
-                this.money=value
+                this.IR=value
+                this.form.incomeRange = index
                 this.showPickermon=false
             }
 

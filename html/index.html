@@ -20,74 +20,218 @@
     <!-- 引入组件,注意引入顺序 -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vant@2.0/lib/vant.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- 获取地理位置 -->
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.3&key=d4332e5adb8b584442266763d20b978c">
+    </script>
 </head>
 
 <body>
     <div id="app">
         <div class="container">
-        <div class="login-form">
-            <div class="login-title"><b>登 录</b></div>
-            <div class="tio"></div>
-            <div class="form-o">
-                <van-cell-group>
-                    <van-field v-model="form.phone" required type="number" focus=true placeholder="请输入手机号码" />
-                </van-cell-group>
-                <van-cell-group>
-                    <van-field v-model="form.sms" required center clearable placeholder="请输入短信验证码" use-button-slot>
-                        <van-button slot="button" size="small" round type="info"  @click="sendck()">
+            <div class="login-form">
+                <div class="login-title"><b>登 录</b></div>
+                <div class="tio"></div>
+                <!-- <div style="height: 2rem;line-height: 2rem; width:100%;text-align: center;">地理位置：{{ gpsdetail }}</div> -->
+                <div class="form-o">
+                    <van-cell-group>
+                        <van-field 
+                        v-model="form.account" 
+                        required 
+                        type="number" 
+                        right-icon="question-o"
+                        @click-right-icon="$toast('账号必须是手机号')" 
+                        focus=true placeholder="请输入手机号码" >
+                    </van-cell-group>
+                    
+                    <van-cell-group>
+                        <van-field v-model="form.verification" required center clearable placeholder="请输入短信验证码"
+                            use-button-slot>
+                            <van-button slot="button" size="small" round type="info" @click="sendck()">
                                 <span v-show="show">发送验证码</span>
                                 <span v-show="!show" class="count">{{count}} s</span>
-                        </van-button>
-                    </van-field>
-                </van-cell-group>
+                            </van-button>
+                        </van-field>
+                    </van-cell-group>
+                </div>
+                <div class="login-button" @click="login(form)">
+                    登录
+                </div>
             </div>
-            <div class="login-button" @click="login(form)">
-                登录
-            </div>
-        </div>
         </div>
         <div class="ms-msg">
             版权公告 © 2018-2019 广州民盛互联网小额贷款有限公司<br>
             粤ICP备18017476号-1
         </div>
     </div>
+
+    <!-- 校验 -->
+    <!-- <script src="https://unpkg.com/vee-validate/dist/vee-validate.js"></script>
+    <script src="https://unpkg.com/vee-validate/dist/locale/zh_CN.js"></script> -->
 </body>
-<script>
+<script type="module">
     var app = new Vue({
         el: "#app",
         data: {
-            show: true,  // 初始启用按钮
-            count: '',   // 初始化次数
+            show: true, // 初始启用按钮
+            count: '', // 初始化次数
             timer: null,
+            gpsdetail: "", //详细地理位置
             form: {
-                phone: '',
-                sms: '',
+                account: '', //账号
+                verification: '', //验证码
+                currentLocation: '', //当前定位
             }
         },
+        mounted() {
+            this.getLocation(); // 调用获取地理位置
+        },
         methods: {
-            //发送验证码
-            sendck(){    
-                const TIME_COUNT = 60; //更改倒计时时间
-                  if (!this.timer) {
-                      this.count = TIME_COUNT;
-                      this.show = false;
-                      this.timer = setInterval(() => {
-                        if (this.count > 0 && this.count <= TIME_COUNT) {
-                          this.count--;
-                        } else {
-                          this.show = true;
-                          clearInterval(this.timer);  // 清除定时器
-                          this.timer = null;
-                        }
-                      }, 1000)
+            
+            /**获取地图定位*/
+            getLocation() {
+                let _that = this;
+                let geolocation = _that.initMap("map-container"); //定位
+                AMap.event.addListener(geolocation, "complete", result => {
+                    // _that.lat = result.position.lat;  //经度
+                    // _that.lng = result.position.lng;   //纬度
+                    // _that.province = result.addressComponent.province;  //省份
+                    // _that.city = result.addressComponent.city;    //市区
+                    // _that.district = result.addressComponent.district;   //区
+                    _that.gpsdetail = result.addressComponent.province + "." + result.addressComponent
+                        .city + "." + result.addressComponent.district;
+                    _that.form.currentLocation = _that.gpsdetail;
+                    console.log(_that.form.currentLocation);
+                });
+                AMap.event.addListener(geolocation, 'error', data => {
+                    var str = '定位失败!';
+                    str += '错误信息：'
+                    switch (data.info) {
+                        case 'PERMISSION_DENIED':
+                            str += '浏览器阻止了定位操作';
+                            break;
+                        case 'POSITION_UNAVAILBLE':
+                            str += '无法获得当前位置';
+                            break;
+                        case 'TIMEOUT':
+                            str += '定位超时';
+                            break;
+                        default:
+                            str += '未知错误';
+                            break;
                     }
+                    console.log(str)
+                    vant.Toast(str); //定位报错
+                    _that.form.currentLocation = '无法获取位置信息'
+                }); //返回定位出错信息
+            },
+
+            initMap(id) {
+                let mapObj = new AMap.Map(id, {})
+                let geolocation;
+                mapObj.plugin(['AMap.Geolocation'], function () {
+                    geolocation = new AMap.Geolocation({
+                        enableHighAccuracy: true, //  是否使用高精度定位，默认:true
+                        timeout: 10000, //  超过10秒后停止定位，默认：无穷大
+                        maximumAge: 0, // 定位结果缓存0毫秒，默认：0
+                        convert: true, // 自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+                        showButton: true, //  显示定位按钮，默认：true
+                        buttonPosition: 'LB', // 定位按钮停靠位置，默认：'LB'，左下角
+                        buttonOffset: new AMap.Pixel(10,
+                        20), //  定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+                        showMarker: true, //  定位成功后在定位到的位置显示点标记，默认：true
+                        showCircle: true, //  定位成功后用圆圈表示定位精度范围，默认：true
+                        panToLocation: true, //  定位成功后将定位到的位置作为地图中心点，默认：true
+                        zoomToAccuracy: true //  定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+                    })
+                    mapObj.addControl(geolocation)
+                    geolocation.getCurrentPosition()
+                })
+                return geolocation;
+            },
+
+            //发送验证码
+            sendck() {
+                if (this.form.account != '') {
+                    const TIME_COUNT = 60; //更改倒计时时间
+                    if (!this.timer) {
+                        this.count = TIME_COUNT;
+                        this.show = false;
+
+                        axios({
+                                method: 'post',
+                                url: "http://dev.zxtouch.msxiaodai.com/app/user/getSmsVerification",
+                                data: {
+                                    account: this.form.account
+                                }
+                            })
+                            .then(
+                                response => {
+                                    if (response.data.code == 1) {
+                                        vant.Toast(response.data.msg);
+                                        clearInterval(this.timer); // 清除定时器
+                                        this.timer = null;
+                                    }
+                                },
+                                response => {
+                                    console.log(response);
+                                }
+                            )
+
+                        this.timer = setInterval(() => {
+                            if (this.count > 0 && this.count <= TIME_COUNT) {
+                                this.count--;
+                            } else {
+                                this.show = true;
+                                clearInterval(this.timer); // 清除定时器
+                                this.timer = null;
+                            }
+                        }, 1000)
+                    }
+                } else {
+                    vant.Toast('手机号不能为空!')
+                }
             },
 
             //登录
             login(form) {
-                console.log(form);
-                //跳转
-                window.location.href='./FirstPage.html';
+                if(form.account !=''){
+                    if (form.currentLocation != '') {
+                        axios({
+                            method: "post",
+                            data: form,
+                            url: "http://dev.zxtouch.msxiaodai.com/app/user/login"
+                        }).then(
+                            response => {
+                                if (response.data.code == 0) {
+                                    vant.Toast.success('登录成功')
+
+                                    sessionStorage.setItem("account",form.account);//本地存储账号
+
+                                    //跳转
+                                    window.location.href = './FirstPage.html';
+                                } else {
+                                    vant.Toast.fail('登录失败')
+                                    console.log(response.data.msg)
+                                    this.show = true;
+                                    clearInterval(this.timer); // 清除定时器
+                                    this.timer = null;
+                                    this.form.verification = ''
+                                }
+                            }
+                        ).catch(function (error) {
+                            console.log(error);
+                        });
+                    } else {
+                        vant.Notify({
+                            message: '获取位置信息中，请稍等几秒.',
+                            duration: 1000,
+                            background: '#1989fa'
+                        });
+                    }
+                }else {
+                        vant.Toast('手机号不能为空!');
+                    }
             }
         },
     });
