@@ -45,8 +45,10 @@
                                     is-link
                                     label="直系联系人"
                                     v-model="DCR"
-                                    placeholder="父母"
+                                    right-icon="question-o" 
+                                    placeholder="如父母"
                                     @click="showPickerparent1=!showPickerparent1"
+                                    @click-right-icon="$toast('请选择直系亲属')" 
                                   />
                             </van-cell-group>
                             
@@ -59,6 +61,7 @@
                                     @cancel="showPickerparent1 = false"
                                     @confirm="onConfirmparent1"
                                     @change="onChangeparent1"
+                                    @click-right-icon="$toast('必须是真实准确的单位地址')" 
                                 />
                             </van-popup>
 
@@ -77,8 +80,10 @@
                                         is-link
                                         label="其他联系人"
                                         v-model="ODC"
-                                        placeholder="父母"
+                                        right-icon="question-o" 
+                                        placeholder="如亲属"
                                         @click="showPickerparent2=!showPickerparent2"
+                                        @click-right-icon="$toast('请选择亲属')"
                                       />
                                 </van-cell-group>
                                 
@@ -86,7 +91,7 @@
                                 <van-popup v-model="showPickerparent2" position="bottom">
                                     <van-picker
                                         show-toolbar
-                                        title="直系联系人"
+                                        title="其他联系人"
                                         :columns="columns2"
                                         @cancel="showPickerparent2 = false"
                                         @confirm="onConfirmparent2"

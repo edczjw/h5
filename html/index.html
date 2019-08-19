@@ -220,6 +220,7 @@
                                 }
                             }
                         ).catch(function (error) {
+                            vant.Toast('手机格式不正确或者验证码未填写.')
                             console.log(error);
                         });
                     } else {
