@@ -45,7 +45,7 @@
                         @confirm="onConfirmTwo" value-key="financialProductsName" @change="onchangeTwo" />
                 </van-popup>
             </div>
-            <van-button class="login-button" @click="next()" :disabled="is_sure">
+            <van-button class="login-button" @click="next()">
                 提交
             </van-button>
         </div>
@@ -75,9 +75,9 @@
         },
         computed: {
             // 计算属性的 getter
-            is_sure() {
-                return this.value.length === 0 || this.valueTwo.length === 0
-            }
+            // is_sure() {
+            //     return this.value.length === 0 || this.valueTwo.length === 0
+            // }
         },
         methods: {
             next() {
