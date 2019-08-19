@@ -20,6 +20,24 @@
 #basic .basic-idcard .idcardup .van-cell {
   width: 63%;
 }
+.login-button {
+  width: 84%;
+  margin: 0 auto;
+  height: 2.4rem;
+  line-height: 2.4rem;
+  color: aliceblue;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: .5rem;
+  background: -webkit-linear-gradient(left, #066ff8, #a3cff3);
+  /* Safari 5.1 - 6.0 */
+  background: -o-linear-gradient(right, #066ff8, #a3cff3);
+  /* Opera 11.1 - 12.0 */
+  background: -moz-linear-gradient(right, #066ff8, #a3cff3);
+  /* Firefox 3.6 - 15 */
+  background: linear-gradient(to right, #066ff8, #a3cff3);
+  /* 标准的语法 */
+}
 body {
   background: #f5f4f4;
 }
