@@ -26,11 +26,11 @@
     <div id="app">
         <div class="top-step">
             <van-steps :active="form.currentPage">
-                <van-step>基本信息</van-step>
-                <van-step>活体检测</van-step>
-                <van-step>工作信息</van-step>
-                <van-step>联系人员</van-step>
-                <van-step>用户认证</van-step>
+                <van-step><a href="../html/basicPage.html">基本信息</a></van-step>
+                <van-step><a href="../html/CheckFace.html">活体检测</a></van-step>
+                <van-step><a href="../html/WorkMsg.html">工作信息</a></van-step>
+                <van-step><a href="../html/Contract.html">联系人员</a></van-step>
+                <van-step><a href="../html/UserCommit.html">用户认证</a></van-step>
             </van-steps>
         </div>
         <div class="container">
@@ -161,6 +161,10 @@
             <van-field v-model='form.workingYears' label="工作年限" right-icon="question-o" placeholder="请填写真实的工作年限" @click-right-icon="$toast('请填写真实年限')" />
         </van-cell-group>
 
+        <div class="load-ing" v-if="loadshow">
+            <van-loading size="24px" color="#1989fa"  vertical>加载中...</van-loading>
+        </div>
+
         <div class="next-button" @click="next()">
             下 一 步
         </div>
@@ -193,6 +197,8 @@
             IR:"",     //收入区间
             WT:"",        //工作类型
             SI:"",  //社会身份
+
+            loadshow:false,
 
             showPickerdanwei: false,//单位性质弹出层
             showworktype:false,//工作类型弹出层
@@ -229,21 +235,25 @@
         methods: {
             next(){
                 this.form.account = sessionStorage.getItem('account');
+                this.loadshow = true;
                 axios({
                         method: 'post',
-                        url: "http://dev.zxtouch.msxiaodai.com/app/workInfo",
+                        url: "https://dev.zxtouch.msxiaodai.com/app/workInfo",
                         data: this.form
                     })
                     .then(
                         response => {
                             if (response.data.code == 0) {
+                                this.loadshow = false;
                                 vant.Toast('工作信息提交完成.');
                                 window.location.href='./Contract.html';
                             }else{
+                                this.loadshow = false;
                                 vant.Toast(response.data.msg);
                             }
                         },
                         response => {
+                            this.loadshow = false;
                             console.log(response);
                         }
                     )

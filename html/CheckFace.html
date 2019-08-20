@@ -34,11 +34,11 @@
     <div id="app">
         <div class="top-step">
             <van-steps :active="active">
-                <van-step>基本信息</van-step>
-                <van-step>活体检测</van-step>
-                <van-step>工作信息</van-step>
-                <van-step>联系人员</van-step>
-                <van-step>用户认证</van-step>
+                    <van-step><a href="../html/basicPage.html">基本信息</a></van-step>
+                    <van-step><a href="../html/CheckFace.html">活体检测</a></van-step>
+                    <van-step><a href="../html/WorkMsg.html">工作信息</a></van-step>
+                    <van-step><a href="../html/Contract.html">联系人员</a></van-step>
+                    <van-step><a href="../html/UserCommit.html">用户认证</a></van-step>
             </van-steps>
         </div>
         <div class="container">
@@ -114,7 +114,8 @@
     var app = new Vue({
             el: "#app",
             data: {
-                active: 1
+                active: 1,
+                form:{}
             },
             methods: {
                 
@@ -143,6 +144,41 @@
         //弹出随机数框
         $(".modal-layer").show();
 
+        $.ajax({
+                type: "POST",
+                url: "https://dev.zxtouch.msxiaodai.com/rong360/getRandomNum",     //后台接口
+                data: this.form,
+                processData: false,
+                contentType: false,
+                xhr: function () {
+                    myXhr = $.ajaxSettings.xhr();
+                    return myXhr
+                },
+                //成功发送
+                success: function (data) {
+                    if(data.code==200){
+                        console.log(data.msg)
+                        console.log(data.data.random_number)
+                        console.log(data.data.biz_no)
+                        console.log(data.data.token_random_number)
+                    }else{
+                        console.log(data.msg)
+                    }
+                },
+                //失败发送
+                error: function (jqXHR, textStatus, errorThrown) {
+                    $(".LivAlert").html(
+                        "<div class='alert alert-danger alert-dismissable'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>服务器异常:" +
+                        jqXHR.status + ":" + jqXHR.statusText + "</div>");
+                    alert("错误返回：" + jqXHR.status + ":" + jqXHR.statusText);
+                    $(".loading").hide();
+                    $(".modal-layer").hide();
+                    window.clearTimeout(tmid);
+                    //window.location.reload();
+                    //HJSJ.prompts("error",jqXHR.status+":"+jqXHR.statusText);
+                }
+            })
+            
         //四位随机数计算
         $(".modal-layer-popup-number").html("<span>" + Math.floor(Math.random() * 10) + "</span><span>" + Math
             .floor(Math.random() * 10) + "</span><span>" + Math.floor(Math.random() * 10) +

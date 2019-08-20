@@ -26,11 +26,11 @@
         <div id="app">
             <div class="top-step">
                 <van-steps :active="form.currentPage">
-                    <van-step>基本信息</van-step>
-                    <van-step>活体检测</van-step>
-                    <van-step>工作信息</van-step>
-                    <van-step>联系人员</van-step>
-                    <van-step>用户认证</van-step>
+                        <van-step><a href="../html/basicPage.html">基本信息</a></van-step>
+                        <van-step><a href="../html/CheckFace.html">活体检测</a></van-step>
+                        <van-step><a href="../html/WorkMsg.html">工作信息</a></van-step>
+                        <van-step><a href="../html/Contract.html">联系人员</a></van-step>
+                        <van-step><a href="../html/UserCommit.html">用户认证</a></van-step>
                 </van-steps>
             </div>
             <div class="container">
@@ -107,6 +107,12 @@
                                     <van-field v-model='form.otherContactsPhone' label="电话" right-icon="question-o" placeholder="填写"/>
                                 </van-cell-group>
                     </div>
+
+                    
+                <div class="load-ing" v-if="loadshow">
+                    <van-loading size="24px" color="#1989fa"  vertical>加载中...</van-loading>
+                </div>
+
                 <div class="next-button" @click="next()">
                     下 一 步
                 </div>
@@ -137,6 +143,8 @@
                 DCR:"",     //直系联系人关系
                 ODC:"",     //其他联系人关系
 
+                loadshow:false,
+
                 contracts:"",//直系联系人
                 showPickerparent1:false,//直系联系人的弹出层
                 showPickerparent2:false,//直系联系人的弹出层
@@ -152,21 +160,25 @@
                 },
                 next(){
                     this.form.account = sessionStorage.getItem('account');
+                    this.loadshow = true;
                     axios({
                         method: 'post',
-                        url: "http://dev.zxtouch.msxiaodai.com/app/contactsInfo",
+                        url: "https://dev.zxtouch.msxiaodai.com/app/contactsInfo",
                         data: this.form
                     })
                     .then(
                         response => {
                             if (response.data.code == 0) {
+                                this.loadshow = false
                                 vant.Toast('联系人信息提交完成.');
                                 window.location.href='./UserCommit.html';
                             }else{
+                                this.loadshow = false
                                 vant.Toast(response.data.msg);
                             }
                         },
                         response => {
+                            this.loadshow = false;
                             console.log(response);
                         }
                     )

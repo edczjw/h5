@@ -54,6 +54,11 @@
                         </van-field>
                     </van-cell-group>
                 </div>
+                
+                <div class="load-ing" v-if="loadshow">
+                    <van-loading size="24px" color="#1989fa"  vertical>加载中...</van-loading>
+                </div>
+
                 <div class="login-button" @click="login(form)">
                     登录
                 </div>
@@ -77,6 +82,7 @@
             count: '', // 初始化次数
             timer: null,
             gpsdetail: "", //详细地理位置
+            loadshow:"",
             form: {
                 account: '', //账号
                 verification: '', //验证码
@@ -84,7 +90,7 @@
             }
         },
         mounted() {
-            this.getLocation(); // 调用获取地理位置
+            // this.getLocation(); // 调用获取地理位置
         },
         methods: {
             
@@ -160,7 +166,7 @@
 
                         axios({
                                 method: 'post',
-                                url: "http://dev.zxtouch.msxiaodai.com/app/user/getSmsVerification",
+                                url: "https://dev.zxtouch.msxiaodai.com/app/user/getSmsVerification",
                                 data: {
                                     account: this.form.account
                                 }
@@ -196,14 +202,16 @@
             //登录
             login(form) {
                 if(form.account !=''){
-                    if (form.currentLocation != '') {
+                    this.loadshow = true;
+                    // if (form.currentLocation != '') {
                         axios({
                             method: "post",
                             data: form,
-                            url: "http://dev.zxtouch.msxiaodai.com/app/user/login"
+                            url: "https://dev.zxtouch.msxiaodai.com/app/user/login"
                         }).then(
                             response => {
                                 if (response.data.code == 0) {
+                                    this.loadshow = false;
                                     vant.Toast.success('登录成功')
 
                                     sessionStorage.setItem("account",form.account);//本地存储账号
@@ -211,6 +219,7 @@
                                     //跳转
                                     window.location.href = './FirstPage.html';
                                 } else {
+                                    this.loadshow = false;
                                     vant.Toast.fail('登录失败')
                                     console.log(response.data.msg)
                                     this.show = true;
@@ -220,16 +229,17 @@
                                 }
                             }
                         ).catch(function (error) {
+                            this.loadshow = false;
                             vant.Toast('手机格式不正确或者验证码未填写.')
                             console.log(error);
                         });
-                    } else {
-                        vant.Notify({
-                            message: '获取位置信息中，请稍等几秒.',
-                            duration: 1000,
-                            background: '#1989fa'
-                        });
-                    }
+                    // } else {
+                    //     vant.Notify({
+                    //         message: '获取位置信息中，请稍等几秒.',
+                    //         duration: 1000,
+                    //         background: '#1989fa'
+                    //     });
+                    // }
                 }else {
                         vant.Toast('手机号不能为空!');
                     }

@@ -30,11 +30,11 @@
     <div id="basic">
         <div class="top-step">
             <van-steps :active="active">
-                <van-step>基本信息</van-step>
-                <van-step>活体检测</van-step>
-                <van-step>工作信息</van-step>
-                <van-step>联系人员</van-step>
-                <van-step>用户认证</van-step>
+                    <van-step><a href="../html/basicPage.html">基本信息</a></van-step>
+                    <van-step><a href="../html/CheckFace.html">活体检测</a></van-step>
+                    <van-step><a href="../html/WorkMsg.html">工作信息</a></van-step>
+                    <van-step><a href="../html/Contract.html">联系人员</a></van-step>
+                    <van-step><a href="../html/UserCommit.html">用户认证</a></van-step>
             </van-steps>
         </div>
         <div class="container">
@@ -60,13 +60,16 @@
                 </div>
             </div>
             <van-cell-group>
-                <van-field v-model='formData.name' label="姓名" required />
+                <van-field v-model='formData.name' label="姓名" 
+                right-icon="question-o" required @click-right-icon="$toast('请填写真实姓名')" />
             </van-cell-group>
             <van-cell-group>
-                <van-field v-model='formData.idCard' label="身份证号" required />
+                <van-field v-model='formData.idCard' label="身份证号" 
+                right-icon="question-o" required @click-right-icon="$toast('请填写真实身份证号码')" />
             </van-cell-group>
             <van-cell-group>
-                <van-field v-model='formData.phoneNumber' label="手机号" type="tel" required />
+                <van-field v-model='formData.phoneNumber' label="手机号" 
+                right-icon="question-o" type="tel" required />
             </van-cell-group>
             <!-- 性别 -->
             <van-cell-group>
@@ -78,19 +81,24 @@
                     @confirm="onConfirmxinbie" @change="onChangexinbie" />
             </van-popup>
             <van-cell-group>
-                <van-field v-model='formData.age' label="年龄" type="number" />
+                <van-field v-model='formData.age' label="年龄" 
+                right-icon="question-o" type="number" @click-right-icon="$toast('请填写真实年龄')" />
             </van-cell-group>
             <van-cell-group>
-                <van-field v-model='formData.nation' label="民族" />
+                <van-field v-model='formData.nation' label="民族" 
+                right-icon="question-o" @click-right-icon="$toast('请填写真实民族')" />
             </van-cell-group>
             <van-cell-group>
-                <van-field v-model='formData.idCardAddress' label="身份证地址" />
+                <van-field v-model='formData.idCardAddress' label="身份证地址" 
+                right-icon="question-o" @click-right-icon="$toast('请填写真实身份证地址')" />
             </van-cell-group>
             <van-cell-group>
-                <van-field v-model='formData.signingOffice' label="签发机关" />
+                <van-field v-model='formData.signingOffice' label="签发机关" 
+                right-icon="question-o" @click-right-icon="$toast('请填写真实有效的签发机关')" />
             </van-cell-group>
             <van-cell-group>
-                <van-field v-model='formData.certificateValidityPeriod' label="身份证有效期" />
+                <van-field v-model='formData.certificateValidityPeriod' label="身份证有效期" 
+                right-icon="question-o" @click-right-icon="$toast('请填写真实的身份证有效期')" />
             </van-cell-group>
             <!-- 婚姻 -->
             <van-cell-group>
@@ -138,13 +146,18 @@
                     @change="onChangeshengshiqu" />
             </van-popup>
             <van-cell-group>
-                <van-field v-model='formData.email' label="电子邮箱" />
+                <van-field v-model='formData.email' label="电子邮箱" 
+                right-icon="question-o" @click-right-icon="$toast('请填写真实有效的电子邮箱')" />
             </van-cell-group>
             <van-cell-group>
-                <van-field v-model='formData.qq' label="QQ" type="number" />
+                <van-field v-model='formData.qq' label="QQ" type="number" 
+                right-icon="question-o" @click-right-icon="$toast('请填写真实的QQ')" />
             </van-cell-group>
             <div class="next-button" @click="next">
                 下一步
+            </div>
+            <div class="load-ing" v-if="loadshow">
+                <van-loading size="24px" color="#1989fa"  vertical>加载中...</van-loading>
             </div>
             <div class="ms-msg">
                 版权公告 © 2018-2019 广州民盛互联网小额贷款有限公司<br>
@@ -160,6 +173,7 @@
         data() {
             return {
                 formData: {
+                    account:"",//登录手机号
                     positive: '',//上传证件正面
                     back: '',//上传证件反面
                     name: '',//姓名
@@ -180,7 +194,8 @@
                     qq: '',//QQ
                 },
                 active: 0,
-                phone: '12345678911',
+                loadshow: false,        //加载条显示
+
                 showPickerhunyin: false,//控制婚姻弹窗显示
                 showPickerxueli: false,//控制学历弹窗显示
                 showPickerxuewei: false,//控制学位弹窗显示
@@ -189,7 +204,7 @@
                 showPickershengshiqu: false,//控制省市区弹窗显示
                 area: {},//省市区数据
                 columnshy: ['已婚', '未婚', '离异', '丧偶', '其他'],//婚姻选择项
-                columnsxl: ['小学及以下', '初中', '高中', '大专', '本科', '博客及以上'],//学历选择项
+                columnsxl: ['小学及以下', '初中', '高中', '大专', '本科', '研究生及以上'],//学历选择项
                 columnsxw: ['学士', '硕士', '博士', '其他'],//学位选择项
                 columnsjz: ['租用', '自有', '亲属房产', '其他'],//居住选择项
                 columnsxb: ['男', '女']//性别选择项
@@ -229,7 +244,7 @@
                             'Content-Type': 'multipart/form-data'
                         },
                         method: "post",
-                        url: "http://dev.zxtouch.msxiaodai.com/app/getOssProperties"
+                        url: "https://dev.zxtouch.msxiaodai.com/app/getOssProperties"
                     }).then(
                         response => {
                             console.log('response', response)
@@ -269,14 +284,69 @@
                                 .multipartUpload(storeAs, file, {
                                 })
                                 .then(res => {
-                                    console.log('res', res)
+                                    // console.log('res', res)
                                     if (res) {
-                                        this.formData.positive = "http://appserbuc.oss-cn-shenzhen.aliyuncs.com/" + storeAs;
-                                        console.log('this.formData', this.formData)
+                                        this.formData.positive = "https://appserbuc.oss-cn-shenzhen.aliyuncs.com/" + storeAs;
+
+                                        var imageUrl = this.formData.positive
+                                        //显示加载
+                                        this.loadshow = true
+
+                                        //图片上传成功后调用身份识别接口
+                                        axios({
+                                            method: 'post',
+                                            url: "https://dev.zxtouch.msxiaodai.com/rong360/idCarddIscern",
+                                            data: {
+                                                imageUrl:imageUrl
+                                            }
+                                        })
+                                        .then(
+                                            response => {
+                                                if (response.data.code == 200) {
+                                                    //取消显示加载
+                                                    this.loadshow = false
+
+                                                    vant.Toast('识别身份证正面照成功.');
+                                                    //姓名
+                                                    this.formData.name = response.data.data.name
+
+                                                    //身份证号码
+                                                    this.formData.idCard = response.data.data.id_card_number
+
+                                                    //手机号
+                                                    this.formData.phoneNumber = sessionStorage.getItem('account');
+
+                                                    //性别
+                                                    this.formData.sex = response.data.data.gender
+
+                                                    //年龄
+                                                    this.formData.age = 111
+
+                                                    //民族
+                                                    this.formData.nation = response.data.data.race
+
+                                                    //身份证地址
+                                                    this.formData.idCardAddress = response.data.data.address
+
+                                                }else{
+                                                    //取消显示加载
+                                                    this.loadshow = false
+                                                    vant.Toast('识别身份证正面照失败.' + response.data.msg);
+                                                }
+                                            },
+                                            response => {
+                                                console.log(response);
+                                                vant.Toast('异常.');
+                                            }
+                                        )
+
+                                        
                                     }
                                 })
                                 .catch(err => {
+                                    this.loadshow = false;
                                     console.log('err', err)
+                                    vant.Toast('异常.');
                                 });
                         },
                         //打印
@@ -313,7 +383,7 @@
                             'Content-Type': 'multipart/form-data'
                         },
                         method: "post",
-                        url: "http://dev.zxtouch.msxiaodai.com/app/getOssProperties"
+                        url: "https://dev.zxtouch.msxiaodai.com/app/getOssProperties"
                     }).then(
                         response => {
                             console.log('response', response)
@@ -353,9 +423,50 @@
                                 .multipartUpload(storeAs, file, {
                                 })
                                 .then(res => {
-                                    console.log('res', res)
+                                    // console.log('res', res)
                                     if (res) {
-                                        this.formData.back = "http://appserbuc.oss-cn-shenzhen.aliyuncs.com/" + storeAs;
+                                        this.formData.back = "https://appserbuc.oss-cn-shenzhen.aliyuncs.com/" + storeAs;
+
+                                        var imageUrl = this.formData.back
+
+                                        //显示加载
+                                        this.loadshow = true
+
+                                        // console.log(imageUrl)
+                                        //图片上传成功后调用身份识别接口
+                                        axios({
+                                            method: 'post',
+                                            url: "https://dev.zxtouch.msxiaodai.com/rong360/idCarddIscern",
+                                            data: {
+                                                imageUrl:imageUrl
+                                            }
+                                        })
+                                        .then(
+                                            response => {
+                                                if (response.data.code == 200) {
+                                                    //隐藏加载
+                                                    this.loadshow = false
+
+                                                    vant.Toast('识别身份证反面照成功.');
+                                                    
+                                                    //签发机关
+                                                    this.formData.signingOffice = response.data.data.issued_by
+
+                                                    //身份证有效期
+                                                    this.formData.certificateValidityPeriod = response.data.data.valid_date
+
+                                                }else{
+                                                    //取消显示加载
+                                                    this.loadshow = false
+                                                    vant.Toast('识别身份证反面照失败.'+ response.data.msg);
+                                                }
+                                            },
+                                            response => {
+                                                this.loadshow = false;  
+                                                console.log(response);
+                                                vant.Toast('异常.');
+                                            }
+                                        )
                                     }
                                 })
                                 .catch(err => {
@@ -480,7 +591,25 @@
             },
             //提交
             next() {
-                window.location.href = './CheckFace.html'
+                this.formData.account = sessionStorage.getItem('account');
+                    axios({
+                        method: 'post',
+                        url: "https://dev.zxtouch.msxiaodai.com/basicInformation/commit",
+                        data: this.formData
+                    })
+                    .then(
+                        response => {
+                            if (response.data.code == 0) {
+                                vant.Toast('基本信息提交完成.');
+                                // window.location.href = './CheckFace.html'1
+                            }else{
+                                vant.Toast(response.data.msg);
+                            }
+                        },
+                        response => {
+                            console.log(response);
+                        }
+                    )
             }
         },
     });
