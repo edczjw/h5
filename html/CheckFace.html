@@ -28,6 +28,7 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
     <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+    <script src="https://gosspublic.alicdn.com/aliyun-oss-sdk-4.4.4.min.js"></script>
 </head>
 
 <body>
@@ -83,7 +84,7 @@
                                     记住了，开始录制
                                 </span>
                                 <!-- 点击录制视频 -->
-                                <input type="file" accept="video/*" capture="user" class="camera-input video"
+                                <input type="file" accept="video/*" capture="user" class="camera-input video" @change="upload" 
                                     id="video">
                             </div>
                         </div>
@@ -115,10 +116,158 @@
             el: "#app",
             data: {
                 active: 1,
-                form:{}
+                form:{
+                    videoUrl:"",
+                    idcardName:"",
+                    idcardNumber:"",
+                    tokenRandomNumber:"",
+                    bizNo:"",
+                },
+                tokenRandomNumber:"",
+                bizNo:"",
             },
             methods: {
-                
+                //身份证正面面
+                upload(e) {
+                    let files = e.target.files || e.dataTransfer.files
+                    if (!files.length) return
+                    this.imgPreview(files[0])
+                },
+
+                imgPreview(file) {
+                let self = this
+                let Orientation
+                var _that = this;
+                let _self = this;
+                var bucket; //OSS文件名称
+                var region;
+                var extranet;
+                var accessKeyId;
+                var accessKeySecret;
+                // 去获取拍照时的信息，解决拍出来的照片旋转问题
+                EXIF.getData(file, function () {
+                    Orientation = EXIF.getTag(this, 'Orientation')
+                })
+                // 看支持不支持FileReader
+                if (!file || !window.FileReader) return
+                if (/^image/.test(file.type)) {
+                    // console.log('file', file)
+                    axios({
+                        header: {
+                            'Content-Type': 'multipart/form-data'
+                        },
+                        method: "post",
+                        url: "https://dev.zxtouch.msxiaodai.com/app/getOssProperties"
+                    }).then(
+                        response => {
+                            // console.log('response', response)
+                            // 向后台发请求 拉取OSS相关配置
+                            //后端提供数据
+                            const client = new OSS.Wrapper({
+                                secure: true,//这句话很重要！！！！！！！！！
+                                region: "oss-cn-shenzhen", // 服务器集群地区
+                                extranet: response.data.extranet,
+                                accessKeyId: response.data.secretId, // OSS帐号
+                                accessKeySecret: response.data.secretKey, // OSS 密码
+                                bucket: response.data.bucket // 阿里云上存储的 Bucket
+                            });
+                            // console.log('client', client)
+                            // this.receivables.push(fileName);
+                            var fileName = file.name;
+                            //时间戳
+                            const obj = this.timestamp();
+                            //时间戳
+                            const obj2 = this.timestamp1();
+                            //后缀名
+                            const suffix = fileName.substr(fileName.indexOf("."));
+
+                            var phone = sessionStorage.getItem('account');
+
+                            //获取企业编号
+                            // const enterpriseNo = sessionStorage.getItem("enterpriseNo");
+                            const storeAs =
+                                "test/appser/uservideo/" +
+                                phone +
+                                "/" +
+                                obj +
+                                "-" +
+                                obj2 +
+                                "-" +
+                                fileName;
+                            //上传
+                            client
+                                .multipartUpload(storeAs, file, {
+                                })
+                                .then(res => {
+                                    // console.log('res', res)
+                                    if (res) {
+                                        this.formData.videoUrl = "https://appserbuc.oss-cn-shenzhen.aliyuncs.com/" + storeAs;
+
+                                        this.formData.positvideoUrlive
+
+                                        //图片上传成功后调用身份识别接口
+                                        axios({
+                                            method: 'post',
+                                            url: "https://dev.zxtouch.msxiaodai.com/rong360/idCarddIscern",
+                                            data: {
+                                                imageUrl:imageUrl
+                                            }
+                                        })
+                                        .then(
+                                            response => {
+                                                if (response.data.code == 200) {
+
+                                                    vant.Toast('识别身份证正面照成功.');
+                                                    //姓名
+                                                    this.formData.name = response.data.data.name
+
+                                                    sessionStorage.setItem("idcardName",response.data.data.name);
+
+                                                    //身份证号码
+                                                    this.formData.idCard = response.data.data.id_card_number
+
+                                                    sessionStorage.setItem("idcardNumber",response.data.data.id_card_number);
+
+                                                    //手机号
+                                                    this.formData.phoneNumber = sessionStorage.getItem('account');
+
+                                                    //性别
+                                                    for(var i=0;i<this.columnsxb.length;i++){
+                                                        if(this.columnsxb[i] == response.data.data.gender){
+                                                            this.formData.sex = i+1;
+                                                            this.sex = this.columnsxb[i]
+                                                        }
+                                                    }
+
+                                                    //民族
+                                                    this.formData.nation = response.data.data.race
+
+                                                    //身份证地址
+                                                    this.formData.idCardAddress = response.data.data.address
+
+                                                }else{
+                                                    vant.Toast('识别身份证正面照失败.' + response.data.msg);
+                                                }
+                                            },
+                                            response => {
+                                                console.log(response);
+                                                vant.Toast('异常.');
+                                            }
+                                        )
+
+                                        
+                                    }
+                                })
+                                .catch(err => {
+                                    console.log('err', err)
+                                    vant.Toast('异常.');
+                                });
+                        },
+                        //打印
+                        response => { }
+                    );
+                }
+            },
             }
         });
 
@@ -141,9 +290,6 @@
     }
     //活体下一步
     $(".nextVideo").click(function () {
-        //弹出随机数框
-        $(".modal-layer").show();
-
         $.ajax({
                 type: "POST",
                 url: "https://dev.zxtouch.msxiaodai.com/rong360/getRandomNum",     //后台接口
@@ -157,32 +303,42 @@
                 //成功发送
                 success: function (data) {
                     if(data.code==200){
-                        console.log(data.msg)
-                        console.log(data.data.random_number)
-                        console.log(data.data.biz_no)
-                        console.log(data.data.token_random_number)
+
+                        //随机数
+                        // console.log(data.data.tianji_api_faceplus_getrandomnumber_response.random_number)
+
+                        var randomnum = data.data.tianji_api_faceplus_getrandomnumber_response.random_number;
+                        var b = String(randomnum).split('');
+
+                        //四位随机数计算
+                        $(".modal-layer-popup-number").html("<span>" + b[0]+ "</span><span>" + b[1] + "</span><span>" + b[2] +
+                        "</span><span>" + b[3] + "</span>");
+                        
+                        //弹出随机数框
+                        $(".modal-layer").show();
+
+                        //tokenRandomNumber
+                        this.tokenRandomNumber = data.data.tianji_api_faceplus_getrandomnumber_response.token_random_number;
+
+                        //bizNo
+                        this.bizNo = data.data.tianji_api_faceplus_getrandomnumber_response.biz_no;
+
                     }else{
                         console.log(data.msg)
                     }
                 },
                 //失败发送
                 error: function (jqXHR, textStatus, errorThrown) {
-                    $(".LivAlert").html(
-                        "<div class='alert alert-danger alert-dismissable'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>服务器异常:" +
-                        jqXHR.status + ":" + jqXHR.statusText + "</div>");
-                    alert("错误返回：" + jqXHR.status + ":" + jqXHR.statusText);
-                    $(".loading").hide();
-                    $(".modal-layer").hide();
-                    window.clearTimeout(tmid);
-                    //window.location.reload();
-                    //HJSJ.prompts("error",jqXHR.status+":"+jqXHR.statusText);
+                    vant.Toast.fail('获取随机数异常.')
+                    // $(".LivAlert").html(
+                    //     "<div class='alert alert-danger alert-dismissable'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>服务器异常:" +
+                    //     jqXHR.status + ":" + jqXHR.statusText + "</div>");
+                    // alert("错误返回：" + jqXHR.status + ":" + jqXHR.statusText);
+                    // $(".loading").hide();
+                    // $(".modal-layer").hide();
+                    // window.clearTimeout(tmid);
                 }
             })
-            
-        //四位随机数计算
-        $(".modal-layer-popup-number").html("<span>" + Math.floor(Math.random() * 10) + "</span><span>" + Math
-            .floor(Math.random() * 10) + "</span><span>" + Math.floor(Math.random() * 10) +
-            "</span><span>" + Math.floor(Math.random() * 10) + "</span>");
 
         //倒计时
         settime(60);
@@ -199,7 +355,7 @@
         var file = $("#video").get(0).files[0];
         var fileSize = (this.files[0].size) / (1024 * 1024); //转换成M
         fileSize = fileSize.toFixed(0); //保留小数点后一位
-
+        console.log(fileSize)
         //判断文件大小是否大于18M
         if (fileSize > 18) {
             $(".LivAlert").html(
@@ -210,16 +366,19 @@
             window.clearTimeout(tmid);
             return;
         } else {
-            // alert("发送");
             //加载的动图显示
             $(".loading").show();
-            var parameter = {};
-            parameter["name"] = name;
-            parameter["cardId"] = cardId;
+            // var parameter = {};
+            // parameter["name"] = name;
+            // parameter["cardId"] = cardId;
 
             var formData = new FormData();
-            formData.append("data", parameter);
-            formData.append("video", file);
+            formData.append("tokenRandomNumber", this.tokenRandomNumber);
+            formData.append("bizNo", this.bizNo);
+            var idcardName = sessionStorage.getItem('idcardName');
+            console.log(idcardName)
+            var idcardNumber = sessionStorage.getItem('idcardNumber');
+            console.log(idcardNumber)
 
             //ajax提交视频
             $.ajax({

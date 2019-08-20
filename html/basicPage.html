@@ -73,7 +73,7 @@
             </van-cell-group>
             <!-- 性别 -->
             <van-cell-group>
-                <van-field readonly is-link label="性别" v-model="formData.sex" placeholder="请选择"
+                <van-field readonly is-link label="性别" v-model="sex" placeholder="请选择"
                     @click="showPickerxinbie=true " />
             </van-cell-group>
             <van-popup v-model="showPickerxinbie" position="bottom">
@@ -81,7 +81,8 @@
                     @confirm="onConfirmxinbie" @change="onChangexinbie" />
             </van-popup>
             <van-cell-group>
-                <van-field v-model='formData.age' label="年龄" 
+                <van-field v-model='formData.age' label="年龄"  
+                placeholder="请手动输入"
                 right-icon="question-o" type="number" @click-right-icon="$toast('请填写真实年龄')" />
             </van-cell-group>
             <van-cell-group>
@@ -173,7 +174,7 @@
         data() {
             return {
                 formData: {
-                    account:"",//登录手机号
+                    mobile:"",//登录手机号
                     positive: '',//上传证件正面
                     back: '',//上传证件反面
                     name: '',//姓名
@@ -192,9 +193,12 @@
                     provincialAndUrbanAreas: '',//现居住省市区
                     email: '',//电子邮箱
                     qq: '',//QQ
+
+                    page:0,         //当前页
                 },
                 active: 0,
                 loadshow: false,        //加载条显示
+                sex:'', //性别
 
                 showPickerhunyin: false,//控制婚姻弹窗显示
                 showPickerxueli: false,//控制学历弹窗显示
@@ -238,7 +242,7 @@
                 // 看支持不支持FileReader
                 if (!file || !window.FileReader) return
                 if (/^image/.test(file.type)) {
-                    console.log('file', file)
+                    // console.log('file', file)
                     axios({
                         header: {
                             'Content-Type': 'multipart/form-data'
@@ -247,7 +251,7 @@
                         url: "https://dev.zxtouch.msxiaodai.com/app/getOssProperties"
                     }).then(
                         response => {
-                            console.log('response', response)
+                            // console.log('response', response)
                             // 向后台发请求 拉取OSS相关配置
                             //后端提供数据
                             const client = new OSS.Wrapper({
@@ -258,7 +262,7 @@
                                 accessKeySecret: response.data.secretKey, // OSS 密码
                                 bucket: response.data.bucket // 阿里云上存储的 Bucket
                             });
-                            console.log('client', client)
+                            // console.log('client', client)
                             // this.receivables.push(fileName);
                             var fileName = file.name;
                             //时间戳
@@ -267,12 +271,12 @@
                             const obj2 = this.timestamp1();
                             //后缀名
                             const suffix = fileName.substr(fileName.indexOf("."));
-
+                            var phone = sessionStorage.getItem('account');
                             //获取企业编号
                             // const enterpriseNo = sessionStorage.getItem("enterpriseNo");
                             const storeAs =
                                 "test/appser/userinfo/" +
-                                this.phone +
+                                phone +
                                 "/" +
                                 obj +
                                 "-" +
@@ -310,17 +314,23 @@
                                                     //姓名
                                                     this.formData.name = response.data.data.name
 
+                                                    sessionStorage.setItem("idcardName",response.data.data.name);
+
                                                     //身份证号码
                                                     this.formData.idCard = response.data.data.id_card_number
+
+                                                    sessionStorage.setItem("idcardNumber",response.data.data.id_card_number);
 
                                                     //手机号
                                                     this.formData.phoneNumber = sessionStorage.getItem('account');
 
                                                     //性别
-                                                    this.formData.sex = response.data.data.gender
-
-                                                    //年龄
-                                                    this.formData.age = 111
+                                                    for(var i=0;i<this.columnsxb.length;i++){
+                                                        if(this.columnsxb[i] == response.data.data.gender){
+                                                            this.formData.sex = i+1;
+                                                            this.sex = this.columnsxb[i]
+                                                        }
+                                                    }
 
                                                     //民族
                                                     this.formData.nation = response.data.data.race
@@ -377,7 +387,7 @@
                 // 看支持不支持FileReader
                 if (!file || !window.FileReader) return
                 if (/^image/.test(file.type)) {
-                    console.log('file', file)
+                    // console.log('file', file)
                     axios({
                         header: {
                             'Content-Type': 'multipart/form-data'
@@ -386,7 +396,7 @@
                         url: "https://dev.zxtouch.msxiaodai.com/app/getOssProperties"
                     }).then(
                         response => {
-                            console.log('response', response)
+                            // console.log('response', response)
                             // 向后台发请求 拉取OSS相关配置
                             //后端提供数据
                             const client = new OSS.Wrapper({
@@ -406,12 +416,14 @@
                             const obj2 = this.timestamp1();
                             //后缀名
                             const suffix = fileName.substr(fileName.indexOf("."));
+                            
+                            var phone = sessionStorage.getItem('account');
 
                             //获取企业编号
                             // const enterpriseNo = sessionStorage.getItem("enterpriseNo");
                             const storeAs =
                                 "test/appser/userinfo/" +
-                                this.phone +
+                                phone +
                                 "/" +
                                 obj +
                                 "-" +
@@ -520,18 +532,20 @@
             },
             // 性别---------------------|
             //变直
-            onChangexinbie(value, index) {
-                this.formData.sex = index
+            onChangexinbie(all,value,index) {
+                this.sex = value;
+                this.formData.sex = index + 1
             },
             //弹出层确认
             onConfirmxinbie(value, index) {
-                this.formData.sex = value
+                this.sex = value;
+                this.formData.sex = index + 1;
                 this.showPickerxinbie = false
             },
             // 婚姻---------------------|
             //变直
-            onChangehunyin(value, index) {
-                this.formData.maritalStatus = index
+            onChangehunyin(all,value,index) {
+                this.formData.maritalStatus = value
             },
             //弹出层确认
             onConfirmhunyin(value, index) {
@@ -541,8 +555,8 @@
 
             // 学历---------------------|
             //变直
-            onChangexueli(value, index) {
-                this.formData.education = index
+            onChangexueli(all,value,index) {
+                this.formData.education = value
             },
             //弹出层确认
             onConfirmxueli(value, index) {
@@ -551,8 +565,8 @@
             },
             // 学位---------------------|
             //变直
-            onChangexuewei(value, index) {
-                this.formData.degree = index
+            onChangexuewei(all,value,index) {
+                this.formData.degree = value
             },
             //弹出层确认
             onConfirmxuewei(value, index) {
@@ -561,8 +575,8 @@
             },
             // 居住状况---------------------|
             //变值
-            onChangejuzhu(value, index) {
-                this.formData.livingConditions = index
+            onChangejuzhu(all,value,index) {
+                this.formData.livingConditions = value
             },
             //弹出层确认
             onConfirmjuzhu(value, index) {
@@ -571,27 +585,28 @@
             },
             // 现居住省市区---------------------|
             //变值
-            onConfirmshengshiqu(value, index) {
+            onConfirmshengshiqu(value,index) {
                 var sum = '';
                 value.forEach((data) => {
                     sum += data.name
                 });
-                this.provincialAndUrbanAreas = sum;
+                this.formData.provincialAndUrbanAreas = sum;
                 this.showPickershengshiqu = false
             },
             //弹出层确认
-            onChangeshengshiqu(value, index) {
+            onChangeshengshiqu(all,value, index) {
                 if (index.length === 3) {
                     var sum = '';
                     index.forEach((data) => {
                         sum += data.name
                     });
-                    this.provincialAndUrbanAreas = sum;
+                    this.formData.provincialAndUrbanAreas = sum;
                 }
             },
             //提交
             next() {
-                this.formData.account = sessionStorage.getItem('account');
+                this.formData.mobile = sessionStorage.getItem('account');
+                this.loadshow = true;
                     axios({
                         method: 'post',
                         url: "https://dev.zxtouch.msxiaodai.com/basicInformation/commit",
@@ -600,8 +615,9 @@
                     .then(
                         response => {
                             if (response.data.code == 0) {
+                                this.loadshow = false;
                                 vant.Toast('基本信息提交完成.');
-                                // window.location.href = './CheckFace.html'1
+                                window.location.href = './CheckFace.html'
                             }else{
                                 vant.Toast(response.data.msg);
                             }
