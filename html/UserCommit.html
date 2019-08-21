@@ -93,7 +93,6 @@
         methods: {
             load() {
                 var usrNo = sessionStorage.getItem("usrNo");
-
                 axios({
                     method: 'get',
                     headers: {
@@ -101,7 +100,7 @@
                     },
                     url: "https://dev.zxtouch.msxiaodai.com/auth/status",
                     params: {
-                        userNo: 'YH20190819000001'
+                        userNo: usrNo
                     }
                 })
                     .then(
