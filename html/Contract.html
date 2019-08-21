@@ -25,7 +25,7 @@
         <![endif]-->
         <div id="app">
             <div class="top-step">
-                <van-steps :active="form.currentPage">
+                <van-steps :active="active">
                         <van-step><a href="../html/basicPage.html">基本信息</a></van-step>
                         <van-step><a href="../html/CheckFace.html">活体检测</a></van-step>
                         <van-step><a href="../html/WorkMsg.html">工作信息</a></van-step>
@@ -126,6 +126,7 @@
             el: "#app",
             data: {
                 form:{
+                    usrNo:"",
                     account:"",                 //手机号
                     directContactsName:"",      //直系联系人姓名
                     directContactsRelation:"",  //关系
@@ -135,7 +136,7 @@
                     otherContactsPhone:"",      //电话
                     currentPage:3               //当前页
                 },
-
+                active:3,
                 DCR:"",     //直系联系人关系
                 ODC:"",     //其他联系人关系
 
@@ -148,14 +149,52 @@
                 columns2: ['亲属', '朋友','同事','同学'],//关系
             },
             mounted() {
-
+                this.getoldmsg();//获取上一次登录的信息数据预览
             },
             methods: {
+                
+            getoldmsg(){
+                this.form.usrNo = sessionStorage.getItem('usrNo');
+                axios({
+                        method: 'post',
+                        url: "https://dev.zxtouch.msxiaodai.com/app/userInfo",
+                        data: this.form
+                    })
+                    .then(
+                        response => {
+                            if (response.data.code == 0) {
+                                if(this.active <= response.data.detail.result.currentPage){
+                                    
+                                    this.form.directContactsName = response.data.detail.result.directContactsName
+
+                                    this.form.directContactsRelation = response.data.detail.result.directContactsRelation
+                                    this.DCR = this.columns1[this.form.directContactsRelation]
+
+                                    this.form.directContactsPhone = response.data.detail.result.directContactsPhone
+                                    this.form.otherContactsName = response.data.detail.result.otherContactsName
+
+                                    this.form.otherDirectContacts = response.data.detail.result.otherDirectContacts
+                                    this.ODC = this.columns2[this.form.otherDirectContacts]
+                                    this.form.otherContactsPhone = response.data.detail.result.otherContactsPhone
+                                   
+                                   
+                                }
+                            }else{
+                                console.log('第一次登录或者报错')
+                                vant.Toast.fail(response.data.msg)
+                            }
+                        },
+                        response => {
+
+                        }
+                    )
+            },
+
                 upload(e){
                     console.log(e.target.value)
                 },
                 next(){
-                    this.form.account = sessionStorage.getItem('account');
+                    this.form.usrNo = sessionStorage.getItem('usrNo');
                     this.loadshow = true;
                     axios({
                         method: 'post',

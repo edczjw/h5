@@ -71,7 +71,8 @@
                 formData: {
                     ICid: '',   //信息类别id
                     FPCid: '',  //金融产品id
-                    account: '' //用户账号
+                    account: '', //用户账号
+                    usrNo:"",//用户编号
                 },
                 columns: ['个人' ,'企业'],//信息类别选项
                 columnsTwo:[],  //金融产品
@@ -87,11 +88,11 @@
             // }
         },
         mounted() {
-            this.getproduct();      //获取产品
+
         },
         methods: {
             next() {
-                this.formData.account = sessionStorage.getItem('account');
+                this.formData.usrNo = sessionStorage.getItem('usrNo');
                 this.loadshow = true;
                 axios({
                         method: "post",
@@ -118,8 +119,8 @@
 
             //获取产品
             getproduct(){
-                this.formData.account = sessionStorage.getItem('account');
-                if(this.formData.account !=''){
+                this.formData.usrNo = sessionStorage.getItem('usrNo');
+                if(this.formData.usrNo !=''){
                 axios({
                         method: "get",
                         params:{
@@ -150,7 +151,8 @@
                 this.value=value
                 this.formData.ICid = index+1
                 this.showPicker = false;
-                this.getproduct()
+                this.getproduct();
+                this.valueTwo=''
             },
             //信息类别弹窗取消
             onCancel() {
@@ -161,6 +163,7 @@
                 this.value = value
                 this.formData.ICid = index+1
                 this.getproduct()
+                this.valueTwo=''
             },
 
             // 金融产品
