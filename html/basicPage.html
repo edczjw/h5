@@ -222,7 +222,16 @@
             upload(e) {
                 let files = e.target.files || e.dataTransfer.files
                 if (!files.length) return
-                this.imgPreview(files[0])
+
+                var fileSize = (files[0].size) / (1024 * 1024); //转换成M
+                fileSize = fileSize.toFixed(0); //保留小数点后一位
+
+                // 不得大于2M
+                if(fileSize <= 2){
+                    this.imgPreview(files[0])
+                }else{
+                    vant.Toast('照片大小不得大于2M.')
+                }
             },
 
             imgPreview(file) {
@@ -310,33 +319,39 @@
                                                     //取消显示加载
                                                     this.loadshow = false
 
-                                                    vant.Toast('识别身份证正面照成功.');
-                                                    //姓名
-                                                    this.formData.name = response.data.data.name
+                                                    if(response.data.data.side == 'front'){
 
-                                                    sessionStorage.setItem("idcardName",response.data.data.name);
+                                                            vant.Toast('识别身份证正面照成功.');
+                                                            //姓名
+                                                            this.formData.name = response.data.data.name
 
-                                                    //身份证号码
-                                                    this.formData.idCard = response.data.data.id_card_number
+                                                            sessionStorage.setItem("idcardName",response.data.data.name);
 
-                                                    sessionStorage.setItem("idcardNumber",response.data.data.id_card_number);
+                                                            //身份证号码
+                                                            this.formData.idCard = response.data.data.id_card_number
 
-                                                    //手机号
-                                                    this.formData.phoneNumber = sessionStorage.getItem('account');
+                                                            sessionStorage.setItem("idcardNumber",response.data.data.id_card_number);
 
-                                                    //性别
-                                                    for(var i=0;i<this.columnsxb.length;i++){
-                                                        if(this.columnsxb[i] == response.data.data.gender){
-                                                            this.formData.sex = i+1;
-                                                            this.sex = this.columnsxb[i]
-                                                        }
+                                                            //手机号
+                                                            this.formData.phoneNumber = sessionStorage.getItem('account');
+
+                                                            //性别
+                                                            for(var i=0;i<this.columnsxb.length;i++){
+                                                                if(this.columnsxb[i] == response.data.data.gender){
+                                                                    this.formData.sex = i+1;
+                                                                    this.sex = this.columnsxb[i]
+                                                                }
+                                                            }
+
+                                                            //民族
+                                                            this.formData.nation = response.data.data.race
+
+                                                            //身份证地址
+                                                            this.formData.idCardAddress = response.data.data.address
+                                                        
+                                                    }else{
+                                                        vant.Toast.fail('请上传正确的身份证正面照.')
                                                     }
-
-                                                    //民族
-                                                    this.formData.nation = response.data.data.race
-
-                                                    //身份证地址
-                                                    this.formData.idCardAddress = response.data.data.address
 
                                                 }else{
                                                     //取消显示加载
@@ -368,7 +383,17 @@
             upload1(e) {
                 let files = e.target.files || e.dataTransfer.files
                 if (!files.length) return
-                this.imgPreview1(files[0])
+
+                var fileSize = (files[0].size) / (1024 * 1024); //转换成M
+                fileSize = fileSize.toFixed(0); //保留小数点后一位
+
+                // 不得大于2M
+                if(fileSize <= 2){
+                    this.imgPreview1(files[0])
+                }else{
+                    vant.Toast('照片大小不得大于2M.')
+                }
+
             },
             imgPreview1(file) {
                 let self = this
@@ -407,7 +432,7 @@
                                 accessKeySecret: response.data.secretKey, // OSS 密码
                                 bucket: response.data.bucket // 阿里云上存储的 Bucket
                             });
-                            console.log('client', client)
+                            // console.log('client', client)
                             // this.receivables.push(fileName);
                             var fileName = file.name;
                             //时间戳
@@ -459,13 +484,19 @@
                                                     //隐藏加载
                                                     this.loadshow = false
 
-                                                    vant.Toast('识别身份证反面照成功.');
-                                                    
-                                                    //签发机关
-                                                    this.formData.signingOffice = response.data.data.issued_by
+                                                    if(response.data.data.side == 'back'){
 
-                                                    //身份证有效期
-                                                    this.formData.certificateValidityPeriod = response.data.data.valid_date
+                                                            vant.Toast('识别身份证反面照成功.');
+                                                            
+                                                            //签发机关
+                                                            this.formData.signingOffice = response.data.data.issued_by
+
+                                                            //身份证有效期
+                                                            this.formData.certificateValidityPeriod = response.data.data.valid_date
+                                                        
+                                                    }else{
+                                                        vant.Toast.fail('请上传正确的身份证反面照.')
+                                                    }
 
                                                 }else{
                                                     //取消显示加载
@@ -619,6 +650,7 @@
                                 vant.Toast('基本信息提交完成.');
                                 window.location.href = './CheckFace.html'
                             }else{
+                                this.loadshow = false;
                                 vant.Toast(response.data.msg);
                             }
                         },

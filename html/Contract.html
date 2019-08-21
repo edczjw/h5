@@ -45,10 +45,8 @@
                                     is-link
                                     label="直系联系人"
                                     v-model="DCR"
-                                    right-icon="question-o" 
                                     placeholder="如父母"
                                     @click="showPickerparent1=!showPickerparent1"
-                                    @click-right-icon="$toast('请选择直系亲属')" 
                                   />
                             </van-cell-group>
                             
@@ -80,10 +78,8 @@
                                         is-link
                                         label="其他联系人"
                                         v-model="ODC"
-                                        right-icon="question-o" 
                                         placeholder="如亲属"
                                         @click="showPickerparent2=!showPickerparent2"
-                                        @click-right-icon="$toast('请选择亲属')"
                                       />
                                 </van-cell-group>
                                 

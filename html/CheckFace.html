@@ -29,6 +29,7 @@
     <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
     <script src="https://gosspublic.alicdn.com/aliyun-oss-sdk-4.4.4.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
@@ -92,17 +93,11 @@
                     </div>
                 </div>
 
-                <div class="loading" style="display:none;">
+                <div class="loading" v-if="loadingshow">
                     <div class="loading-icon">验证中...</div>
                 </div>
             </div>
         </div>
-        
-        <a href="./WorkMsg.html">
-            <div class="next-buttons" >
-                下 一 步
-            </div>
-        </a>
         <div class="ms-msg">
             版权公告 © 2018-2019 广州民盛互联网小额贷款有限公司<br>
             粤ICP备18017476号-1
@@ -123,34 +118,41 @@
                     tokenRandomNumber:"",
                     bizNo:"",
                 },
-                tokenRandomNumber:"",
-                bizNo:"",
+                loadingshow:false,
             },
             methods: {
-                //身份证正面面
+                //上传视频
                 upload(e) {
+                    // console.log(e)
+                    this.dialog = false;
                     let files = e.target.files || e.dataTransfer.files
                     if (!files.length) return
-                    this.imgPreview(files[0])
+
+                    
+                    var fileSize = (files[0].size) / (1024 * 1024); //转换成M
+                    fileSize = fileSize.toFixed(0); //保留小数点后一位
+
+                    // 不得大于2M
+                    if(fileSize <= 18){
+                        this.imgPreview(files[0])
+                    }else{
+                        vant.Toast('视频大小不得大于18M.')
+                    }
                 },
 
                 imgPreview(file) {
-                let self = this
+                this.loadingshow = true;
+                let _that = this;
                 let Orientation
-                var _that = this;
-                let _self = this;
                 var bucket; //OSS文件名称
                 var region;
                 var extranet;
                 var accessKeyId;
                 var accessKeySecret;
-                // 去获取拍照时的信息，解决拍出来的照片旋转问题
-                EXIF.getData(file, function () {
-                    Orientation = EXIF.getTag(this, 'Orientation')
-                })
+
                 // 看支持不支持FileReader
                 if (!file || !window.FileReader) return
-                if (/^image/.test(file.type)) {
+                if (/^video/.test(file.type)) {
                     // console.log('file', file)
                     axios({
                         header: {
@@ -175,9 +177,9 @@
                             // this.receivables.push(fileName);
                             var fileName = file.name;
                             //时间戳
-                            const obj = this.timestamp();
+                            const obj = _that.timestamp();
                             //时间戳
-                            const obj2 = this.timestamp1();
+                            const obj2 = _that.timestamp1();
                             //后缀名
                             const suffix = fileName.substr(fileName.indexOf("."));
 
@@ -201,57 +203,53 @@
                                 .then(res => {
                                     // console.log('res', res)
                                     if (res) {
-                                        this.formData.videoUrl = "https://appserbuc.oss-cn-shenzhen.aliyuncs.com/" + storeAs;
-
-                                        this.formData.positvideoUrlive
+                                        _that.form.videoUrl = "https://appserbuc.oss-cn-shenzhen.aliyuncs.com/" + storeAs;
+ 
+                                        _that.form.idcardName = sessionStorage.getItem('idcardName')
+                                        _that.form.idcardNumber = sessionStorage.getItem('idcardNumber')
+                                        _that.form.tokenRandomNumber = sessionStorage.getItem('tokenRandomNumber')
+                                        _that.form.bizNo = sessionStorage.getItem('bizNo')
 
                                         //图片上传成功后调用身份识别接口
                                         axios({
                                             method: 'post',
-                                            url: "https://dev.zxtouch.msxiaodai.com/rong360/idCarddIscern",
-                                            data: {
-                                                imageUrl:imageUrl
-                                            }
+                                            url: "https://dev.zxtouch.msxiaodai.com/video/auth",
+                                            data: _that.form
                                         })
                                         .then(
                                             response => {
-                                                if (response.data.code == 200) {
+                                                if (response.data.code == 0) {
+                                                    
+                                                    //隐藏随机数框
+                                                    $(".modal-layer").hide();
+                                                    
+                                                    _that.loadingshow = false;
 
-                                                    vant.Toast('识别身份证正面照成功.');
-                                                    //姓名
-                                                    this.formData.name = response.data.data.name
+                                                    vant.Toast('成功.' + response.data.msg);
 
-                                                    sessionStorage.setItem("idcardName",response.data.data.name);
-
-                                                    //身份证号码
-                                                    this.formData.idCard = response.data.data.id_card_number
-
-                                                    sessionStorage.setItem("idcardNumber",response.data.data.id_card_number);
-
-                                                    //手机号
-                                                    this.formData.phoneNumber = sessionStorage.getItem('account');
-
-                                                    //性别
-                                                    for(var i=0;i<this.columnsxb.length;i++){
-                                                        if(this.columnsxb[i] == response.data.data.gender){
-                                                            this.formData.sex = i+1;
-                                                            this.sex = this.columnsxb[i]
-                                                        }
-                                                    }
-
-                                                    //民族
-                                                    this.formData.nation = response.data.data.race
-
-                                                    //身份证地址
-                                                    this.formData.idCardAddress = response.data.data.address
+                                                    Dialog.confirm({
+                                                    title: '提示',
+                                                    message: '您已完成活体检测，是否进入下一个流程？'
+                                                    }).then(() => {
+                                                        window.location.href = './WorkMsg.html'
+                                                    }).catch(() => {
+                                                    // on cancel
+                                                    });
 
                                                 }else{
-                                                    vant.Toast('识别身份证正面照失败.' + response.data.msg);
+                                                    //隐藏随机数框
+                                                    $(".modal-layer").hide();
+                                                    _that.loadingshow = false;
+                                                    window.clearTimeout(tmid);
+                                                    vant.Toast('失败.' + response.data.msg + '.请重新进行视频录制.');
                                                 }
                                             },
                                             response => {
+                                                //隐藏随机数框
+                                                $(".modal-layer").hide();
+                                                _that.loadingshow = false;
                                                 console.log(response);
-                                                vant.Toast('异常.');
+                                                vant.Toast('异常.'+response.data.msg + '.请重新进行视频录制.');
                                             }
                                         )
 
@@ -259,6 +257,10 @@
                                     }
                                 })
                                 .catch(err => {
+                                    //隐藏随机数框
+                                    $(".modal-layer").hide();
+                                    _that.loadingshow = false;
+                                    window.clearTimeout(tmid);
                                     console.log('err', err)
                                     vant.Toast('异常.');
                                 });
@@ -268,7 +270,49 @@
                     );
                 }
             },
-            }
+
+            
+            //  时间戳
+            timestamp() {
+                const time = new Date();
+                const y = time.getFullYear();
+                const m = time.getMonth() + 1;
+                const d = time.getDate();
+                const h = time.getHours();
+                const mm = time.getMinutes();
+                const s = time.getSeconds();
+                return "" + y + "-" + this.Add0(m) + "-" + this.Add0(d);
+            },
+            Add0: function (m) {
+                return m < 10 ? "0" + m : m;
+            },
+
+            //  时间戳1
+            timestamp1() {
+                const time = new Date();
+                const y = time.getFullYear();
+                const m = time.getMonth() + 1;
+                const d = time.getDate();
+                const h = time.getHours();
+                const mm = time.getMinutes();
+                const s = time.getSeconds();
+                return (
+                    "" +
+                    y +
+                    "-" +
+                    this.Add1(m) +
+                    "-" +
+                    this.Add1(d) +
+                    "_" +
+                    this.Add1(h) +
+                    this.Add1(mm) +
+                    this.Add1(s)
+                );
+            },
+            Add1: function (m) {
+                return m < 10 ? "0" + m : m;
+            },
+            },
         });
 
     // 纯JS
@@ -290,24 +334,23 @@
     }
     //活体下一步
     $(".nextVideo").click(function () {
-        $.ajax({
-                type: "POST",
-                url: "https://dev.zxtouch.msxiaodai.com/rong360/getRandomNum",     //后台接口
-                data: this.form,
-                processData: false,
-                contentType: false,
-                xhr: function () {
-                    myXhr = $.ajaxSettings.xhr();
-                    return myXhr
-                },
-                //成功发送
-                success: function (data) {
-                    if(data.code==200){
+        //显示加载
+        $(".load-ing").show();
+        axios({
+                method: 'post',
+                url: "https://dev.zxtouch.msxiaodai.com/rong360/getRandomNum",
+                data: this.form
+            })
+            .then(
+                response => {
+                    if (response.data.code == 200) {
+                        //隐藏加载
+                        $(".load-ing").hide();
 
                         //随机数
-                        // console.log(data.data.tianji_api_faceplus_getrandomnumber_response.random_number)
+                        // console.log(response.data.data.tianji_api_faceplus_getrandomnumber_response.random_number)
 
-                        var randomnum = data.data.tianji_api_faceplus_getrandomnumber_response.random_number;
+                        var randomnum = response.data.data.tianji_api_faceplus_getrandomnumber_response.random_number;
                         var b = String(randomnum).split('');
 
                         //四位随机数计算
@@ -318,28 +361,24 @@
                         $(".modal-layer").show();
 
                         //tokenRandomNumber
-                        this.tokenRandomNumber = data.data.tianji_api_faceplus_getrandomnumber_response.token_random_number;
+                        var tokenRandomNumber = response.data.data.tianji_api_faceplus_getrandomnumber_response.token_random_number;
+                        sessionStorage.setItem("tokenRandomNumber",tokenRandomNumber)
 
                         //bizNo
-                        this.bizNo = data.data.tianji_api_faceplus_getrandomnumber_response.biz_no;
+                        var bizNo = response.data.data.tianji_api_faceplus_getrandomnumber_response.biz_no;
+                        sessionStorage.setItem("bizNo",bizNo)
 
                     }else{
-                        console.log(data.msg)
+                        vant.Toast(response.data.msg);
                     }
                 },
-                //失败发送
-                error: function (jqXHR, textStatus, errorThrown) {
-                    vant.Toast.fail('获取随机数异常.')
-                    // $(".LivAlert").html(
-                    //     "<div class='alert alert-danger alert-dismissable'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>服务器异常:" +
-                    //     jqXHR.status + ":" + jqXHR.statusText + "</div>");
-                    // alert("错误返回：" + jqXHR.status + ":" + jqXHR.statusText);
-                    // $(".loading").hide();
-                    // $(".modal-layer").hide();
-                    // window.clearTimeout(tmid);
+                response => {
+                    console.log(response);
                 }
-            })
-
+            ).catch(err => {
+                console.log('err', err)
+                vant.Toast('异常.');
+            });
         //倒计时
         settime(60);
     })
@@ -351,67 +390,67 @@
     });
 
     //活体视频上传
-    $("#video").change(function () {
-        var file = $("#video").get(0).files[0];
-        var fileSize = (this.files[0].size) / (1024 * 1024); //转换成M
-        fileSize = fileSize.toFixed(0); //保留小数点后一位
-        console.log(fileSize)
-        //判断文件大小是否大于18M
-        if (fileSize > 18) {
-            $(".LivAlert").html(
-                "<div class='alert alert-danger alert-dismissable'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>视频时间，建议在3-6秒</div>"
-            );
-            //隐藏
-            $(".modal-layer").hide();
-            window.clearTimeout(tmid);
-            return;
-        } else {
-            //加载的动图显示
-            $(".loading").show();
-            // var parameter = {};
-            // parameter["name"] = name;
-            // parameter["cardId"] = cardId;
+    // $("#video").change(function () {
+    //     var file = $("#video").get(0).files[0];
+    //     var fileSize = (this.files[0].size) / (1024 * 1024); //转换成M
+    //     fileSize = fileSize.toFixed(0); //保留小数点后一位
+    //     console.log(fileSize)
+    //     //判断文件大小是否大于18M
+    //     if (fileSize > 18) {
+    //         $(".LivAlert").html(
+    //             "<div class='alert alert-danger alert-dismissable'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>视频时间，建议在3-6秒</div>"
+    //         );
+    //         //隐藏
+    //         $(".modal-layer").hide();
+    //         window.clearTimeout(tmid);
+    //         return;
+    //     } else {
+    //         //加载的动图显示
+    //         $(".loading").show();
+    //         // var parameter = {};
+    //         // parameter["name"] = name;
+    //         // parameter["cardId"] = cardId;
 
-            var formData = new FormData();
-            formData.append("tokenRandomNumber", this.tokenRandomNumber);
-            formData.append("bizNo", this.bizNo);
-            var idcardName = sessionStorage.getItem('idcardName');
-            console.log(idcardName)
-            var idcardNumber = sessionStorage.getItem('idcardNumber');
-            console.log(idcardNumber)
+    //         var formData = new FormData();
+    //         formData.append("tokenRandomNumber", this.tokenRandomNumber);
+    //         formData.append("bizNo", this.bizNo);
+    //         var idcardName = sessionStorage.getItem('idcardName');
+    //         console.log(idcardName)
+    //         var idcardNumber = sessionStorage.getItem('idcardNumber');
+    //         console.log(idcardNumber)
 
-            //ajax提交视频
-            $.ajax({
-                type: "POST",
-                url: "###",     //后台接口
-                data: formData,
-                processData: false,
-                contentType: false,
-                xhr: function () {
-                    myXhr = $.ajaxSettings.xhr();
-                    return myXhr
-                },
-                //成功发送
-                success: function (data) {
-                    //fileRequestData = data
-                    alert("成功发送：" + data);
-                    Submit(data);
-                },
-                //失败发送
-                error: function (jqXHR, textStatus, errorThrown) {
-                    $(".LivAlert").html(
-                        "<div class='alert alert-danger alert-dismissable'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>服务器异常:" +
-                        jqXHR.status + ":" + jqXHR.statusText + "</div>");
-                    alert("错误返回：" + jqXHR.status + ":" + jqXHR.statusText);
-                    $(".loading").hide();
-                    $(".modal-layer").hide();
-                    window.clearTimeout(tmid);
-                    //window.location.reload();
-                    //HJSJ.prompts("error",jqXHR.status+":"+jqXHR.statusText);
-                }
-            })
-        }
-    })
+    //         //ajax提交视频
+    //         $.ajax({
+    //             type: "POST",
+    //             url: "###",     //后台接口
+    //             data: formData,
+    //             processData: false,
+    //             contentType: false,
+    //             xhr: function () {
+    //                 myXhr = $.ajaxSettings.xhr();
+    //                 return myXhr
+    //             },
+    //             //成功发送
+    //             success: function (data) {
+    //                 //fileRequestData = data
+    //                 alert("成功发送：" + data);
+    //                 Submit(data);
+    //             },
+    //             //失败发送
+    //             error: function (jqXHR, textStatus, errorThrown) {
+    //                 $(".LivAlert").html(
+    //                     "<div class='alert alert-danger alert-dismissable'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>服务器异常:" +
+    //                     jqXHR.status + ":" + jqXHR.statusText + "</div>");
+    //                 alert("错误返回：" + jqXHR.status + ":" + jqXHR.statusText);
+    //                 $(".loading").hide();
+    //                 $(".modal-layer").hide();
+    //                 window.clearTimeout(tmid);
+    //                 //window.location.reload();
+    //                 //HJSJ.prompts("error",jqXHR.status+":"+jqXHR.statusText);
+    //             }
+    //         })
+    //     }
+    // })
 </script>
 
 </html>
