@@ -72,7 +72,7 @@
                     ICid: '',   //信息类别id
                     FPCid: '',  //金融产品id
                     account: '', //用户账号
-                    usrNo:"",//用户编号
+                    userNo:"",//用户编号
                 },
                 columns: ['个人' ,'企业'],//信息类别选项
                 columnsTwo:[],  //金融产品
@@ -92,7 +92,7 @@
         },
         methods: {
             next() {
-                this.formData.usrNo = sessionStorage.getItem('usrNo');
+                this.formData.userNo = sessionStorage.getItem('usrNo');
                 this.loadshow = true;
                 axios({
                         method: "post",

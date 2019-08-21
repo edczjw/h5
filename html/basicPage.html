@@ -46,7 +46,7 @@
                     <a href="javascript:;" class="a-upload">
                         <input type="file" accept="image/*" @change="upload">
                     </a>
-                    <img :src="formData.positive" alt="" v-if="formData.positive.length>0" class="id-img">
+                    <img :src="formData.positive" alt="" v-if="filefrontlength>0" class="id-img">
                     <img v-else src="../image/idup.png" alt="" class="id-img">
                     <van-field required :disabled="true" label="上传证件正面" />
                 </div>
@@ -54,7 +54,7 @@
                     <a href="javascript:;" class="a-upload">
                         <input type="file" accept="image/*" @change="upload1">
                     </a>
-                    <img :src="formData.back" alt="" v-if="formData.back.length>0" class="id-img">
+                    <img :src="formData.back" alt="" v-if="filebacklength>0" class="id-img">
                     <img v-else src="../image/iddown.png" alt="" class="id-img">
                     <van-field required :disabled="true" label="上传证件反面" />
                 </div>
@@ -69,7 +69,7 @@
             </van-cell-group>
             <van-cell-group>
                 <van-field v-model='formData.phoneNumber' label="手机号" 
-                right-icon="question-o" type="tel" required />
+                right-icon="question-o" type="tel" @click-right-icon="$toast('请填写真实手机号码')"  required />
             </van-cell-group>
             <!-- 性别 -->
             <van-cell-group>
@@ -174,7 +174,7 @@
         data() {
             return {
                 formData: {
-                    mobile:"",//登录手机号
+                    // mobile:"",//登录手机号
                     positive: '',//上传证件正面
                     back: '',//上传证件反面
                     name: '',//姓名
@@ -204,6 +204,9 @@
                     account:"",
                     usrNo:""
                 },
+
+                filefrontlength:0,
+                filebacklength:0,
                 showPickerhunyin: false,//控制婚姻弹窗显示
                 showPickerxueli: false,//控制学历弹窗显示
                 showPickerxuewei: false,//控制学位弹窗显示
@@ -266,7 +269,7 @@
                                     this.formData.qq = response.data.detail.result.qq
                                 }
                             }else{
-                                console.log('第一次登录或者报错')
+                                console.log(response.data.msg)
                                 vant.Toast.fail(response.data.msg)
                             }
                         },
@@ -279,7 +282,10 @@
             //身份证正面面
             upload(e) {
                 let files = e.target.files || e.dataTransfer.files
+                this.filefrontlength = files.length;
                 if (!files.length) return
+                //显示加载
+                this.loadshow = true
 
                 var fileSize = (files[0].size) / (1024 * 1024); //转换成M
                 fileSize = fileSize.toFixed(0); //保留小数点后一位
@@ -360,15 +366,15 @@
                                         this.formData.positive = "https://appserbuc.oss-cn-shenzhen.aliyuncs.com/" + storeAs;
 
                                         var imageUrl = this.formData.positive
-                                        //显示加载
-                                        this.loadshow = true
-
+                                        
+                                        var usrNo = sessionStorage.getItem('usrNo');
                                         //图片上传成功后调用身份识别接口
                                         axios({
                                             method: 'post',
                                             url: "https://dev.zxtouch.msxiaodai.com/rong360/idCarddIscern",
                                             data: {
-                                                imageUrl:imageUrl
+                                                imageUrl:imageUrl,
+                                                usrNo:usrNo
                                             }
                                         })
                                         .then(
@@ -440,7 +446,10 @@
             //身份证反面
             upload1(e) {
                 let files = e.target.files || e.dataTransfer.files
+                this.filebacklength = files.length;
                 if (!files.length) return
+                //显示加载
+                this.loadshow = true
 
                 var fileSize = (files[0].size) / (1024 * 1024); //转换成M
                 fileSize = fileSize.toFixed(0); //保留小数点后一位
@@ -526,6 +535,8 @@
 
                                         //显示加载
                                         this.loadshow = true
+                                        
+                                        var usrNo = sessionStorage.getItem('usrNo');
 
                                         // console.log(imageUrl)
                                         //图片上传成功后调用身份识别接口
@@ -533,7 +544,8 @@
                                             method: 'post',
                                             url: "https://dev.zxtouch.msxiaodai.com/rong360/idCarddIscern",
                                             data: {
-                                                imageUrl:imageUrl
+                                                imageUrl:imageUrl,
+                                                usrNo:usrNo
                                             }
                                         })
                                         .then(

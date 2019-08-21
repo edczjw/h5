@@ -86,7 +86,7 @@
             form: {
                 account: '', //账号
                 verification: '', //验证码
-                currentLocation: '', //当前定位
+                currentLocation: 0, //当前定位
             }
         },
         mounted() {
@@ -215,7 +215,8 @@
                                     vant.Toast.success('登录成功')
 
                                     sessionStorage.setItem("account",form.account);//本地存储账号
-                                    sessionStorage.setItem("usrNo",response.data.usrNo);//本地存储用户编号
+                                    sessionStorage.setItem("userNo",response.data.detail.usrNo);//本地存储用户编号
+                                    console.log(response.data.detail.usrNo)
 
                                     //跳转
                                     window.location.href = './FirstPage.html';

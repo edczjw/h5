@@ -128,9 +128,11 @@
             getoldmsg(){
                 this.form.usrNo = sessionStorage.getItem('usrNo');
                 axios({
-                        method: 'post',
+                        method: 'get',
                         url: "https://dev.zxtouch.msxiaodai.com/auth/status",
-                        data: this.form
+                        params:{
+                                usrNo:this.form.usrNo
+                            },
                     })
                     .then(
                         response => {
@@ -144,7 +146,7 @@
                                             });
                                 }
                             }else{
-                                vant.Toast.fail(response.data.msg)
+                                vant.Toast.fail('用户编号为空,'+response.data.msg)
                             }
                         },
                         response => {
