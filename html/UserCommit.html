@@ -2,116 +2,233 @@
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-            <meta charset="utf-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <title>认证信息</title>
-            <meta name="description" content=""> 
-            <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0,user-scalable=no,shrink-to-fit=no">
-            <link rel="stylesheet" href="../css/Contract.css">
-            <link rel="stylesheet" href="../css/common.css">
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.0/lib/index.css">
-        
-            <!-- 引入组件,注意引入顺序 -->
-            <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/vant@2.0/lib/vant.min.js"></script>
-    </head>
-    <body>
-        <!--[if lt IE 7]>
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>认证信息</title>
+    <meta name="description" content="">
+    <meta name="viewport"
+        content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0,user-scalable=no,shrink-to-fit=no">
+    <link rel="stylesheet" href="../css/Contract.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.0/lib/index.css">
+
+    <!-- 引入组件,注意引入顺序 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vant@2.0/lib/vant.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-        <div id="app">
-            <div class="top-step">
-                <van-steps :active="active">
-                        <van-step><a href="../html/basicPage.html">基本信息</a></van-step>
-                        <van-step><a href="../html/CheckFace.html">活体检测</a></van-step>
-                        <van-step><a href="../html/WorkMsg.html">工作信息</a></van-step>
-                        <van-step><a href="../html/Contract.html">联系人员</a></van-step>
-                        <van-step><a href="../html/UserCommit.html">用户认证</a></van-step>
-                </van-steps>
+    <div id="app">
+        <div class="top-step">
+            <van-steps :active="active">
+                <van-step><a href="../html/basicPage.html">基本信息</a></van-step>
+                <van-step><a href="../html/CheckFace.html">活体检测</a></van-step>
+                <van-step><a href="../html/WorkMsg.html">工作信息</a></van-step>
+                <van-step><a href="../html/Contract.html">联系人员</a></van-step>
+                <van-step><a href="../html/UserCommit.html">用户认证</a></van-step>
+            </van-steps>
+        </div>
+        <div class="container">
+            <div class="top-con">
+                <van-cell-group>
+                    <van-cell title="必选认证" value="" />
+                </van-cell-group>
+
+                <van-cell-group>
+                    <van-cell :is-link="mobile==='未认证' || mobile === '认证失败'" required title="移动运营商" v-model="mobile"
+                        @click="yunyinshang" />
+                </van-cell-group>
             </div>
-            <div class="container">
-                    <div class="top-con">
-                            <van-cell-group>
-                                <van-cell title="必选认证" value="" />
-                            </van-cell-group>
+            <div class="bottom-con">
+                <van-cell-group>
+                    <van-field clearable disabled label="非必选认证" placeholder="认证越多，额度越大" />
+                </van-cell-group>
 
-                            <van-cell-group>
-                                  <van-cell
-                                    is-link
-                                    required
-                                    title="移动运营商"
-                                    v-model="value"
-                                    link-type="navigateTo"
-                                    url="http://baidu.com"
-                                    />
-                            </van-cell-group>
-                    </div>
-                    <div class="bottom-con">
-                                <van-cell-group>
-                                    <van-field
-                                        clearable
-                                        disabled
-                                        label="非必选认证"
-                                        placeholder="认证越多，额度越大"
-                                    />
-                                </van-cell-group>
+                <van-cell-group>
+                    <van-cell title="人行征信信息" v-model="zxcCrawl" :is-link="zxcCrawl==='未认证' || zxcCrawl === '认证失败'" />
+                </van-cell-group>
 
-                                <van-cell-group>
-                                        <van-cell
-                                        is-link
-                                        title="人行征信信息"
-                                        v-model="value"
-                                        link-type="navigateTo"
-                                        url="http://baidu.com"
-                                        />
-                                </van-cell-group>
-    
-                                <van-cell-group>
-                                        <van-cell
-                                        is-link
-                                        title="公积金信息"
-                                        v-model="value"
-                                        link-type="navigateTo"
-                                        url="http://baidu.com"
-                                        />
-                                </van-cell-group>
+                <van-cell-group>
+                    <van-cell title="公积金信息" v-model="fundRp" :is-link="fundRp==='未认证' || fundRp === '认证失败'" />
+                </van-cell-group>
 
-                                <van-cell-group>
-                                        <van-cell
-                                        is-link
-                                        title="学历信息"
-                                        v-model="value"
-                                        link-type="navigateTo"
-                                        url="http://baidu.com"
-                                        />
-                                </van-cell-group>
-                    </div>
-                <div class="next-button" @click="submit()">
-                    提 交
-                </div>
+                <van-cell-group>
+                    <van-cell title="学历信息" v-model="chsi" :is-link="chsi==='未认证' || chsi === '认证失败'" />
+                </van-cell-group>
+            </div>
+            <div class="next-button" @click="submit()">
+                提 交
             </div>
         </div>
-        <div class="ms-msg">
-            版权公告 © 2018-2019 广州民盛互联网小额贷款有限公司<br>
-            粤ICP备18017476号-1
-        </div>
-    </body>
+    </div>
+    <div class="ms-msg">
+        版权公告 © 2018-2019 广州民盛互联网小额贷款有限公司<br>
+        粤ICP备18017476号-1
+    </div>
+</body>
 
-    
+
 <script>
-        var app = new Vue({
-            el: "#app",
-            data: {
-                value:"认证中",
-                active: 4,
+    var app = new Vue({
+        el: "#app",
+        data: {
+            mobile: "",//移动运营商认证
+            zxcCrawl: '',//人行认证
+            fundRp: '',//公积金认证
+            chsi: '',//学历信息
+            active: 4,
+        },
+        mounted() {
+            this.load()
+        },
+        methods: {
+            load() {
+                var usrNo = sessionStorage.getItem("usrNo");
+
+                axios({
+                    method: 'get',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    url: "https://dev.zxtouch.msxiaodai.com/auth/status",
+                    params: {
+                        userNo: 'YH20190819000001'
+                    }
+                })
+                    .then(
+                        response => {
+                            if (response.data.code == 0) {
+                                switch (response.data.detail.mobile) {
+                                    case '01':
+                                        this.mobile = '未认证'
+                                        break;
+                                    case '02':
+                                        this.mobile = '认证中'
+                                        break;
+                                    case '03':
+                                        this.mobile = '认证失败'
+                                        break;
+                                    case '04':
+                                        this.mobile = '认证成功'
+                                        break;
+                                }
+                                switch (response.data.detail.zxcCrawl) {
+                                    case '01':
+                                        this.zxcCrawl = '未认证'
+                                        break;
+                                    case '02':
+                                        this.zxcCrawl = '认证中'
+                                        break;
+                                    case '03':
+                                        this.zxcCrawl = '认证失败'
+                                        break;
+                                    case '04':
+                                        this.zxcCrawl = '认证成功'
+                                        break;
+                                }
+                                switch (response.data.detail.fundRp) {
+                                    case '01':
+                                        this.fundRp = '未认证'
+                                        break;
+                                    case '02':
+                                        this.fundRp = '认证中'
+                                        break;
+                                    case '03':
+                                        this.fundRp = '认证失败'
+                                        break;
+                                    case '04':
+                                        this.fundRp = '认证成功'
+                                        break;
+                                }
+                                switch (response.data.detail.chsi) {
+                                    case '01':
+                                        this.chsi = '未认证'
+                                        break;
+                                    case '02':
+                                        this.chsi = '认证中'
+                                        break;
+                                    case '03':
+                                        this.chsi = '认证失败'
+                                        break;
+                                    case '04':
+                                        this.chsi = '认证成功'
+                                        break;
+                                }
+                            } else {
+                                vant.Toast.fail(response.data.msg)
+                            }
+                        },
+                        response => {
+                            console.log(response);
+                        }
+                    )
             },
-            methods: {
-                submit(){
-                    window.location.href='./index.html';
-                }
+
+            //移动运营商
+            yunyinshang() {
+                var usrNo = sessionStorage.getItem("usrNo");
+                axios({
+                    method: 'get',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    url: "https://dev.zxtouch.msxiaodai.com/auth/phone",
+                    params: {
+                        userNo: usrNo
+                    }
+                })
+                    .then(
+                        response => {
+                            if (response.data.code == 0) {
+                                window.location.href = response.data.url
+                            } else {
+                                vant.Toast.fail(response.data.msg)
+                            }
+                        },
+                        response => {
+                            console.log(response);
+                        }
+                    )
+            },
+            //提交
+            submit() {
+                var usrNo = sessionStorage.getItem("usrNo");
+                axios({
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    method: 'get',
+                    url: "https://dev.zxtouch.msxiaodai.com/auth/updateTotalState",
+                    params: {
+                        userNo: usrNo
+                    }
+                })
+                    .then(
+                        response => {
+                            if (response.data.code == 0) {
+                                vant.Toast.success(response.data.msg)
+                                window.location.href = './index.html';
+
+                            } else {
+                                vant.Toast.fail(response.data.msg)
+                            }
+                        },
+                        response => {
+                            console.log(response);
+                        }
+                    )
             }
-        });
-    </script>
+        }
+    });
+</script>
+
 </html>
