@@ -129,22 +129,21 @@
                 this.form.usrNo = sessionStorage.getItem('usrNo');
                 axios({
                         method: 'post',
-                        url: "https://dev.zxtouch.msxiaodai.com/app/userInfo",
+                        url: "https://dev.zxtouch.msxiaodai.com/auth/status",
                         data: this.form
                     })
                     .then(
                         response => {
                             if (response.data.code == 0) {
-                                if(this.active <= response.data.detail.result.currentPage){
+                                if(response.data.detail.livingBody == '04'){
                                     vant.Dialog.alert({
                                             title: '提示',
-                                            message: '您之前已经通过活体检测测试,无须再次检测，点击确认进入下一个步骤.'
+                                            message: '已认证成功,进入下一个步骤.'
                                             }).then(() => {
                                                 window.location.href = './WorkMsg.html'
                                             });
                                 }
                             }else{
-                                console.log('第一次登录或者报错')
                                 vant.Toast.fail(response.data.msg)
                             }
                         },
