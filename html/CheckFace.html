@@ -117,10 +117,42 @@
                     idcardNumber:"",
                     tokenRandomNumber:"",
                     bizNo:"",
+                    usrNo:"",
                 },
                 loadingshow:false,
             },
+            mounted() {
+                this.getoldmsg();//获取上一次登录的信息数据预览
+            },
             methods: {
+            getoldmsg(){
+                this.form.usrNo = sessionStorage.getItem('usrNo');
+                axios({
+                        method: 'post',
+                        url: "https://dev.zxtouch.msxiaodai.com/app/userInfo",
+                        data: this.form
+                    })
+                    .then(
+                        response => {
+                            if (response.data.code == 0) {
+                                if(this.active <= response.data.detail.result.currentPage){
+                                    vant.Dialog.alert({
+                                            title: '提示',
+                                            message: '您之前已经通过活体检测测试,无须再次检测，点击确认进入下一个步骤.'
+                                            }).then(() => {
+                                                window.location.href = './WorkMsg.html'
+                                            });
+                                }
+                            }else{
+                                console.log('第一次登录或者报错')
+                                vant.Toast.fail(response.data.msg)
+                            }
+                        },
+                        response => {
+
+                        }
+                    )
+            },
                 //上传视频
                 upload(e) {
                     // console.log(e)
@@ -225,11 +257,9 @@
                                                     
                                                     _that.loadingshow = false;
 
-                                                    vant.Toast('成功.' + response.data.msg);
-
-                                                    Dialog.confirm({
+                                                    vant.Dialog.confirm({
                                                     title: '提示',
-                                                    message: '您已完成活体检测，是否进入下一个流程？'
+                                                    message: response.data.msg+',您已完成活体检测，是否进入下一个流程？'
                                                     }).then(() => {
                                                         window.location.href = './WorkMsg.html'
                                                     }).catch(() => {

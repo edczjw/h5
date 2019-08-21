@@ -25,7 +25,7 @@
 <body>
     <div id="app">
         <div class="top-step">
-            <van-steps :active="form.currentPage">
+            <van-steps :active="active">
                 <van-step><a href="../html/basicPage.html">基本信息</a></van-step>
                 <van-step><a href="../html/CheckFace.html">活体检测</a></van-step>
                 <van-step><a href="../html/WorkMsg.html">工作信息</a></van-step>
@@ -181,7 +181,7 @@
         el: "#app",
         data: {
             form:{
-                account:"13202909009",         //手机号
+                account:"",         //手机号
                 companyName:"",     //单位名称
                 natureUnit:"",      //单位性质
                 unitAddress:"",     //单位地址
@@ -191,8 +191,9 @@
                 socialIdentity:"",  //社会身份
                 workingYears:"",    //工作年限
                 currentPage:2,     //当前页数
+                usrNo:"",
             },
-
+            active:2,
             NU:"",      //单位性质
             IR:"",     //收入区间
             WT:"",        //工作类型
@@ -232,10 +233,57 @@
             columns3: ['企业事业单位', '专业技术人员', '在校学生', '待业人士'],//社会身份
             columns4: ['≤3K','3K-5K','5K-8K','8K-10K','10K-15K','15K-20K','≥20K'],//收入区间
         },
+        mounted() {
+                this.getoldmsg();//获取上一次登录的信息数据预览
+        },
         methods: {
+
+            getoldmsg(){
+                this.form.usrNo = sessionStorage.getItem('usrNo');
+                axios({
+                        method: 'post',
+                        url: "https://dev.zxtouch.msxiaodai.com/app/userInfo",
+                        data: this.form
+                    })
+                    .then(
+                        response => {
+                            if (response.data.code == 0) {
+                                if(this.active <= response.data.detail.result.currentPage){
+                                    
+                                    this.form.companyName = response.data.detail.result.companyName
+
+                                    this.form.natureUnit = response.data.detail.result.natureUnit
+                                    this.NU = this.columns1[this.form.natureUnit]
+
+                                    this.form.unitAddress = response.data.detail.result.unitAddress
+                                    this.form.incomeRange = response.data.detail.result.incomeRange
+                                    this.IR = this.columns4[this.form.incomeRange]
+
+                                    this.form.workType = response.data.detail.result.workType
+                                    this.WT = this.columns2[this.form.workType]
+                                    this.form.workPhone = response.data.detail.result.workPhone
+                                    this.form.socialIdentity = response.data.detail.result.socialIdentity
+                                    this.SI = this.columns3[this.form.socialIdentity]
+
+                                    this.form.workingYears = response.data.detail.result.workingYears
+                                   
+                                }
+                            }else{
+                                console.log('第一次登录或者报错')
+                                vant.Toast.fail(response.data.msg)
+                            }
+                        },
+                        response => {
+
+                        }
+                    )
+            },
+
+
             next(){
-                this.form.account = sessionStorage.getItem('account');
+                this.form.usrNo = sessionStorage.getItem('usrNo');
                 this.loadshow = true;
+
                 axios({
                         method: 'post',
                         url: "https://dev.zxtouch.msxiaodai.com/app/workInfo",
@@ -263,12 +311,12 @@
             //变值
             onChangedanwei(all,value,index) {
                 this.NU = value
-                this.form.natureUnit = index
+                this.form.natureUnit = value
             },
             //弹出层确认
             onConfirmdanwei(value,index){
                 this.NU=value
-                this.form.natureUnit = index
+                this.form.natureUnit = value
                 this.showPickerdanwei=false
             },
 
@@ -277,12 +325,12 @@
             //变值
             onChangework(all,value,index) {
                 this.WT = value
-                this.form.workType = index
+                this.form.workType = value
             },
             //弹出层确认
             onConfirmwork(value,index){
                 this.WT=value
-                this.form.workType = index
+                this.form.workType = value
                 this.showworktype=false
             },
             
@@ -291,12 +339,12 @@
             //变值
             onChangesoc(all,value,index) {
                 this.SI = value
-                this.form.socialIdentity = index
+                this.form.socialIdentity = value
             },
             //弹出层确认
             onConfirmsoc(value,index){
                 this.SI=value
-                this.form.socialIdentity = index
+                this.form.socialIdentity = value
                 this.showsoctype=false
             },
 
@@ -305,12 +353,12 @@
             //变值
             onChangemon(all,value,index) {
                 this.IR = value
-                this.form.incomeRange = index
+                this.form.incomeRange = value
             },
             //弹出层确认
             onConfirmmon(value,index){
                 this.IR=value
-                this.form.incomeRange = index
+                this.form.incomeRange = value
                 this.showPickermon=false
             }
 

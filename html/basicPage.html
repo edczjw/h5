@@ -200,6 +200,10 @@
                 loadshow: false,        //加载条显示
                 sex:'', //性别
 
+                form:{
+                    account:"",
+                    usrNo:""
+                },
                 showPickerhunyin: false,//控制婚姻弹窗显示
                 showPickerxueli: false,//控制学历弹窗显示
                 showPickerxuewei: false,//控制学位弹窗显示
@@ -217,7 +221,61 @@
         created() {
             this.area = area;
         },
+        mounted() {
+            this.getoldmsg();//获取上一次登录的信息数据预览
+        },
         methods: {
+
+            getoldmsg(){
+                this.form.usrNo = sessionStorage.getItem('usrNo');
+                axios({
+                        method: 'post',
+                        url: "https://dev.zxtouch.msxiaodai.com/app/userInfo",
+                        data: this.form
+                    })
+                    .then(
+                        response => {
+                            if (response.data.code == 0) {
+                                if(this.active <= response.data.detail.result.currentPage){
+                                    
+                                    this.formData.positive = response.data.detail.result.positive
+                                    this.formData.back = response.data.detail.result.back
+                                    this.formData.phoneNumber = response.data.detail.result.phoneNumber
+                                    this.formData.name = response.data.detail.result.name
+                                    this.formData.idCard = response.data.detail.result.idCard
+
+                                    this.formData.sex = response.data.detail.result.sex
+                                    if(this.formData.sex == 1){
+                                        this.sex = '男'
+                                    }else{
+                                        this.sex = '女'
+                                    }
+
+                                    this.formData.age = response.data.detail.result.age
+                                    this.formData.nation = response.data.detail.result.nation
+                                    this.formData.idCardAddress = response.data.detail.result.idCardAddress
+                                    this.formData.signingOffice = response.data.detail.result.signingOffice
+                                    this.formData.certificateValidityPeriod = response.data.detail.result.certificateValidityPeriod
+                                    this.formData.maritalStatus = response.data.detail.result.maritalStatus
+                                    this.formData.education = response.data.detail.result.education
+                                    this.formData.degree = response.data.detail.result.degree
+                                    this.formData.livingConditions = response.data.detail.result.livingConditions
+                                    this.formData.provincialAndUrbanAreas = response.data.detail.result.provincialAndUrbanAreas
+                                    this.formData.degree = response.data.detail.result.degree
+                                    this.formData.email = response.data.detail.result.email
+                                    this.formData.qq = response.data.detail.result.qq
+                                }
+                            }else{
+                                console.log('第一次登录或者报错')
+                                vant.Toast.fail(response.data.msg)
+                            }
+                        },
+                        response => {
+
+                        }
+                    )
+            },
+
             //身份证正面面
             upload(e) {
                 let files = e.target.files || e.dataTransfer.files
@@ -636,7 +694,7 @@
             },
             //提交
             next() {
-                this.formData.mobile = sessionStorage.getItem('account');
+                this.formData.usrNo = sessionStorage.getItem('usrNo');
                 this.loadshow = true;
                     axios({
                         method: 'post',
