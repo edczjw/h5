@@ -293,7 +293,7 @@
                         response => {
                             if (response.data.code == 0) {
                                 this.loadshow = false;
-                                vant.Toast('工作信息提交完成.');
+                                vant.Toast.success('工作信息提交完成.');
                                 window.location.href='./Contract.html';
                             }else{
                                 this.loadshow = false;
@@ -311,12 +311,12 @@
             //变值
             onChangedanwei(all,value,index) {
                 this.NU = value
-                this.form.natureUnit = value
+                this.form.natureUnit = index
             },
             //弹出层确认
             onConfirmdanwei(value,index){
                 this.NU=value
-                this.form.natureUnit = value
+                this.form.natureUnit = index
                 this.showPickerdanwei=false
             },
 
@@ -325,12 +325,12 @@
             //变值
             onChangework(all,value,index) {
                 this.WT = value
-                this.form.workType = value
+                this.form.workType = index
             },
             //弹出层确认
             onConfirmwork(value,index){
                 this.WT=value
-                this.form.workType = value
+                this.form.workType = index
                 this.showworktype=false
             },
             
@@ -339,12 +339,12 @@
             //变值
             onChangesoc(all,value,index) {
                 this.SI = value
-                this.form.socialIdentity = value
+                this.form.socialIdentity = index
             },
             //弹出层确认
             onConfirmsoc(value,index){
                 this.SI=value
-                this.form.socialIdentity = value
+                this.form.socialIdentity = index
                 this.showsoctype=false
             },
 
@@ -353,12 +353,12 @@
             //变值
             onChangemon(all,value,index) {
                 this.IR = value
-                this.form.incomeRange = value
+                this.form.incomeRange = index
             },
             //弹出层确认
             onConfirmmon(value,index){
                 this.IR=value
-                this.form.incomeRange = value
+                this.form.incomeRange = index
                 this.showPickermon=false
             }
 

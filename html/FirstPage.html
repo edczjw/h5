@@ -119,8 +119,8 @@
 
             //获取产品
             getproduct(){
-                this.formData.usrNo = sessionStorage.getItem('usrNo');
-                if(this.formData.usrNo !=''){
+                this.formData.userNo = sessionStorage.getItem('usrNo');
+                if(this.formData.userNo !=''){
                 axios({
                         method: "get",
                         params:{
