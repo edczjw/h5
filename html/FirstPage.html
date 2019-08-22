@@ -39,16 +39,17 @@
                 </van-popup>
                 <!-- 金融产品 -->
                 <div class="select-one">
-                    <van-cell title="金融产品" is-link arrow-direction="down" :value="valueTwo" @click="showPickerTwo = true" />
+                    <van-cell title="金融产品" is-link arrow-direction="down" :value="valueTwo"
+                        @click="showPickerTwo = true" />
                 </div>
                 <van-popup v-model="showPickerTwo" position="bottom">
                     <van-picker show-toolbar title="金融产品" :columns="columnsTwo" @cancel="onCancelTwo"
                         @confirm="onConfirmTwo" value-key="financialProductsName" @change="onchangeTwo" />
                 </van-popup>
             </div>
-            
+
             <div class="load-ing" v-if="loadshow">
-                <van-loading size="24px" color="#1989fa"  vertical>加载中...</van-loading>
+                <van-loading size="24px" color="#1989fa" vertical>加载中...</van-loading>
             </div>
 
             <van-button class="login-button" @click="next()">
@@ -66,19 +67,19 @@
         el: "#home",
         data() {
             return {
-                value: "",//信息类别
-                valueTwo: "",//金融产品
+                value: "", //信息类别
+                valueTwo: "", //金融产品
                 formData: {
-                    ICid: '',   //信息类别id
-                    FPCid: '',  //金融产品id
+                    ICid: '', //信息类别id
+                    FPCid: '', //金融产品id
                     account: '', //用户账号
-                    userNo:"",//用户编号
+                    userNo: "", //用户编号
                 },
-                columns: ['个人' ,'企业'],//信息类别选项
-                columnsTwo:[],  //金融产品
-                showPickerTwo: false,//金融产品显示控制
-                showPicker: false,//信息类型显示控制
-                loadshow:false,
+                columns: ['个人', '企业'], //信息类别选项
+                columnsTwo: [], //金融产品
+                showPickerTwo: false, //金融产品显示控制
+                showPicker: false, //信息类型显示控制
+                loadshow: false,
             }
         },
         computed: {
@@ -95,37 +96,75 @@
                 this.formData.userNo = sessionStorage.getItem('usrNo');
                 this.loadshow = true;
                 axios({
-                        method: "post",
-                        data:this.formData,
-                        url: "https://dev.zxtouch.msxiaodai.com/data/submission"
-                    }).then(
-                        response => {
-                            if (response.data.code == 0) {
-                                this.loadshow = false;
-                                vant.Toast.success(response.data.msg)
-                                window.location.href = './basicPage.html';
-                            } else {
-                                this.loadshow = false;
-                                vant.Toast.fail(response.data.msg+","+"信息类别和产品不能为空.")
-                                console.log(response.data.msg)
-                            }
+                    method: "post",
+                    data: this.formData,
+                    url: "https://dev.zxtouch.msxiaodai.com/data/submission"
+                }).then(
+                    response => {
+                        if (response.data.code == 0) {
+                            this.loadshow = false;
+                            vant.Toast.success(response.data.msg)
+                            window.location.href = './basicPage.html';
+                        } else {
+                            this.loadshow = false;
+                            vant.Toast.fail(response.data.msg + "," + "信息类别和产品不能为空.")
+                            console.log(response.data.msg)
                         }
-                    ).catch(function (error) {
-                        this.loadshow = false;
-                        vant.Toast.fail(error)
-                        console.log(error);
-                    });
+                    }
+                ).catch(function (error) {
+                    this.loadshow = false;
+                    console.log(error);
+                    console.log(error);
+                    if (error && error.response) {
+                        switch (error.response.status) {
+                            case 400:
+                                error.message = '错误请求'
+                                vant.Toast.fail(error.message)
+                                break;
+
+                            case 401:
+                                error.message = '未授权，请重新登录'
+                                vant.Toast.fail(error.message)
+                                break;
+
+                            case 403:
+                                error.message = '拒绝访问'
+                                vant.Toast.fail(error.message)
+                                break;
+
+                            case 404:
+                                error.message = '请求错误，未找到该资源'
+                                vant.Toast.fail(error.message)
+                                break;
+
+                            case 405:
+                                error.message = '请求方法未允许'
+                                vant.Toast.fail(error.message)
+                                break;
+
+                            case 408:
+                                error.message = '请求超时'
+                                vant.Toast.fail(error.message)
+                                break;
+
+                            case 502:
+                                error.message = '服务器错误'
+                                vant.Toast.fail(error.message)
+                                break;
+                        }
+                    }
+                });
             },
 
             //获取产品
-            getproduct(){
+            getproduct() {
                 this.formData.userNo = sessionStorage.getItem('usrNo');
-                if(this.formData.userNo !=''){
-                axios({
+                if (this.formData.userNo != '') {
+                    axios({
                         method: "get",
-                        params:{
-                                ICid:this.formData.ICid
-                            },
+                        params: {
+                            ICid: this.formData.ICid
+                        },
                         url: "https://dev.zxtouch.msxiaodai.com/get/financialProducts"
                     }).then(
                         response => {
@@ -139,31 +178,70 @@
                     ).catch(function (error) {
                         vant.Toast.fail(error)
                         console.log(error);
+                        console.log(error);
+                        if (error && error.response) {
+                            switch (error.response.status) {
+                                case 400:
+                                    error.message = '错误请求'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 401:
+                                    error.message = '未授权，请重新登录'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 403:
+                                    error.message = '拒绝访问'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 404:
+                                    error.message = '请求错误，未找到该资源'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 405:
+                                    error.message = '请求方法未允许'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 408:
+                                    error.message = '请求超时'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 502:
+                                    error.message = '服务器错误'
+                                    vant.Toast.fail(error.message)
+                                    break;
+                            }
+                        }
                     });
-                }else{
+                } else {
                     vant.Toast.fail('请重新登录')
                 }
             },
 
             // 信息类别--------------------
             //信息类别弹窗确认赋值
-            onConfirm(value,index) {
-                this.value=value
-                this.formData.ICid = index+1
+            onConfirm(value, index) {
+                this.value = value
+                this.formData.ICid = index + 1
                 this.showPicker = false;
                 this.getproduct();
-                this.valueTwo=''
+                this.valueTwo = ''
             },
             //信息类别弹窗取消
             onCancel() {
                 this.showPicker = false;
             },
             //改变值
-            onchangeOne(all,value,index) {
+            onchangeOne(all, value, index) {
                 this.value = value
-                this.formData.ICid = index+1
+                this.formData.ICid = index + 1
                 this.getproduct()
-                this.valueTwo=''
+                this.valueTwo = ''
             },
 
             // 金融产品
@@ -183,9 +261,9 @@
 
 
             //金融产品弹窗确认赋值
-            onConfirmTwo(value,index) {
-                this.valueTwo=value
-                this.formData.FPCid = index+1
+            onConfirmTwo(value, index) {
+                this.valueTwo = value
+                this.formData.FPCid = index + 1
                 this.showPickerTwo = false;
             },
             //金融产品弹窗取消
@@ -193,9 +271,9 @@
                 this.showPickerTwo = false;
             },
             //改变值
-            onchangeTwo(all,value,index) {
+            onchangeTwo(all, value, index) {
                 this.valueTwo = value
-                this.formData.FPCid = index+1
+                this.formData.FPCid = index + 1
             },
         },
     });

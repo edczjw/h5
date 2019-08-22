@@ -10,8 +10,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>工作信息</title>
-    <meta name="description" content=""> 
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0,user-scalable=no,shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="viewport"
+        content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0,user-scalable=no,shrink-to-fit=no">
     <link rel="stylesheet" href="../css/WorkMsg.css">
     <link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.0/lib/index.css">
@@ -34,140 +35,81 @@
             </van-steps>
         </div>
         <div class="container">
-        <van-cell-group>
-            <van-cell title="工作信息" value="" />
-        </van-cell-group>
+            <van-cell-group>
+                <van-cell title="工作信息" value="" />
+            </van-cell-group>
 
-        <van-cell-group>
-            <van-field 
-            v-model='form.companyName' 
-            right-icon="question-o" 
-            label="单位名称" 
-            placeholder="请填写真实有效的单位名称"
-            @click-right-icon="$toast('必须是真实有效的单位名称')" />
-        </van-cell-group>
+            <van-cell-group>
+                <van-field v-model='form.companyName' right-icon="question-o" label="单位名称" placeholder="请填写真实有效的单位名称"
+                    @click-right-icon="$toast('必须是真实有效的单位名称')" />
+            </van-cell-group>
 
-        <van-cell-group>
-                <van-field
-                readonly
-                is-link
-                label="单位性质"
-                v-model="NU"
-                placeholder="请选择单位性质"
-                @click="showPickerdanwei=!showPickerdanwei"
-              />
-        </van-cell-group>
-        
-        <!-- 单位性质选择弹出层 -->
-        <van-popup v-model="showPickerdanwei" position="bottom">
-            <van-picker
-                show-toolbar
-                title="单位性质"
-                :columns="columns1"
-                @cancel="showPickerdanwei = false"
-                @confirm="onConfirmdanwei"
-                @change="onChangedanwei"
-            />
-        </van-popup>
+            <van-cell-group>
+                <van-field readonly is-link label="单位性质" v-model="NU" placeholder="请选择单位性质"
+                    @click="showPickerdanwei=!showPickerdanwei" />
+            </van-cell-group>
 
-        <van-cell-group>
-            <van-field 
-            v-model='form.unitAddress' 
-            right-icon="question-o" 
-            label="单位地址" 
-            placeholder="请填写真实有效的单位地址"
-            @click-right-icon="$toast('必须是真实准确的单位地址')" />
-        </van-cell-group>
-
-        <van-cell-group>
-                <van-field
-                readonly
-                is-link
-                label="收入区间"
-                v-model="IR"
-                placeholder="请选择收入区间"
-                @click="showPickermon=!showPickermon"
-              />
-        </van-cell-group>
-
-        <!-- 收入区间选择弹出层 -->
-        <van-popup v-model="showPickermon" position="bottom">
-                <van-picker
-                    show-toolbar
-                    title="收入区间"
-                    :columns="columns4"
-                    @cancel="showPickermon = false"
-                    @confirm="onConfirmmon"
-                    @change="onChangemon"
-                />
+            <!-- 单位性质选择弹出层 -->
+            <van-popup v-model="showPickerdanwei" position="bottom">
+                <van-picker show-toolbar title="单位性质" :columns="columns1" @cancel="showPickerdanwei = false"
+                    @confirm="onConfirmdanwei" @change="onChangedanwei" />
             </van-popup>
 
-        <van-cell-group>
-                <van-field
-                readonly
-                is-link
-                label="工作类型"
-                v-model="WT"
-                placeholder="请选择工作类型"
-                @click="showworktype=!showworktype"
-              />
-        </van-cell-group>
+            <van-cell-group>
+                <van-field v-model='form.unitAddress' right-icon="question-o" label="单位地址" placeholder="请填写真实有效的单位地址"
+                    @click-right-icon="$toast('必须是真实准确的单位地址')" />
+            </van-cell-group>
 
-        <!-- 工作类型选择弹出层 -->
-        <van-popup v-model="showworktype" position="bottom">
-            <van-picker
-                show-toolbar
-                title="工作类型"
-                :columns="columns2"
-                @cancel="showworktype = false"
-                @confirm="onConfirmwork"
-                @change="onChangework"
-            />
-        </van-popup>
+            <van-cell-group>
+                <van-field readonly is-link label="收入区间" v-model="IR" placeholder="请选择收入区间"
+                    @click="showPickermon=!showPickermon" />
+            </van-cell-group>
 
-        <van-cell-group>
-            <van-field 
-            v-model='form.workPhone' 
-            right-icon="question-o" 
-            label="单位电话" 
-            placeholder="请填写真实有效的单位电话"
-            @click-right-icon="$toast('必须是真实有效的单位电话')"  />
-        </van-cell-group>
+            <!-- 收入区间选择弹出层 -->
+            <van-popup v-model="showPickermon" position="bottom">
+                <van-picker show-toolbar title="收入区间" :columns="columns4" @cancel="showPickermon = false"
+                    @confirm="onConfirmmon" @change="onChangemon" />
+            </van-popup>
 
-        <van-cell-group>
-                <van-field
-                readonly
-                is-link
-                label="社会身份"
-                v-model="SI"
-                placeholder="请选择社会身份"
-                @click="showsoctype=!showsoctype"
-              />
-        </van-cell-group>
+            <van-cell-group>
+                <van-field readonly is-link label="工作类型" v-model="WT" placeholder="请选择工作类型"
+                    @click="showworktype=!showworktype" />
+            </van-cell-group>
 
-        <!-- 社会身份选择弹出层 -->
-        <van-popup v-model="showsoctype" position="bottom">
-            <van-picker
-                show-toolbar
-                title="社会身份"
-                :columns="columns3"
-                @cancel="showsoctype = false"
-                @confirm="onConfirmsoc"
-                @change="onChangesoc"
-            />
-        </van-popup>
+            <!-- 工作类型选择弹出层 -->
+            <van-popup v-model="showworktype" position="bottom">
+                <van-picker show-toolbar title="工作类型" :columns="columns2" @cancel="showworktype = false"
+                    @confirm="onConfirmwork" @change="onChangework" />
+            </van-popup>
 
-        <van-cell-group>
-            <van-field v-model='form.workingYears' label="工作年限" right-icon="question-o" placeholder="请填写真实的工作年限" @click-right-icon="$toast('请填写真实年限')" />
-        </van-cell-group>
+            <van-cell-group>
+                <van-field v-model='form.workPhone' right-icon="question-o" label="单位电话" placeholder="请填写真实有效的单位电话"
+                    @click-right-icon="$toast('必须是真实有效的单位电话')" />
+            </van-cell-group>
 
-        <div class="load-ing" v-if="loadshow">
-            <van-loading size="24px" color="#1989fa"  vertical>加载中...</van-loading>
-        </div>
+            <van-cell-group>
+                <van-field readonly is-link label="社会身份" v-model="SI" placeholder="请选择社会身份"
+                    @click="showsoctype=!showsoctype" />
+            </van-cell-group>
 
-        <div class="next-button" @click="next()">
-            下 一 步
-        </div>
+            <!-- 社会身份选择弹出层 -->
+            <van-popup v-model="showsoctype" position="bottom">
+                <van-picker show-toolbar title="社会身份" :columns="columns3" @cancel="showsoctype = false"
+                    @confirm="onConfirmsoc" @change="onChangesoc" />
+            </van-popup>
+
+            <van-cell-group>
+                <van-field v-model='form.workingYears' label="工作年限" right-icon="question-o" placeholder="请填写真实的工作年限"
+                    @click-right-icon="$toast('请填写真实年限')" />
+            </van-cell-group>
+
+            <div class="load-ing" v-if="loadshow">
+                <van-loading size="24px" color="#1989fa" vertical>加载中...</van-loading>
+            </div>
+
+            <div class="next-button" @click="next()">
+                下 一 步
+            </div>
         </div>
     </div>
     <div class="ms-msg">
@@ -180,65 +122,65 @@
     var app = new Vue({
         el: "#app",
         data: {
-            form:{
-                account:"",         //手机号
-                companyName:"",     //单位名称
-                natureUnit:"",      //单位性质
-                unitAddress:"",     //单位地址
-                incomeRange:"",     //收入区间
-                workType:"",        //工作类型
-                workPhone:"",       //单位电话
-                socialIdentity:"",  //社会身份
-                workingYears:"",    //工作年限
-                currentPage:2,     //当前页数
-                usrNo:"",
+            form: {
+                account: "", //手机号
+                companyName: "", //单位名称
+                natureUnit: "", //单位性质
+                unitAddress: "", //单位地址
+                incomeRange: "", //收入区间
+                workType: "", //工作类型
+                workPhone: "", //单位电话
+                socialIdentity: "", //社会身份
+                workingYears: "", //工作年限
+                currentPage: 2, //当前页数
+                usrNo: "",
             },
-            active:2,
-            NU:"",      //单位性质
-            IR:"",     //收入区间
-            WT:"",        //工作类型
-            SI:"",  //社会身份
+            active: 2,
+            NU: "", //单位性质
+            IR: "", //收入区间
+            WT: "", //工作类型
+            SI: "", //社会身份
 
-            loadshow:false,
+            loadshow: false,
 
-            showPickerdanwei: false,//单位性质弹出层
-            showworktype:false,//工作类型弹出层
-            showsoctype:false,//社会身份弹出层
-            showPickermon:false,//收入区间弹出层
+            showPickerdanwei: false, //单位性质弹出层
+            showworktype: false, //工作类型弹出层
+            showsoctype: false, //社会身份弹出层
+            showPickermon: false, //收入区间弹出层
 
-            columns1: ['机关事', '个体', '国有股份', '合资', '其他','私营'],//单位性质
+            columns1: ['机关事', '个体', '国有股份', '合资', '其他', '私营'], //单位性质
             columns2: [
-                '农、林、牧、渔业', 
-                '采矿业', 
-                '制造业', 
-                '电力、热力、燃气及水生产和供应业', 
-                '建筑业', 
-                '批发和零售业', 
-                '交通运输、仓储和邮政业', 
-                '住宿和餐饮业', 
-                '信息传输、软件和信息技术服务业', 
-                '金融业', 
-                '房地产业', 
-                '租赁和商务服务业', 
-                '科学研究和技术服务业', 
-                '水利、环境和公共设施管理业', 
-                '居民服务、修理和其他服务业', 
-                '教育', 
-                '卫生和社会工作', 
-                '文化、体育和娱乐业', 
-                '公共管理、社会保障和社会组织', 
-                '国际组织', 
+                '农、林、牧、渔业',
+                '采矿业',
+                '制造业',
+                '电力、热力、燃气及水生产和供应业',
+                '建筑业',
+                '批发和零售业',
+                '交通运输、仓储和邮政业',
+                '住宿和餐饮业',
+                '信息传输、软件和信息技术服务业',
+                '金融业',
+                '房地产业',
+                '租赁和商务服务业',
+                '科学研究和技术服务业',
+                '水利、环境和公共设施管理业',
+                '居民服务、修理和其他服务业',
+                '教育',
+                '卫生和社会工作',
+                '文化、体育和娱乐业',
+                '公共管理、社会保障和社会组织',
+                '国际组织',
                 '其他'
-            ],//工作类型
-            columns3: ['企业事业单位', '专业技术人员', '在校学生', '待业人士'],//社会身份
-            columns4: ['≤3K','3K-5K','5K-8K','8K-10K','10K-15K','15K-20K','≥20K'],//收入区间
+            ], //工作类型
+            columns3: ['企业事业单位', '专业技术人员', '在校学生', '待业人士'], //社会身份
+            columns4: ['≤3K', '3K-5K', '5K-8K', '8K-10K', '10K-15K', '15K-20K', '≥20K'], //收入区间
         },
         mounted() {
-                this.getoldmsg();//获取上一次登录的信息数据预览
+            this.getoldmsg(); //获取上一次登录的信息数据预览
         },
         methods: {
 
-            getoldmsg(){
+            getoldmsg() {
                 this.form.usrNo = sessionStorage.getItem('usrNo');
                 axios({
                         method: 'post',
@@ -248,8 +190,8 @@
                     .then(
                         response => {
                             if (response.data.code == 0) {
-                                if(this.active <= response.data.detail.result.currentPage){
-                                    
+                                if (this.active <= response.data.detail.result.currentPage) {
+
                                     this.form.companyName = response.data.detail.result.companyName
 
                                     this.form.natureUnit = response.data.detail.result.natureUnit
@@ -266,21 +208,60 @@
                                     this.SI = this.columns3[this.form.socialIdentity]
 
                                     this.form.workingYears = response.data.detail.result.workingYears
-                                   
+
                                 }
-                            }else{
+                            } else {
                                 console.log('第一次登录或者报错')
                                 vant.Toast.fail(response.data.msg)
                             }
-                        },
-                        response => {
-
                         }
-                    )
+                    ).catch(function (error) {
+                        vant.Toast.fail(error)
+                        console.log(error);
+                        console.log(error);
+                        if (error && error.response) {
+                            switch (error.response.status) {
+                                case 400:
+                                    error.message = '错误请求'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 401:
+                                    error.message = '未授权，请重新登录'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 403:
+                                    error.message = '拒绝访问'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 404:
+                                    error.message = '请求错误，未找到该资源'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 405:
+                                    error.message = '请求方法未允许'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 408:
+                                    error.message = '请求超时'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 502:
+                                    error.message = '服务器错误'
+                                    vant.Toast.fail(error.message)
+                                    break;
+                            }
+                        }
+                    })
             },
 
 
-            next(){
+            next() {
                 this.form.usrNo = sessionStorage.getItem('usrNo');
                 this.loadshow = true;
 
@@ -294,72 +275,110 @@
                             if (response.data.code == 0) {
                                 this.loadshow = false;
                                 vant.Toast.success('工作信息提交完成.');
-                                window.location.href='./Contract.html';
-                            }else{
+                                window.location.href = './Contract.html';
+                            } else {
                                 this.loadshow = false;
                                 vant.Toast(response.data.msg);
                             }
-                        },
-                        response => {
-                            this.loadshow = false;
-                            console.log(response);
                         }
-                    )
+                    ).catch(function (error) {
+                        vant.Toast.fail(error)
+                        console.log(error);
+                        console.log(error);
+                        if (error && error.response) {
+                            switch (error.response.status) {
+                                case 400:
+                                    error.message = '错误请求'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 401:
+                                    error.message = '未授权，请重新登录'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 403:
+                                    error.message = '拒绝访问'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 404:
+                                    error.message = '请求错误，未找到该资源'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 405:
+                                    error.message = '请求方法未允许'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 408:
+                                    error.message = '请求超时'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 502:
+                                    error.message = '服务器错误'
+                                    vant.Toast.fail(error.message)
+                                    break;
+                            }
+                        }
+                    })
             },
 
             // 单位性质---------------------|
             //变值
-            onChangedanwei(all,value,index) {
+            onChangedanwei(all, value, index) {
                 this.NU = value
                 this.form.natureUnit = index
             },
             //弹出层确认
-            onConfirmdanwei(value,index){
-                this.NU=value
+            onConfirmdanwei(value, index) {
+                this.NU = value
                 this.form.natureUnit = index
-                this.showPickerdanwei=false
+                this.showPickerdanwei = false
             },
 
 
             // 工作类型---------------------|
             //变值
-            onChangework(all,value,index) {
+            onChangework(all, value, index) {
                 this.WT = value
                 this.form.workType = index
             },
             //弹出层确认
-            onConfirmwork(value,index){
-                this.WT=value
+            onConfirmwork(value, index) {
+                this.WT = value
                 this.form.workType = index
-                this.showworktype=false
+                this.showworktype = false
             },
-            
+
 
             // 社会身份---------------------|
             //变值
-            onChangesoc(all,value,index) {
+            onChangesoc(all, value, index) {
                 this.SI = value
                 this.form.socialIdentity = index
             },
             //弹出层确认
-            onConfirmsoc(value,index){
-                this.SI=value
+            onConfirmsoc(value, index) {
+                this.SI = value
                 this.form.socialIdentity = index
-                this.showsoctype=false
+                this.showsoctype = false
             },
 
 
             // 收入区间---------------------|
             //变值
-            onChangemon(all,value,index) {
+            onChangemon(all, value, index) {
                 this.IR = value
                 this.form.incomeRange = index
             },
             //弹出层确认
-            onConfirmmon(value,index){
-                this.IR=value
+            onConfirmmon(value, index) {
+                this.IR = value
                 this.form.incomeRange = index
-                this.showPickermon=false
+                this.showPickermon = false
             }
 
         },

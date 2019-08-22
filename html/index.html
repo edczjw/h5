@@ -35,15 +35,10 @@
                 <!-- <div style="height: 2rem;line-height: 2rem; width:100%;text-align: center;">地理位置：{{ gpsdetail }}</div> -->
                 <div class="form-o">
                     <van-cell-group>
-                        <van-field 
-                        v-model="form.account" 
-                        required 
-                        type="number" 
-                        right-icon="question-o"
-                        @click-right-icon="$toast('账号必须是手机号')" 
-                        focus=true placeholder="请输入手机号码" >
+                        <van-field v-model="form.account" required type="number" right-icon="question-o"
+                            @click-right-icon="$toast('账号必须是手机号')" focus=true placeholder="请输入手机号码">
                     </van-cell-group>
-                    
+
                     <van-cell-group>
                         <van-field v-model="form.verification" required center clearable placeholder="请输入短信验证码"
                             use-button-slot>
@@ -54,9 +49,9 @@
                         </van-field>
                     </van-cell-group>
                 </div>
-                
+
                 <div class="load-ing" v-if="loadshow">
-                    <van-loading size="24px" color="#1989fa"  vertical>加载中...</van-loading>
+                    <van-loading size="24px" color="#1989fa" vertical>加载中...</van-loading>
                 </div>
 
                 <div class="login-button" @click="login(form)">
@@ -82,7 +77,7 @@
             count: '', // 初始化次数
             timer: null,
             gpsdetail: "", //详细地理位置
-            loadshow:"",
+            loadshow:false,
             form: {
                 account: '', //账号
                 verification: '', //验证码
@@ -201,6 +196,7 @@
 
             //登录
             login(form) {
+                let _that = this;
                 if(form.account !=''){
                     this.loadshow = true;
                     // if (form.currentLocation != '') {
@@ -232,9 +228,46 @@
                                 }
                             }
                         ).catch(function (error) {
-                            this.loadshow = false;
-                            vant.Toast('手机格式不正确或者验证码未填写.')
+                            _that.loadshow = false;
                             console.log(error);
+                            if(error && error.response){
+                                switch (error.response.status){
+                                    case 400:
+                                    error.message = '错误请求'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                    case 401:
+                                    error.message = '未授权，请重新登录'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                    case 403:
+                                    error.message = '拒绝访问'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                    case 404:
+                                    error.message = '请求错误，未找到该资源'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                    case 405:
+                                    error.message = '请求方法未允许'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                    case 408:
+                                    error.message = '请求超时'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                    case 502:
+                                    error.message = '服务器错误'
+                                    vant.Toast.fail(error.message)
+                                    break;
+                                }
+                            }
                         });
                     // } else {
                     //     vant.Notify({

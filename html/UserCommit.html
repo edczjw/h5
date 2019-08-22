@@ -81,10 +81,10 @@
     var app = new Vue({
         el: "#app",
         data: {
-            mobile: "",//移动运营商认证
-            zxcCrawl: '',//人行认证
-            fundRp: '',//公积金认证
-            chsi: '',//学历信息
+            mobile: "", //移动运营商认证
+            zxcCrawl: '', //人行认证
+            fundRp: '', //公积金认证
+            chsi: '', //学历信息
             active: 4,
         },
         mounted() {
@@ -94,15 +94,15 @@
             load() {
                 var usrNo = sessionStorage.getItem("usrNo");
                 axios({
-                    method: 'get',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    url: "https://dev.zxtouch.msxiaodai.com/auth/status",
-                    params: {
-                        userNo: usrNo
-                    }
-                })
+                        method: 'get',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        url: "https://dev.zxtouch.msxiaodai.com/auth/status",
+                        params: {
+                            userNo: usrNo
+                        }
+                    })
                     .then(
                         response => {
                             if (response.data.code == 0) {
@@ -165,26 +165,65 @@
                             } else {
                                 vant.Toast.fail(response.data.msg)
                             }
-                        },
-                        response => {
-                            console.log(response);
                         }
-                    )
+                    ).catch(function (error) {
+                        vant.Toast.fail(error)
+                        console.log(error);
+                        console.log(error);
+                        if (error && error.response) {
+                            switch (error.response.status) {
+                                case 400:
+                                    error.message = '错误请求'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 401:
+                                    error.message = '未授权，请重新登录'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 403:
+                                    error.message = '拒绝访问'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 404:
+                                    error.message = '请求错误，未找到该资源'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 405:
+                                    error.message = '请求方法未允许'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 408:
+                                    error.message = '请求超时'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 502:
+                                    error.message = '服务器错误'
+                                    vant.Toast.fail(error.message)
+                                    break;
+                            }
+                        }
+                    })
             },
 
             //移动运营商
             yunyinshang() {
                 var usrNo = sessionStorage.getItem("usrNo");
                 axios({
-                    method: 'get',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    url: "https://dev.zxtouch.msxiaodai.com/auth/phone",
-                    params: {
-                        userNo: usrNo
-                    }
-                })
+                        method: 'get',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        url: "https://dev.zxtouch.msxiaodai.com/auth/phone",
+                        params: {
+                            userNo: usrNo
+                        }
+                    })
                     .then(
                         response => {
                             if (response.data.code == 0) {
@@ -196,21 +235,63 @@
                         response => {
                             console.log(response);
                         }
-                    )
+                    ).catch(function (error) {
+                        vant.Toast.fail(error)
+                        console.log(error);
+                        console.log(error);
+                        if (error && error.response) {
+                            switch (error.response.status) {
+                                case 400:
+                                    error.message = '错误请求'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 401:
+                                    error.message = '未授权，请重新登录'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 403:
+                                    error.message = '拒绝访问'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 404:
+                                    error.message = '请求错误，未找到该资源'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 405:
+                                    error.message = '请求方法未允许'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 408:
+                                    error.message = '请求超时'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 502:
+                                    error.message = '服务器错误'
+                                    vant.Toast.fail(error.message)
+                                    break;
+                            }
+                        }
+                    })
             },
             //提交
             submit() {
                 var usrNo = sessionStorage.getItem("usrNo");
                 axios({
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    method: 'get',
-                    url: "https://dev.zxtouch.msxiaodai.com/auth/updateTotalState",
-                    params: {
-                        userNo: usrNo
-                    }
-                })
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        method: 'get',
+                        url: "https://dev.zxtouch.msxiaodai.com/auth/updateTotalState",
+                        params: {
+                            userNo: usrNo
+                        }
+                    })
                     .then(
                         response => {
                             if (response.data.code == 0) {
@@ -224,7 +305,49 @@
                         response => {
                             console.log(response);
                         }
-                    )
+                    ).catch(function (error) {
+                        vant.Toast.fail(error)
+                        console.log(error);
+                        console.log(error);
+                        if (error && error.response) {
+                            switch (error.response.status) {
+                                case 400:
+                                    error.message = '错误请求'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 401:
+                                    error.message = '未授权，请重新登录'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 403:
+                                    error.message = '拒绝访问'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 404:
+                                    error.message = '请求错误，未找到该资源'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 405:
+                                    error.message = '请求方法未允许'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 408:
+                                    error.message = '请求超时'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 502:
+                                    error.message = '服务器错误'
+                                    vant.Toast.fail(error.message)
+                                    break;
+                            }
+                        }
+                    })
             }
         }
     });

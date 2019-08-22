@@ -2,127 +2,108 @@
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-            <meta charset="utf-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <title>联系人信息</title>
-            <meta name="description" content=""> 
-            <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0,user-scalable=no,shrink-to-fit=no">
-            <link rel="stylesheet" href="../css/Contract.css">
-            <link rel="stylesheet" href="../css/common.css">
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.0/lib/index.css">
-        
-            <!-- 引入组件,注意引入顺序 -->
-            <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/vant@2.0/lib/vant.min.js"></script>
-            <!-- <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script> -->
-            <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    </head>
-    <body>
-        <!--[if lt IE 7]>
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>联系人信息</title>
+    <meta name="description" content="">
+    <meta name="viewport"
+        content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0,user-scalable=no,shrink-to-fit=no">
+    <link rel="stylesheet" href="../css/Contract.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.0/lib/index.css">
+
+    <!-- 引入组件,注意引入顺序 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vant@2.0/lib/vant.min.js"></script>
+    <!-- <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script> -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-        <div id="app">
-            <div class="top-step">
-                <van-steps :active="active">
-                        <van-step><a href="../html/basicPage.html">基本信息</a></van-step>
-                        <van-step><a href="../html/CheckFace.html">活体检测</a></van-step>
-                        <van-step><a href="../html/WorkMsg.html">工作信息</a></van-step>
-                        <van-step><a href="../html/Contract.html">联系人员</a></van-step>
-                        <van-step><a href="../html/UserCommit.html">用户认证</a></van-step>
-                </van-steps>
+    <div id="app">
+        <div class="top-step">
+            <van-steps :active="active">
+                <van-step><a href="../html/basicPage.html">基本信息</a></van-step>
+                <van-step><a href="../html/CheckFace.html">活体检测</a></van-step>
+                <van-step><a href="../html/WorkMsg.html">工作信息</a></van-step>
+                <van-step><a href="../html/Contract.html">联系人员</a></van-step>
+                <van-step><a href="../html/UserCommit.html">用户认证</a></van-step>
+            </van-steps>
+        </div>
+        <div class="container">
+            <div class="top-con">
+                <van-cell-group>
+                    <van-cell title="联系人信息" value="" />
+                </van-cell-group>
+
+                <van-cell-group>
+                    <van-field readonly is-link label="直系联系人" v-model="DCR" placeholder="如父母"
+                        @click="showPickerparent1=!showPickerparent1" />
+                </van-cell-group>
+
+                <!-- 直系联系人选择弹出层 -->
+                <van-popup v-model="showPickerparent1" position="bottom">
+                    <van-picker show-toolbar title="直系联系人" :columns="columns1" @cancel="showPickerparent1 = false"
+                        @confirm="onConfirmparent1" @change="onChangeparent1"
+                        @click-right-icon="$toast('必须是真实准确的单位地址')" />
+                </van-popup>
+
+                <van-cell-group>
+                    <van-field v-model='form.directContactsName' label="姓名" right-icon="question-o" placeholder="填写" />
+                </van-cell-group>
+
+                <van-cell-group>
+                    <van-field v-model='form.directContactsPhone' label="电话" right-icon="question-o" placeholder="填写" />
+                </van-cell-group>
             </div>
-            <div class="container">
-                    <div class="top-con">
-                            <van-cell-group>
-                                <van-cell title="联系人信息" value="" />
-                            </van-cell-group>
+            <div class="bottom-con">
+                <van-cell-group>
+                    <van-field readonly is-link label="其他联系人" v-model="ODC" placeholder="如亲属"
+                        @click="showPickerparent2=!showPickerparent2" />
+                </van-cell-group>
 
-                            <van-cell-group>
-                                    <van-field
-                                    readonly
-                                    is-link
-                                    label="直系联系人"
-                                    v-model="DCR"
-                                    placeholder="如父母"
-                                    @click="showPickerparent1=!showPickerparent1"
-                                  />
-                            </van-cell-group>
-                            
-                            <!-- 直系联系人选择弹出层 -->
-                            <van-popup v-model="showPickerparent1" position="bottom">
-                                <van-picker
-                                    show-toolbar
-                                    title="直系联系人"
-                                    :columns="columns1"
-                                    @cancel="showPickerparent1 = false"
-                                    @confirm="onConfirmparent1"
-                                    @change="onChangeparent1"
-                                    @click-right-icon="$toast('必须是真实准确的单位地址')" 
-                                />
-                            </van-popup>
+                <!-- 直系联系人选择弹出层 -->
+                <van-popup v-model="showPickerparent2" position="bottom">
+                    <van-picker show-toolbar title="其他联系人" :columns="columns2" @cancel="showPickerparent2 = false"
+                        @confirm="onConfirmparent2" @change="onChangeparent2" />
+                </van-popup>
 
-                            <van-cell-group>
-                                <van-field v-model='form.directContactsName' label="姓名" right-icon="question-o" placeholder="填写"/>
-                            </van-cell-group>
+                <van-cell-group>
+                    <van-field v-model='form.otherContactsName' label="姓名" right-icon="question-o" placeholder="填写" />
+                </van-cell-group>
 
-                            <van-cell-group>
-                                <van-field v-model='form.directContactsPhone' label="电话" right-icon="question-o" placeholder="填写"/>
-                            </van-cell-group>
-                    </div>
-                    <div class="bottom-con">
-                                <van-cell-group>
-                                        <van-field
-                                        readonly
-                                        is-link
-                                        label="其他联系人"
-                                        v-model="ODC"
-                                        placeholder="如亲属"
-                                        @click="showPickerparent2=!showPickerparent2"
-                                      />
-                                </van-cell-group>
-                                
-                                <!-- 直系联系人选择弹出层 -->
-                                <van-popup v-model="showPickerparent2" position="bottom">
-                                    <van-picker
-                                        show-toolbar
-                                        title="其他联系人"
-                                        :columns="columns2"
-                                        @cancel="showPickerparent2 = false"
-                                        @confirm="onConfirmparent2"
-                                        @change="onChangeparent2"
-                                    />
-                                </van-popup>
-    
-                                <van-cell-group>
-                                    <van-field v-model='form.otherContactsName' label="姓名" right-icon="question-o" placeholder="填写"/>
-                                </van-cell-group>
-    
-                                <van-cell-group>
-                                    <van-field v-model='form.otherContactsPhone' label="电话" right-icon="question-o" placeholder="填写"/>
-                                </van-cell-group>
-                    </div>
+                <van-cell-group>
+                    <van-field v-model='form.otherContactsPhone' label="电话" right-icon="question-o" placeholder="填写" />
+                </van-cell-group>
+            </div>
 
-                    
-                <div class="load-ing" v-if="loadshow">
-                    <van-loading size="24px" color="#1989fa"  vertical>加载中...</van-loading>
-                </div>
 
-                <div class="next-button" @click="next()">
-                    下 一 步
-                </div>
+            <div class="load-ing" v-if="loadshow">
+                <van-loading size="24px" color="#1989fa" vertical>加载中...</van-loading>
+            </div>
+
+            <div class="next-button" @click="next()">
+                下 一 步
             </div>
         </div>
-        <div class="ms-msg">
-            版权公告 © 2018-2019 广州民盛互联网小额贷款有限公司<br>
-            粤ICP备18017476号-1
-        </div>
-    </body>
+    </div>
+    <div class="ms-msg">
+        版权公告 © 2018-2019 广州民盛互联网小额贷款有限公司<br>
+        粤ICP备18017476号-1
+    </div>
+</body>
 
-    <!-- es6写法 type="module"-->
+<!-- es6写法 type="module"-->
 <script type="module">
-        var app = new Vue({
+    var app = new Vue({
             el: "#app",
             data: {
                 form:{
@@ -187,7 +168,49 @@
                         response => {
 
                         }
-                    )
+                    ).catch(function (error) {
+                        vant.Toast.fail(error)
+                        console.log(error);
+                        console.log(error);
+                            if(error && error.response){
+                                switch (error.response.status){
+                                    case 400:
+                                    error.message = '错误请求'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                    case 401:
+                                    error.message = '未授权，请重新登录'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                    case 403:
+                                    error.message = '拒绝访问'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                    case 404:
+                                    error.message = '请求错误，未找到该资源'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                    case 405:
+                                    error.message = '请求方法未允许'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                    case 408:
+                                    error.message = '请求超时'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                    case 502:
+                                    error.message = '服务器错误'
+                                    vant.Toast.fail(error.message)
+                                    break;
+                                }
+                            }
+                            })
             },
 
                 upload(e){
@@ -216,7 +239,49 @@
                             this.loadshow = false;
                             console.log(response);
                         }
-                    )
+                    ).catch(function (error) {
+                        vant.Toast.fail(error)
+                        console.log(error);
+                        console.log(error);
+                            if(error && error.response){
+                                switch (error.response.status){
+                                    case 400:
+                                    error.message = '错误请求'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                    case 401:
+                                    error.message = '未授权，请重新登录'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                    case 403:
+                                    error.message = '拒绝访问'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                    case 404:
+                                    error.message = '请求错误，未找到该资源'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                    case 405:
+                                    error.message = '请求方法未允许'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                    case 408:
+                                    error.message = '请求超时'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                    case 502:
+                                    error.message = '服务器错误'
+                                    vant.Toast.fail(error.message)
+                                    break;
+                                }
+                            }
+                            })
                 },
 
                 // 直系联系人---------------------|
@@ -247,4 +312,5 @@
             }
         });
     </script>
+
 </html>

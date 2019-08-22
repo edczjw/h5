@@ -30,11 +30,11 @@
     <div id="basic">
         <div class="top-step">
             <van-steps :active="active">
-                    <van-step><a href="../html/basicPage.html">基本信息</a></van-step>
-                    <van-step><a href="../html/CheckFace.html">活体检测</a></van-step>
-                    <van-step><a href="../html/WorkMsg.html">工作信息</a></van-step>
-                    <van-step><a href="../html/Contract.html">联系人员</a></van-step>
-                    <van-step><a href="../html/UserCommit.html">用户认证</a></van-step>
+                <van-step><a href="../html/basicPage.html">基本信息</a></van-step>
+                <van-step><a href="../html/CheckFace.html">活体检测</a></van-step>
+                <van-step><a href="../html/WorkMsg.html">工作信息</a></van-step>
+                <van-step><a href="../html/Contract.html">联系人员</a></van-step>
+                <van-step><a href="../html/UserCommit.html">用户认证</a></van-step>
             </van-steps>
         </div>
         <div class="container">
@@ -60,16 +60,16 @@
                 </div>
             </div>
             <van-cell-group>
-                <van-field v-model='formData.name' label="姓名" 
-                right-icon="question-o" required @click-right-icon="$toast('请填写真实姓名')" />
+                <van-field v-model='formData.name' label="姓名" right-icon="question-o" required
+                    @click-right-icon="$toast('请填写真实姓名')" />
             </van-cell-group>
             <van-cell-group>
-                <van-field v-model='formData.idCard' label="身份证号" 
-                right-icon="question-o" required @click-right-icon="$toast('请填写真实身份证号码')" />
+                <van-field v-model='formData.idCard' label="身份证号" right-icon="question-o" required
+                    @click-right-icon="$toast('请填写真实身份证号码')" />
             </van-cell-group>
             <van-cell-group>
-                <van-field v-model='formData.phoneNumber' label="手机号" 
-                right-icon="question-o" type="tel" @click-right-icon="$toast('请填写真实手机号码')"  required />
+                <van-field v-model='formData.phoneNumber' label="手机号" right-icon="question-o" type="tel"
+                    @click-right-icon="$toast('请填写真实手机号码')" required />
             </van-cell-group>
             <!-- 性别 -->
             <van-cell-group>
@@ -81,25 +81,24 @@
                     @confirm="onConfirmxinbie" @change="onChangexinbie" />
             </van-popup>
             <van-cell-group>
-                <van-field v-model='formData.age' label="年龄"  
-                placeholder="请手动输入"
-                right-icon="question-o" type="number" @click-right-icon="$toast('请填写真实年龄')" />
+                <van-field v-model='formData.age' label="年龄" placeholder="请手动输入" right-icon="question-o" type="number"
+                    @click-right-icon="$toast('请填写真实年龄')" />
             </van-cell-group>
             <van-cell-group>
-                <van-field v-model='formData.nation' label="民族" 
-                right-icon="question-o" @click-right-icon="$toast('请填写真实民族')" />
+                <van-field v-model='formData.nation' label="民族" right-icon="question-o"
+                    @click-right-icon="$toast('请填写真实民族')" />
             </van-cell-group>
             <van-cell-group>
-                <van-field v-model='formData.idCardAddress' label="身份证地址" 
-                right-icon="question-o" @click-right-icon="$toast('请填写真实身份证地址')" />
+                <van-field v-model='formData.idCardAddress' label="身份证地址" right-icon="question-o"
+                    @click-right-icon="$toast('请填写真实身份证地址')" />
             </van-cell-group>
             <van-cell-group>
-                <van-field v-model='formData.signingOffice' label="签发机关" 
-                right-icon="question-o" @click-right-icon="$toast('请填写真实有效的签发机关')" />
+                <van-field v-model='formData.signingOffice' label="签发机关" right-icon="question-o"
+                    @click-right-icon="$toast('请填写真实有效的签发机关')" />
             </van-cell-group>
             <van-cell-group>
-                <van-field v-model='formData.certificateValidityPeriod' label="身份证有效期" 
-                right-icon="question-o" @click-right-icon="$toast('请填写真实的身份证有效期')" />
+                <van-field v-model='formData.certificateValidityPeriod' label="身份证有效期" right-icon="question-o"
+                    @click-right-icon="$toast('请填写真实的身份证有效期')" />
             </van-cell-group>
             <!-- 婚姻 -->
             <van-cell-group>
@@ -147,18 +146,18 @@
                     @change="onChangeshengshiqu" />
             </van-popup>
             <van-cell-group>
-                <van-field v-model='formData.email' label="电子邮箱" 
-                right-icon="question-o" @click-right-icon="$toast('请填写真实有效的电子邮箱')" />
+                <van-field v-model='formData.email' label="电子邮箱" right-icon="question-o"
+                    @click-right-icon="$toast('请填写真实有效的电子邮箱')" />
             </van-cell-group>
             <van-cell-group>
-                <van-field v-model='formData.qq' label="QQ" type="number" 
-                right-icon="question-o" @click-right-icon="$toast('请填写真实的QQ')" />
+                <van-field v-model='formData.qq' label="QQ" type="number" right-icon="question-o"
+                    @click-right-icon="$toast('请填写真实的QQ')" />
             </van-cell-group>
             <div class="next-button" @click="next">
                 下一步
             </div>
             <div class="load-ing" v-if="loadshow">
-                <van-loading size="24px" color="#1989fa"  vertical>加载中...</van-loading>
+                <van-loading size="24px" color="#1989fa" vertical>加载中...</van-loading>
             </div>
             <div class="ms-msg">
                 版权公告 © 2018-2019 广州民盛互联网小额贷款有限公司<br>
@@ -175,134 +174,190 @@
             return {
                 formData: {
                     // mobile:"",//登录手机号
-                    positive: '',//上传证件正面
-                    back: '',//上传证件反面
-                    name: '',//姓名
-                    idCard: '',//身份证号
-                    phoneNumber: '',//手机号
-                    sex: '',//性别
-                    age: '',//年龄
-                    nation: '',//民族
-                    idCardAddress: '',//身份证地址
-                    signingOffice: '',//签发机关
-                    certificateValidityPeriod: '',//身份证有效期
-                    maritalStatus: '',//婚姻
-                    education: '',//学历
-                    degree: '',//学位
-                    livingConditions: '',//居住状况
-                    provincialAndUrbanAreas: '',//现居住省市区
-                    email: '',//电子邮箱
-                    qq: '',//QQ
+                    positive: '', //上传证件正面
+                    back: '', //上传证件反面
+                    name: '', //姓名
+                    idCard: '', //身份证号
+                    phoneNumber: '', //手机号
+                    sex: '', //性别
+                    age: '', //年龄
+                    nation: '', //民族
+                    idCardAddress: '', //身份证地址
+                    signingOffice: '', //签发机关
+                    certificateValidityPeriod: '', //身份证有效期
+                    maritalStatus: '', //婚姻
+                    education: '', //学历
+                    degree: '', //学位
+                    livingConditions: '', //居住状况
+                    provincialAndUrbanAreas: '', //现居住省市区
+                    email: '', //电子邮箱
+                    qq: '', //QQ
 
-                    page:0,         //当前页
+                    page: 0, //当前页
                 },
                 active: 0,
-                loadshow: false,        //加载条显示
-                sex:'', //性别
+                loadshow: false, //加载条显示
+                sex: '', //性别
 
-                form:{
-                    account:"",
-                    usrNo:""
+                form: {
+                    account: "",
+                    usrNo: ""
                 },
 
-                filefrontlength:0,
-                filebacklength:0,
-                showPickerhunyin: false,//控制婚姻弹窗显示
-                showPickerxueli: false,//控制学历弹窗显示
-                showPickerxuewei: false,//控制学位弹窗显示
-                showPickerjuzhu: false,//控制居住弹窗显示
-                showPickerxinbie: false,//控制性别弹窗显示
-                showPickershengshiqu: false,//控制省市区弹窗显示
-                area: {},//省市区数据
-                columnshy: ['已婚', '未婚', '离异', '丧偶', '其他'],//婚姻选择项
-                columnsxl: ['小学及以下', '初中', '高中', '大专', '本科', '研究生及以上'],//学历选择项
-                columnsxw: ['学士', '硕士', '博士', '其他'],//学位选择项
-                columnsjz: ['租用', '自有', '亲属房产', '其他'],//居住选择项
-                columnsxb: ['男', '女']//性别选择项
+                filefrontlength: 0,
+                filebacklength: 0,
+                showPickerhunyin: false, //控制婚姻弹窗显示
+                showPickerxueli: false, //控制学历弹窗显示
+                showPickerxuewei: false, //控制学位弹窗显示
+                showPickerjuzhu: false, //控制居住弹窗显示
+                showPickerxinbie: false, //控制性别弹窗显示
+                showPickershengshiqu: false, //控制省市区弹窗显示
+                area: {}, //省市区数据
+                columnshy: ['已婚', '未婚', '离异', '丧偶', '其他'], //婚姻选择项
+                columnsxl: ['小学及以下', '初中', '高中', '大专', '本科', '研究生及以上'], //学历选择项
+                columnsxw: ['学士', '硕士', '博士', '其他'], //学位选择项
+                columnsjz: ['租用', '自有', '亲属房产', '其他'], //居住选择项
+                columnsxb: ['男', '女'] //性别选择项
             }
         },
         created() {
             this.area = area;
         },
         mounted() {
-            this.getoldmsg();//获取上一次登录的信息数据预览
+            this.getoldmsg(); //获取上一次登录的信息数据预览
         },
         methods: {
 
-            getoldmsg(){
+            getoldmsg() {
                 this.form.usrNo = sessionStorage.getItem('usrNo');
                 axios({
                         method: 'get',
                         url: "https://dev.zxtouch.msxiaodai.com/auth/status",
-                        params:{
-                                userNo:this.form.usrNo
-                            },
+                        params: {
+                            userNo: this.form.usrNo
+                        },
                     })
                     .then(
                         response => {
                             if (response.data.code == 0) {
-                                if(response.data.detail.ocr == '04' || response.data.detail.ocr == '01' ){
+                                if (response.data.detail.ocr == '04' || response.data.detail.ocr == '01') {
                                     this.form.usrNo = sessionStorage.getItem('usrNo');
-                                        axios({
-                                                method: 'post',
-                                                url: "https://dev.zxtouch.msxiaodai.com/app/userInfo",
-                                                data: this.form
-                                            })
-                                            .then(
-                                                response => {
-                                                    if (response.data.code == 0) {
-                                                        if(this.active <= response.data.detail.result.currentPage){
-                                                            this.filefrontlength=1;
-                                                            this.filebacklength=1;
-                                                            this.formData.positive = response.data.detail.result.positive
-                                                            this.formData.back = response.data.detail.result.back
-                                                            this.formData.phoneNumber = response.data.detail.result.phoneNumber
-                                                            this.formData.name = response.data.detail.result.name
-                                                            this.formData.idCard = response.data.detail.result.idCard
+                                    axios({
+                                            method: 'post',
+                                            url: "https://dev.zxtouch.msxiaodai.com/app/userInfo",
+                                            data: this.form
+                                        })
+                                        .then(
+                                            response => {
+                                                if (response.data.code == 0) {
+                                                    if (this.active <= response.data.detail.result
+                                                        .currentPage) {
+                                                        this.filefrontlength = 1;
+                                                        this.filebacklength = 1;
+                                                        this.formData.positive = response.data.detail.result
+                                                            .positive
+                                                        this.formData.back = response.data.detail.result.back
+                                                        this.formData.phoneNumber = response.data.detail.result
+                                                            .phoneNumber
+                                                        this.formData.name = response.data.detail.result.name
+                                                        this.formData.idCard = response.data.detail.result
+                                                            .idCard
 
-                                                            this.formData.sex = response.data.detail.result.sex
-                                                            if(this.formData.sex == 1){
-                                                                this.sex = '男'
-                                                            }else if(this.formData.sex == 0){
-                                                                this.sex = '女'
-                                                            }else{
-                                                                this.sex = ''
-                                                            }
-
-                                                            this.formData.age = response.data.detail.result.age
-                                                            this.formData.nation = response.data.detail.result.nation
-                                                            this.formData.idCardAddress = response.data.detail.result.idCardAddress
-                                                            this.formData.signingOffice = response.data.detail.result.signingOffice
-                                                            this.formData.certificateValidityPeriod = response.data.detail.result.certificateValidityPeriod
-                                                            this.formData.maritalStatus = response.data.detail.result.maritalStatus
-                                                            this.formData.education = response.data.detail.result.education
-                                                            this.formData.degree = response.data.detail.result.degree
-                                                            this.formData.livingConditions = response.data.detail.result.livingConditions
-                                                            this.formData.provincialAndUrbanAreas = response.data.detail.result.provincialAndUrbanAreas
-                                                            this.formData.degree = response.data.detail.result.degree
-                                                            this.formData.email = response.data.detail.result.email
-                                                            this.formData.qq = response.data.detail.result.qq
+                                                        this.formData.sex = response.data.detail.result.sex
+                                                        if (this.formData.sex == 1) {
+                                                            this.sex = '男'
+                                                        } else if (this.formData.sex == 0) {
+                                                            this.sex = '女'
+                                                        } else {
+                                                            this.sex = ''
                                                         }
-                                                    }else{
-                                                        console.log(response.data.msg)
-                                                        vant.Toast.fail(response.data.msg)
-                                                    }
-                                                },
-                                                response => {
-                                                        vant.Toast.fail(response.data.msg)
 
+                                                        this.formData.age = response.data.detail.result.age
+                                                        this.formData.nation = response.data.detail.result
+                                                            .nation
+                                                        this.formData.idCardAddress = response.data.detail
+                                                            .result.idCardAddress
+                                                        this.formData.signingOffice = response.data.detail
+                                                            .result.signingOffice
+                                                        this.formData.certificateValidityPeriod = response.data
+                                                            .detail.result.certificateValidityPeriod
+                                                        this.formData.maritalStatus = response.data.detail
+                                                            .result.maritalStatus
+                                                        this.formData.education = response.data.detail.result
+                                                            .education
+                                                        this.formData.degree = response.data.detail.result
+                                                            .degree
+                                                        this.formData.livingConditions = response.data.detail
+                                                            .result.livingConditions
+                                                        this.formData.provincialAndUrbanAreas = response.data
+                                                            .detail.result.provincialAndUrbanAreas
+                                                        this.formData.degree = response.data.detail.result
+                                                            .degree
+                                                        this.formData.email = response.data.detail.result.email
+                                                        this.formData.qq = response.data.detail.result.qq
+                                                    }
+                                                } else {
+                                                    console.log(response.data.msg)
+                                                    vant.Toast.fail(response.data.msg)
                                                 }
-                                            )
+                                            },
+                                            response => {
+                                                vant.Toast.fail(response.data.msg)
+
+                                            }
+                                        )
                                 }
-                            }else{
+                            } else {
                                 vant.Toast.fail(response.data.msg)
                             }
                         },
                         response => {
                             console.log(response);
                         }
-                    )
-                
+                    ).catch(function (error) {
+                        vant.Toast.fail(error)
+                        console.log(error);
+                        console.log(error);
+                        if (error && error.response) {
+                            switch (error.response.status) {
+                                case 400:
+                                    error.message = '错误请求'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 401:
+                                    error.message = '未授权，请重新登录'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 403:
+                                    error.message = '拒绝访问'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 404:
+                                    error.message = '请求错误，未找到该资源'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 405:
+                                    error.message = '请求方法未允许'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 408:
+                                    error.message = '请求超时'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 502:
+                                    error.message = '服务器错误'
+                                    vant.Toast.fail(error.message)
+                                    break;
+                            }
+                        }
+                    })
+
             },
 
             //身份证正面面
@@ -317,9 +372,9 @@
                 fileSize = fileSize.toFixed(0); //保留小数点后一位
 
                 // 不得大于2M
-                if(fileSize <= 2){
+                if (fileSize <= 2) {
                     this.imgPreview(files[0])
-                }else{
+                } else {
                     vant.Toast('照片大小不得大于2M.')
                 }
             },
@@ -354,7 +409,7 @@
                             // 向后台发请求 拉取OSS相关配置
                             //后端提供数据
                             const client = new OSS.Wrapper({
-                                secure: true,//这句话很重要！！！！！！！！！
+                                secure: true, //这句话很重要！！！！！！！！！
                                 region: "oss-cn-shenzhen", // 服务器集群地区
                                 extranet: response.data.extranet,
                                 accessKeyId: response.data.secretId, // OSS帐号
@@ -384,88 +439,175 @@
                                 fileName;
                             //上传
                             client
-                                .multipartUpload(storeAs, file, {
-                                })
+                                .multipartUpload(storeAs, file, {})
                                 .then(res => {
                                     // console.log('res', res)
                                     if (res) {
-                                        this.formData.positive = "https://appserbuc.oss-cn-shenzhen.aliyuncs.com/" + storeAs;
+                                        this.formData.positive =
+                                            "https://appserbuc.oss-cn-shenzhen.aliyuncs.com/" + storeAs;
 
                                         var imageUrl = this.formData.positive
-                                        
+
                                         var usrNo = sessionStorage.getItem('usrNo');
                                         //图片上传成功后调用身份识别接口
                                         axios({
-                                            method: 'post',
-                                            url: "https://dev.zxtouch.msxiaodai.com/rong360/idCarddIscern",
-                                            data: {
-                                                imageUrl:imageUrl,
-                                                usrNo:usrNo
-                                            }
-                                        })
-                                        .then(
-                                            response => {
-                                                if (response.data.code == 200) {
-                                                    //取消显示加载
-                                                    this.loadshow = false
+                                                method: 'post',
+                                                url: "https://dev.zxtouch.msxiaodai.com/rong360/idCarddIscern",
+                                                data: {
+                                                    imageUrl: imageUrl,
+                                                    usrNo: usrNo
+                                                }
+                                            })
+                                            .then(
+                                                response => {
+                                                    if (response.data.code == 200) {
+                                                        //取消显示加载
+                                                        this.loadshow = false
 
-                                                    if(response.data.data.side == 'front'){
+                                                        if (response.data.data.side == 'front') {
 
                                                             vant.Toast('识别身份证正面照成功.');
                                                             //姓名
                                                             this.formData.name = response.data.data.name
 
-                                                            sessionStorage.setItem("idcardName",response.data.data.name);
+                                                            sessionStorage.setItem("idcardName",
+                                                                response.data.data.name);
 
                                                             //身份证号码
-                                                            this.formData.idCard = response.data.data.id_card_number
+                                                            this.formData.idCard = response.data.data
+                                                                .id_card_number
 
-                                                            sessionStorage.setItem("idcardNumber",response.data.data.id_card_number);
+                                                            sessionStorage.setItem("idcardNumber",
+                                                                response.data.data.id_card_number);
 
                                                             //手机号
-                                                            this.formData.phoneNumber = sessionStorage.getItem('account');
+                                                            this.formData.phoneNumber = sessionStorage
+                                                                .getItem('account');
 
                                                             //性别
-                                                            for(var i=0;i<this.columnsxb.length;i++){
-                                                                if(this.columnsxb[i] == response.data.data.gender){
-                                                                    this.formData.sex = i+1;
+                                                            for (var i = 0; i < this.columnsxb
+                                                                .length; i++) {
+                                                                if (this.columnsxb[i] == response.data
+                                                                    .data.gender) {
+                                                                    this.formData.sex = i + 1;
                                                                     this.sex = this.columnsxb[i]
                                                                 }
                                                             }
 
                                                             //民族
-                                                            this.formData.nation = response.data.data.race
+                                                            this.formData.nation = response.data.data
+                                                                .race
 
                                                             //身份证地址
-                                                            this.formData.idCardAddress = response.data.data.address
-                                                        
-                                                    }else{
-                                                        vant.Toast.fail('请上传正确的身份证正面照.')
+                                                            this.formData.idCardAddress = response.data
+                                                                .data.address
+
+                                                        } else {
+                                                            vant.Toast.fail('请上传正确的身份证正面照.')
+                                                        }
+
+                                                    } else {
+                                                        //取消显示加载
+                                                        this.loadshow = false
+                                                        vant.Toast('识别身份证正面照失败.' + response.data.msg);
                                                     }
-
-                                                }else{
-                                                    //取消显示加载
-                                                    this.loadshow = false
-                                                    vant.Toast('识别身份证正面照失败.' + response.data.msg);
+                                                },
+                                                response => {
+                                                    console.log(response);
+                                                    vant.Toast('异常.');
                                                 }
-                                            },
-                                            response => {
-                                                console.log(response);
-                                                vant.Toast('异常.');
-                                            }
-                                        )
+                                            ).catch(function (error) {
+                                                vant.Toast.fail(error)
+                                                console.log(error);
+                                                console.log(error);
+                                                if (error && error.response) {
+                                                    switch (error.response.status) {
+                                                        case 400:
+                                                            error.message = '错误请求'
+                                                            vant.Toast.fail(error.message)
+                                                            break;
 
-                                        
+                                                        case 401:
+                                                            error.message = '未授权，请重新登录'
+                                                            vant.Toast.fail(error.message)
+                                                            break;
+
+                                                        case 403:
+                                                            error.message = '拒绝访问'
+                                                            vant.Toast.fail(error.message)
+                                                            break;
+
+                                                        case 404:
+                                                            error.message = '请求错误，未找到该资源'
+                                                            vant.Toast.fail(error.message)
+                                                            break;
+
+                                                        case 405:
+                                                            error.message = '请求方法未允许'
+                                                            vant.Toast.fail(error.message)
+                                                            break;
+
+                                                        case 408:
+                                                            error.message = '请求超时'
+                                                            vant.Toast.fail(error.message)
+                                                            break;
+
+                                                        case 502:
+                                                            error.message = '服务器错误'
+                                                            vant.Toast.fail(error.message)
+                                                            break;
+                                                    }
+                                                }
+                                            })
+
+
+                                    }
+                                }).catch(function (error) {
+                                    vant.Toast.fail(error)
+                                    console.log(error);
+                                    console.log(error);
+                                    if (error && error.response) {
+                                        switch (error.response.status) {
+                                            case 400:
+                                                error.message = '错误请求'
+                                                vant.Toast.fail(error.message)
+                                                break;
+
+                                            case 401:
+                                                error.message = '未授权，请重新登录'
+                                                vant.Toast.fail(error.message)
+                                                break;
+
+                                            case 403:
+                                                error.message = '拒绝访问'
+                                                vant.Toast.fail(error.message)
+                                                break;
+
+                                            case 404:
+                                                error.message = '请求错误，未找到该资源'
+                                                vant.Toast.fail(error.message)
+                                                break;
+
+                                            case 405:
+                                                error.message = '请求方法未允许'
+                                                vant.Toast.fail(error.message)
+                                                break;
+
+                                            case 408:
+                                                error.message = '请求超时'
+                                                vant.Toast.fail(error.message)
+                                                break;
+
+                                            case 502:
+                                                error.message = '服务器错误'
+                                                vant.Toast.fail(error.message)
+                                                break;
+                                        }
                                     }
                                 })
-                                .catch(err => {
-                                    this.loadshow = false;
-                                    console.log('err', err)
-                                    vant.Toast('异常.');
-                                });
                         },
                         //打印
-                        response => { }
+                        response => {}
                     );
                 }
             },
@@ -481,9 +623,9 @@
                 fileSize = fileSize.toFixed(0); //保留小数点后一位
 
                 // 不得大于2M
-                if(fileSize <= 2){
+                if (fileSize <= 2) {
                     this.imgPreview1(files[0])
-                }else{
+                } else {
                     vant.Toast('照片大小不得大于2M.')
                 }
 
@@ -518,7 +660,7 @@
                             // 向后台发请求 拉取OSS相关配置
                             //后端提供数据
                             const client = new OSS.Wrapper({
-                                secure: true,//这句话很重要！！！！！！！！！
+                                secure: true, //这句话很重要！！！！！！！！！
                                 region: "oss-cn-shenzhen", // 服务器集群地区
                                 extranet: response.data.extranet,
                                 accessKeyId: response.data.secretId, // OSS帐号
@@ -534,7 +676,7 @@
                             const obj2 = this.timestamp1();
                             //后缀名
                             const suffix = fileName.substr(fileName.indexOf("."));
-                            
+
                             var phone = sessionStorage.getItem('account');
 
                             //获取企业编号
@@ -550,70 +692,153 @@
                                 fileName;
                             //上传
                             client
-                                .multipartUpload(storeAs, file, {
-                                })
+                                .multipartUpload(storeAs, file, {})
                                 .then(res => {
                                     // console.log('res', res)
                                     if (res) {
-                                        this.formData.back = "https://appserbuc.oss-cn-shenzhen.aliyuncs.com/" + storeAs;
+                                        this.formData.back =
+                                            "https://appserbuc.oss-cn-shenzhen.aliyuncs.com/" + storeAs;
 
                                         var imageUrl = this.formData.back
 
                                         //显示加载
                                         this.loadshow = true
-                                        
+
                                         var usrNo = sessionStorage.getItem('usrNo');
 
                                         // console.log(imageUrl)
                                         //图片上传成功后调用身份识别接口
                                         axios({
-                                            method: 'post',
-                                            url: "https://dev.zxtouch.msxiaodai.com/rong360/idCarddIscern",
-                                            data: {
-                                                imageUrl:imageUrl,
-                                                usrNo:usrNo
-                                            }
-                                        })
-                                        .then(
-                                            response => {
-                                                if (response.data.code == 200) {
-                                                    //隐藏加载
-                                                    this.loadshow = false
+                                                method: 'post',
+                                                url: "https://dev.zxtouch.msxiaodai.com/rong360/idCarddIscern",
+                                                data: {
+                                                    imageUrl: imageUrl,
+                                                    usrNo: usrNo
+                                                }
+                                            })
+                                            .then(
+                                                response => {
+                                                    if (response.data.code == 200) {
+                                                        //隐藏加载
+                                                        this.loadshow = false
 
-                                                    if(response.data.data.side == 'back'){
+                                                        if (response.data.data.side == 'back') {
 
                                                             vant.Toast('识别身份证反面照成功.');
-                                                            
+
                                                             //签发机关
-                                                            this.formData.signingOffice = response.data.data.issued_by
+                                                            this.formData.signingOffice = response.data
+                                                                .data.issued_by
 
                                                             //身份证有效期
-                                                            this.formData.certificateValidityPeriod = response.data.data.valid_date
-                                                        
-                                                    }else{
-                                                        vant.Toast.fail('请上传正确的身份证反面照.')
-                                                    }
+                                                            this.formData.certificateValidityPeriod =
+                                                                response.data.data.valid_date
 
-                                                }else{
-                                                    //取消显示加载
-                                                    this.loadshow = false
-                                                    vant.Toast('识别身份证反面照失败.'+ response.data.msg);
+                                                        } else {
+                                                            vant.Toast.fail('请上传正确的身份证反面照.')
+                                                        }
+
+                                                    } else {
+                                                        //取消显示加载
+                                                        this.loadshow = false
+                                                        vant.Toast('识别身份证反面照失败.' + response.data.msg);
+                                                    }
+                                                },
+                                                response => {
+                                                    this.loadshow = false;
+                                                    console.log(response);
+                                                    vant.Toast('异常.');
                                                 }
-                                            },
-                                            response => {
-                                                this.loadshow = false;  
-                                                console.log(response);
-                                                vant.Toast('异常.');
-                                            }
-                                        )
+                                            ).catch(function (error) {
+                                                vant.Toast.fail(error)
+                                                console.log(error);
+                                                console.log(error);
+                                                if (error && error.response) {
+                                                    switch (error.response.status) {
+                                                        case 400:
+                                                            error.message = '错误请求'
+                                                            vant.Toast.fail(error.message)
+                                                            break;
+
+                                                        case 401:
+                                                            error.message = '未授权，请重新登录'
+                                                            vant.Toast.fail(error.message)
+                                                            break;
+
+                                                        case 403:
+                                                            error.message = '拒绝访问'
+                                                            vant.Toast.fail(error.message)
+                                                            break;
+
+                                                        case 404:
+                                                            error.message = '请求错误，未找到该资源'
+                                                            vant.Toast.fail(error.message)
+                                                            break;
+
+                                                        case 405:
+                                                            error.message = '请求方法未允许'
+                                                            vant.Toast.fail(error.message)
+                                                            break;
+
+                                                        case 408:
+                                                            error.message = '请求超时'
+                                                            vant.Toast.fail(error.message)
+                                                            break;
+
+                                                        case 502:
+                                                            error.message = '服务器错误'
+                                                            vant.Toast.fail(error.message)
+                                                            break;
+                                                    }
+                                                }
+                                            })
+                                    }
+                                }).catch(function (error) {
+                                    vant.Toast.fail(error)
+                                    console.log(error);
+                                    console.log(error);
+                                    if (error && error.response) {
+                                        switch (error.response.status) {
+                                            case 400:
+                                                error.message = '错误请求'
+                                                vant.Toast.fail(error.message)
+                                                break;
+
+                                            case 401:
+                                                error.message = '未授权，请重新登录'
+                                                vant.Toast.fail(error.message)
+                                                break;
+
+                                            case 403:
+                                                error.message = '拒绝访问'
+                                                vant.Toast.fail(error.message)
+                                                break;
+
+                                            case 404:
+                                                error.message = '请求错误，未找到该资源'
+                                                vant.Toast.fail(error.message)
+                                                break;
+
+                                            case 405:
+                                                error.message = '请求方法未允许'
+                                                vant.Toast.fail(error.message)
+                                                break;
+
+                                            case 408:
+                                                error.message = '请求超时'
+                                                vant.Toast.fail(error.message)
+                                                break;
+
+                                            case 502:
+                                                error.message = '服务器错误'
+                                                vant.Toast.fail(error.message)
+                                                break;
+                                        }
                                     }
                                 })
-                                .catch(err => {
-                                    console.log('err', err)
-                                });
                         },
                         //打印
-                        response => { }
+                        response => {}
                     );
                 }
             },
@@ -659,7 +884,7 @@
             },
             // 性别---------------------|
             //变直
-            onChangexinbie(all,value,index) {
+            onChangexinbie(all, value, index) {
                 this.sex = value;
                 this.formData.sex = index + 1
             },
@@ -671,7 +896,7 @@
             },
             // 婚姻---------------------|
             //变直
-            onChangehunyin(all,value,index) {
+            onChangehunyin(all, value, index) {
                 this.formData.maritalStatus = value
             },
             //弹出层确认
@@ -682,7 +907,7 @@
 
             // 学历---------------------|
             //变直
-            onChangexueli(all,value,index) {
+            onChangexueli(all, value, index) {
                 this.formData.education = value
             },
             //弹出层确认
@@ -692,7 +917,7 @@
             },
             // 学位---------------------|
             //变直
-            onChangexuewei(all,value,index) {
+            onChangexuewei(all, value, index) {
                 this.formData.degree = value
             },
             //弹出层确认
@@ -702,7 +927,7 @@
             },
             // 居住状况---------------------|
             //变值
-            onChangejuzhu(all,value,index) {
+            onChangejuzhu(all, value, index) {
                 this.formData.livingConditions = value
             },
             //弹出层确认
@@ -712,7 +937,7 @@
             },
             // 现居住省市区---------------------|
             //变值
-            onConfirmshengshiqu(value,index) {
+            onConfirmshengshiqu(value, index) {
                 var sum = '';
                 value.forEach((data) => {
                     sum += data.name
@@ -721,7 +946,7 @@
                 this.showPickershengshiqu = false
             },
             //弹出层确认
-            onChangeshengshiqu(all,value, index) {
+            onChangeshengshiqu(all, value, index) {
                 if (index.length === 3) {
                     var sum = '';
                     index.forEach((data) => {
@@ -734,7 +959,7 @@
             next() {
                 this.formData.usrNo = sessionStorage.getItem('usrNo');
                 this.loadshow = true;
-                    axios({
+                axios({
                         method: 'post',
                         url: "https://dev.zxtouch.msxiaodai.com/basicInformation/commit",
                         data: this.formData
@@ -745,7 +970,7 @@
                                 this.loadshow = false;
                                 vant.Toast('基本信息提交完成.');
                                 window.location.href = './CheckFace.html'
-                            }else{
+                            } else {
                                 this.loadshow = false;
                                 vant.Toast(response.data.msg);
                             }
@@ -753,7 +978,49 @@
                         response => {
                             console.log(response);
                         }
-                    )
+                    ).catch(function (error) {
+                        vant.Toast.fail(error)
+                        console.log(error);
+                        console.log(error);
+                        if (error && error.response) {
+                            switch (error.response.status) {
+                                case 400:
+                                    error.message = '错误请求'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 401:
+                                    error.message = '未授权，请重新登录'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 403:
+                                    error.message = '拒绝访问'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 404:
+                                    error.message = '请求错误，未找到该资源'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 405:
+                                    error.message = '请求方法未允许'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 408:
+                                    error.message = '请求超时'
+                                    vant.Toast.fail(error.message)
+                                    break;
+
+                                case 502:
+                                    error.message = '服务器错误'
+                                    vant.Toast.fail(error.message)
+                                    break;
+                            }
+                        }
+                    })
             }
         },
     });
