@@ -230,6 +230,7 @@
 
             getoldmsg() {
                 this.form.usrNo = sessionStorage.getItem('usrNo');
+                if(this.form.usrNo != ''){
                 axios({
                         method: 'get',
                         url: "https://dev.zxtouch.msxiaodai.com/auth/status",
@@ -298,17 +299,17 @@
                                                     }
                                                 } else {
                                                     console.log(response.data.msg)
-                                                    vant.Toast.fail(response.data.msg)
+                                                    // vant.Toast.fail(response.data.msg)
                                                 }
                                             },
                                             response => {
-                                                vant.Toast.fail(response.data.msg)
+                                                // vant.Toast.fail(response.data.msg)
 
                                             }
                                         )
                                 }
                             } else {
-                                vant.Toast.fail(response.data.msg)
+                                // vant.Toast.fail(response.data.msg)
                             }
                         },
                         response => {
@@ -356,7 +357,9 @@
                                     break;
                             }
                         }
-                    })
+                    })}else{
+                        window.location.href = './index.html'
+                    }
 
             },
 
@@ -517,8 +520,6 @@
                                                     vant.Toast('异常.');
                                                 }
                                             ).catch(function (error) {
-                                                vant.Toast.fail(error)
-                                                console.log(error);
                                                 console.log(error);
                                                 if (error && error.response) {
                                                     switch (error.response.status) {
@@ -563,8 +564,6 @@
 
                                     }
                                 }).catch(function (error) {
-                                    vant.Toast.fail(error)
-                                    console.log(error);
                                     console.log(error);
                                     if (error && error.response) {
                                         switch (error.response.status) {
@@ -750,8 +749,6 @@
                                                     vant.Toast('异常.');
                                                 }
                                             ).catch(function (error) {
-                                                vant.Toast.fail(error)
-                                                console.log(error);
                                                 console.log(error);
                                                 if (error && error.response) {
                                                     switch (error.response.status) {
@@ -794,8 +791,6 @@
                                             })
                                     }
                                 }).catch(function (error) {
-                                    vant.Toast.fail(error)
-                                    console.log(error);
                                     console.log(error);
                                     if (error && error.response) {
                                         switch (error.response.status) {
@@ -968,8 +963,14 @@
                         response => {
                             if (response.data.code == 0) {
                                 this.loadshow = false;
-                                vant.Toast('基本信息提交完成.');
+
+                                vant.Dialog.alert({
+                                title: '提示',
+                                message: '基本信息提交完成,进入活体检测页面.'
+                                }).then(() => {
                                 window.location.href = './CheckFace.html'
+                                });
+
                             } else {
                                 this.loadshow = false;
                                 vant.Toast(response.data.msg);
@@ -979,8 +980,6 @@
                             console.log(response);
                         }
                     ).catch(function (error) {
-                        vant.Toast.fail(error)
-                        console.log(error);
                         console.log(error);
                         if (error && error.response) {
                             switch (error.response.status) {

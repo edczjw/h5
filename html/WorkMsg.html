@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="../css/WorkMsg.css">
     <link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.0/lib/index.css">
+    <link rel="icon" type="image/x-icon" href="../image/form.png">
 
     <!-- 引入组件,注意引入顺序 -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
@@ -182,6 +183,7 @@
 
             getoldmsg() {
                 this.form.usrNo = sessionStorage.getItem('usrNo');
+                if(this.form.usrNo != ''){
                 axios({
                         method: 'post',
                         url: "https://dev.zxtouch.msxiaodai.com/app/userInfo",
@@ -211,13 +213,10 @@
 
                                 }
                             } else {
-                                console.log('第一次登录或者报错')
-                                vant.Toast.fail(response.data.msg)
+                                // vant.Toast.fail(response.data.msg)
                             }
                         }
                     ).catch(function (error) {
-                        vant.Toast.fail(error)
-                        console.log(error);
                         console.log(error);
                         if (error && error.response) {
                             switch (error.response.status) {
@@ -257,7 +256,9 @@
                                     break;
                             }
                         }
-                    })
+                    })}else{
+                        window.location.href = './index.html'
+                    }
             },
 
 
@@ -274,16 +275,20 @@
                         response => {
                             if (response.data.code == 0) {
                                 this.loadshow = false;
-                                vant.Toast.success('工作信息提交完成.');
+
+                                vant.Dialog.alert({
+                                title: '提示',
+                                message: '工作信息提交完成,进入联系人填写页面.'
+                                }).then(() => {
                                 window.location.href = './Contract.html';
+                                });
+
                             } else {
                                 this.loadshow = false;
                                 vant.Toast(response.data.msg);
                             }
                         }
                     ).catch(function (error) {
-                        vant.Toast.fail(error)
-                        console.log(error);
                         console.log(error);
                         if (error && error.response) {
                             switch (error.response.status) {

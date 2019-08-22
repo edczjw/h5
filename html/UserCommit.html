@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="../css/Contract.css">
     <link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.0/lib/index.css">
+    <link rel="icon" type="image/x-icon" href="../image/form.png">
 
     <!-- 引入组件,注意引入顺序 -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
@@ -93,6 +94,7 @@
         methods: {
             load() {
                 var usrNo = sessionStorage.getItem("usrNo");
+                if(usrNo != ''){
                 axios({
                         method: 'get',
                         headers: {
@@ -163,12 +165,10 @@
                                         break;
                                 }
                             } else {
-                                vant.Toast.fail(response.data.msg)
+                                // vant.Toast.fail(response.data.msg)
                             }
                         }
                     ).catch(function (error) {
-                        vant.Toast.fail(error)
-                        console.log(error);
                         console.log(error);
                         if (error && error.response) {
                             switch (error.response.status) {
@@ -208,12 +208,15 @@
                                     break;
                             }
                         }
-                    })
+                    })}else{
+                        window.location.href = './index.html'
+                    }
             },
 
             //移动运营商
             yunyinshang() {
                 var usrNo = sessionStorage.getItem("usrNo");
+                if(usrNo != ''){
                 axios({
                         method: 'get',
                         headers: {
@@ -277,11 +280,14 @@
                                     break;
                             }
                         }
-                    })
+                    })}else{
+                        window.location.href = './index.html'
+                    }
             },
             //提交
             submit() {
                 var usrNo = sessionStorage.getItem("usrNo");
+                if(usrNo !=''){
                 axios({
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded'
@@ -295,8 +301,12 @@
                     .then(
                         response => {
                             if (response.data.code == 0) {
-                                vant.Toast.success(response.data.msg)
-                                window.location.href = './index.html';
+                                vant.Dialog.alert({
+                                title: '提示',
+                                message: 'response.data.msg'+',请返回登录页.'
+                                }).then(() => {
+                                    window.location.href = './index.html';
+                                });
 
                             } else {
                                 vant.Toast.fail(response.data.msg)
@@ -306,8 +316,6 @@
                             console.log(response);
                         }
                     ).catch(function (error) {
-                        vant.Toast.fail(error)
-                        console.log(error);
                         console.log(error);
                         if (error && error.response) {
                             switch (error.response.status) {
@@ -348,6 +356,9 @@
                             }
                         }
                     })
+            }else{
+                window.location.href = './index.html'
+            }
             }
         }
     });
