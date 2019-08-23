@@ -37,11 +37,11 @@
         </div>
         <div class="container">
             <van-cell-group>
-                <van-cell title="工作信息" value="" />
+                <van-tag mark type="primary">工作信息</van-tag>
             </van-cell-group>
 
             <van-cell-group>
-                <van-field v-model='form.companyName' right-icon="question-o" label="单位名称" placeholder="请填写真实有效的单位名称"
+                <van-field v-model='form.companyName' right-icon="question-o" label="单位名称" type="textarea" rows="1" autosize  placeholder="请填写真实有效的单位名称"
                     @click-right-icon="$toast('必须是真实有效的单位名称')" />
             </van-cell-group>
 
@@ -57,7 +57,7 @@
             </van-popup>
 
             <van-cell-group>
-                <van-field v-model='form.unitAddress' right-icon="question-o" label="单位地址" placeholder="请填写真实有效的单位地址"
+                <van-field v-model='form.unitAddress' right-icon="question-o" label="单位地址" type="textarea" rows="1" autosize  placeholder="请填写真实有效的单位地址"
                     @click-right-icon="$toast('必须是真实准确的单位地址')" />
             </van-cell-group>
 
@@ -182,8 +182,10 @@
         methods: {
 
             getoldmsg() {
+                this.loadshow = true;
                 this.form.usrNo = sessionStorage.getItem('usrNo');
-                if(this.form.usrNo != ''){
+                if(this.form.usrNo != null){
+                console.log(this.form.usrNo)
                 axios({
                         method: 'post',
                         url: "https://dev.zxtouch.msxiaodai.com/app/userInfo",
@@ -192,7 +194,8 @@
                     .then(
                         response => {
                             if (response.data.code == 0) {
-                                if (this.active <= response.data.detail.result.currentPage) {
+                                    this.loadshow = false;
+                                if (response.data.detail.result.currentPage == 1 || response.data.detail.result.currentPage == 4  || response.data.detail.result.currentPage == 3) {
 
                                     this.form.companyName = response.data.detail.result.companyName
 
@@ -211,13 +214,28 @@
 
                                     this.form.workingYears = response.data.detail.result.workingYears
 
+
+                                }else{
+                                    vant.Dialog.alert({
+                                        title: '提示',
+                                        message: '请您完成填写前面几个页面的信息.'
+                                        }).then(() => {
+
+                                        switch (response.data.detail.result.currentPage) {
+                                            case 0:
+                                                window.location.href = './basicPage.html'
+                                                break;
+                                        }
+                                        });
                                 }
                             } else {
-                                // vant.Toast.fail(response.data.msg)
+                                this.loadshow = false;
+                                
                             }
                         }
                     ).catch(function (error) {
                         console.log(error);
+                        this.loadshow = false;
                         if (error && error.response) {
                             switch (error.response.status) {
                                 case 400:
@@ -257,7 +275,14 @@
                             }
                         }
                     })}else{
-                        window.location.href = './index.html'
+                        
+                        vant.Dialog.alert({
+                                title: '提示',
+                                message: '请返回登录页面进行登录.'
+                                }).then(() => {
+                                this.loadshow = true;
+                                window.location.href = './index.html'
+                                });
                     }
             },
 

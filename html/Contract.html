@@ -42,7 +42,7 @@
         <div class="container">
             <div class="top-con">
                 <van-cell-group>
-                    <van-cell title="联系人信息" value="" />
+                    <van-tag mark type="primary">联系人信息</van-tag>
                 </van-cell-group>
 
                 <van-cell-group>
@@ -62,7 +62,7 @@
                 </van-cell-group>
 
                 <van-cell-group>
-                    <van-field v-model='form.directContactsPhone' label="电话" right-icon="question-o" placeholder="填写" />
+                    <van-field v-model='form.directContactsPhone' label="电话" right-icon="question-o" placeholder="填写" @blur='checkaccount1()' :error-message="account1"/>
                 </van-cell-group>
             </div>
             <div class="bottom-con">
@@ -82,7 +82,7 @@
                 </van-cell-group>
 
                 <van-cell-group>
-                    <van-field v-model='form.otherContactsPhone' label="电话" right-icon="question-o" placeholder="填写" />
+                    <van-field v-model='form.otherContactsPhone' label="电话" right-icon="question-o" placeholder="填写" @blur='checkaccount2()' :error-message="account2"/>
                 </van-cell-group>
             </div>
 
@@ -122,6 +122,16 @@
                 DCR:"",     //直系联系人关系
                 ODC:"",     //其他联系人关系
 
+                //输入框校验
+                inputerror:{
+                    phonegeshi:'手机号格式错误',
+                    kong:'不能为空',
+                    idgeshi:'身份证格式错误',
+                    em:'邮箱格式错误',
+                    q:'qq格式错误',
+                },
+                account1:"",
+                account2:"",
                 loadshow:false,
 
                 contracts:"",//直系联系人
@@ -135,9 +145,46 @@
             },
             methods: {
                 
+            //校验
+            checkaccount1(){
+                // 手机号正则
+                var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;
+
+                // 手机格式
+                if(this.form.directContactsPhone == ''){
+                    this.account1 = '不能为空'
+                }
+                else if (!myreg.test(this.form.directContactsPhone)) {
+                    this.account1 = this.inputerror.phonegeshi;
+                }
+                // 取消报错
+                else{
+                    this.account1 = "";
+                }
+            },
+            
+            //校验
+            checkaccount2(){
+                // 手机号正则
+                var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;
+
+                // 手机格式
+                if(this.form.otherContactsPhone == ''){
+                    this.account2 = '不能为空'
+                }
+                else if (!myreg.test(this.form.otherContactsPhone)) {
+                    this.account2 = this.inputerror.phonegeshi;
+                }
+                // 取消报错
+                else{
+                    this.account2 = "";
+                }
+            },
+                
             getoldmsg(){
+                this.loadshow = true;
                 this.form.usrNo = sessionStorage.getItem('usrNo');
-                if(this.form.usrNo != ''){
+                if(this.form.usrNo != null){
                 axios({
                         method: 'post',
                         url: "https://dev.zxtouch.msxiaodai.com/app/userInfo",
@@ -146,7 +193,8 @@
                     .then(
                         response => {
                             if (response.data.code == 0) {
-                                if(this.active <= response.data.detail.result.currentPage){
+                                    this.loadshow = false;
+                                if(response.data.detail.result.currentPage == 2  || response.data.detail.result.currentPage == 4  || response.data.detail.result.currentPage == 3){
                                     
                                     this.form.directContactsName = response.data.detail.result.directContactsName
 
@@ -160,10 +208,26 @@
                                     this.ODC = this.columns2[this.form.otherDirectContacts]
                                     this.form.otherContactsPhone = response.data.detail.result.otherContactsPhone
                                    
-                                   
+                                }else{
+                                    
+                                    vant.Dialog.alert({
+                                        title: '提示',
+                                        message: '请您完成填写前面几个页面的信息.'
+                                        }).then(() => {
+
+                                        switch (response.data.detail.result.currentPage) {
+                                            case 0:
+                                                window.location.href = './basicPage.html'
+                                                break;
+                                            case 1:
+                                                window.location.href = './CheckFace.html'
+                                                break;
+                                        }
+                                        });
                                 }
                             }else{
                                 // vant.Toast.fail(response.data.msg)
+                                this.loadshow = false;
                             }
                         },
                         response => {
@@ -171,6 +235,7 @@
                         }
                     ).catch(function (error) {
                         console.log(error);
+                        this.loadshow = false;
                             if(error && error.response){
                                 switch (error.response.status){
                                     case 400:
@@ -210,7 +275,13 @@
                                 }
                             }
                             })}else{
-                                window.location.href = './index.html'
+                                vant.Dialog.alert({
+                                        title: '提示',
+                                        message: '请返回登录页面进行登录.'
+                                        }).then(() => {
+                                        this.loadshow = true;
+                                        window.location.href = './index.html'
+                                        });
                             }
             },
 
