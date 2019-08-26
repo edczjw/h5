@@ -103,9 +103,9 @@
                     url: "https://dev.zxtouch.msxiaodai.com/data/submission"
                 }).then(
                     response => {
-                        sessionStorage.setItem("userNo",response.data.usrNo);//本地存储用户编号
-                        sessionStorage.setItem("usrNo",response.data.usrNo);//本地存储用户编号
-                        var usrNo = sessionStorage.getItem('usrNo');
+                        sessionStorage.setItem("userNo",response.data.detail.result.usrNo);//本地存储用户编号
+                        sessionStorage.setItem("usrNo",response.data.detail.result.usrNo);//本地存储用户编号
+                        var usrNo = response.data.detail.result.usrNo;
                         axios({
                                 method: 'get',
                                 url: "https://dev.zxtouch.msxiaodai.com/auth/status",

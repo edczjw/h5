@@ -202,7 +202,6 @@
             load() {
                 this.loadshow = true;
                 var usrNo = sessionStorage.getItem("usrNo");
-                if(usrNo != null){
                 axios({
                         method: 'get',
                         headers: {
@@ -333,15 +332,7 @@
                                     break;
                             }
                         }
-                    })}else{
-                        vant.Dialog.alert({
-                                title: '提示',
-                                message: '请返回登录页面进行登录.'
-                                }).then(() => {
-                                this.loadshow = true;
-                                window.location.href = './index.html'
-                                });
-                    }
+                    })
             },
 
             //移动运营商
