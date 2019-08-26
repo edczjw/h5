@@ -153,13 +153,16 @@
                 // 手机格式
                 if(this.form.directContactsPhone == ''){
                     this.account1 = '不能为空'
+                    return false
                 }
                 else if (!myreg.test(this.form.directContactsPhone)) {
                     this.account1 = this.inputerror.phonegeshi;
+                    return false
                 }
                 // 取消报错
                 else{
                     this.account1 = "";
+                    return true
                 }
             },
             
@@ -171,13 +174,16 @@
                 // 手机格式
                 if(this.form.otherContactsPhone == ''){
                     this.account2 = '不能为空'
+                    return false
                 }
                 else if (!myreg.test(this.form.otherContactsPhone)) {
                     this.account2 = this.inputerror.phonegeshi;
+                    return false
                 }
                 // 取消报错
                 else{
                     this.account2 = "";
+                    return true
                 }
             },
                 
@@ -187,7 +193,7 @@
                 if(this.form.usrNo != null){
                 axios({
                         method: 'post',
-                        url: "https://test.zxtouch.msxiaodai.com/app/userInfo",
+                        url: "https://zxtouch.msxiaodai.com/app/userInfo",
                         data: this.form
                     })
                     .then(
@@ -289,11 +295,14 @@
                     console.log(e.target.value)
                 },
                 next(){
+                    if(this.checkaccount1() &&
+                    this.checkaccount2()){
+                        
                     this.form.usrNo = sessionStorage.getItem('usrNo');
                     this.loadshow = true;
                     axios({
                         method: 'post',
-                        url: "https://test.zxtouch.msxiaodai.com/app/contactsInfo",
+                        url: "https://zxtouch.msxiaodai.com/app/contactsInfo",
                         data: this.form
                     })
                     .then(
@@ -358,6 +367,9 @@
                                 }
                             }
                             })
+                    }else{
+                        vant.Toast.fail('请仔细检查所填信息是否正确!')
+                    }
                 },
 
                 // 直系联系人---------------------|

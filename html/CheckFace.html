@@ -137,7 +137,7 @@
                 if(this.form.usrNo != null){
                 axios({
                         method: 'get',
-                        url: "https://test.zxtouch.msxiaodai.com/auth/status",
+                        url: "https://zxtouch.msxiaodai.com/auth/status",
                         params: {
                             userNo: this.form.usrNo
                         },
@@ -157,7 +157,7 @@
                                                             //提交接口
                                                             axios({
                                                                 method: 'post',
-                                                                url: "https://test.zxtouch.msxiaodai.com/app/bioAssay",
+                                                                url: "https://zxtouch.msxiaodai.com/app/bioAssay",
                                                                 data: {
                                                                     usrNo:usrNo,
                                                                     currentPage:1
@@ -317,7 +317,7 @@
                             'Content-Type': 'multipart/form-data'
                         },
                         method: "post",
-                        url: "https://test.zxtouch.msxiaodai.com/app/getOssProperties"
+                        url: "https://zxtouch.msxiaodai.com/app/getOssProperties"
                     }).then(
                         response => {
                             // console.log('response', response)
@@ -373,7 +373,7 @@
                                         //图片上传成功后调用身份识别接口
                                         axios({
                                                 method: 'post',
-                                                url: "https://test.zxtouch.msxiaodai.com/video/auth",
+                                                url: "https://zxtouch.msxiaodai.com/video/auth",
                                                 data: _that.form
                                             })
                                             .then(
@@ -395,7 +395,7 @@
                                                             //提交接口
                                                             axios({
                                                                 method: 'post',
-                                                                url: "https://test.zxtouch.msxiaodai.com/app/bioAssay",
+                                                                url: "https://zxtouch.msxiaodai.com/app/bioAssay",
                                                                 data: {
                                                                     usrNo:usrNo,
                                                                     currentPage:1
@@ -639,7 +639,7 @@
         var usrNo = sessionStorage.getItem('usrNo');
         axios({
                 method: 'post',
-                url: "https://test.zxtouch.msxiaodai.com/rong360/getRandomNum",
+                url: "https://zxtouch.msxiaodai.com/rong360/getRandomNum",
                 data: {
                     usrNo:usrNo
                 }
