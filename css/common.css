@@ -55,7 +55,7 @@ body {
   transition: all .1s ease;
 }
 .top-step .van-step--horizontal .van-step__title {
-  font-size: xx-small !important;
+  font-size: small !important;
 }
 .van-button--disabled {
   opacity: 0.5 !important;

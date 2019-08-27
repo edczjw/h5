@@ -125,7 +125,7 @@
                 usrNo: "",
             },
             loadingshow: false,
-            loadshow:false,
+            loadshow: false,
         },
         mounted() {
             this.getoldmsg(); //获取上一次登录的信息数据预览
@@ -134,150 +134,152 @@
             getoldmsg() {
                 this.loadshow = true;
                 this.form.usrNo = sessionStorage.getItem('usrNo');
-                if(this.form.usrNo != null){
-                axios({
-                        method: 'get',
-                        url: "https://zxtouch.msxiaodai.com/auth/status",
-                        params: {
-                            userNo: this.form.usrNo
-                        },
-                    })
-                    .then(
-                        response => {
-                            if (response.data.code == 0) {
-                                this.loadshow = false;
-                                if (response.data.detail.livingBody == '04' || response.data.detail.livingBody == '02') {
-                                    vant.Dialog.alert({
-                                        title: '提示',
-                                        message: '您已成功进行过一次活体检测认证,请进入工作信息填写页面.'
-                                    }).then(() => {
-                                        this.loadshow = true
+                if (this.form.usrNo != null) {
+                    axios({
+                            method: 'get',
+                            url: "https://dev.zxtouch.msxiaodai.com/auth/status",
+                            params: {
+                                userNo: this.form.usrNo
+                            },
+                        })
+                        .then(
+                            response => {
+                                if (response.data.code == 0) {
+                                    this.loadshow = false;
+                                    if (response.data.detail.livingBody == '04' || response.data.detail
+                                        .livingBody == '02') {
+                                        vant.Dialog.alert({
+                                            title: '提示',
+                                            message: '您已成功进行过一次活体检测认证,请进入工作信息填写页面.'
+                                        }).then(() => {
+                                            this.loadshow = true
 
-                                        var usrNo = sessionStorage.getItem('usrNo');
-                                                            //提交接口
-                                                            axios({
-                                                                method: 'post',
-                                                                url: "https://zxtouch.msxiaodai.com/app/bioAssay",
-                                                                data: {
-                                                                    usrNo:usrNo,
-                                                                    currentPage:1
-                                                                }
-                                                            })
-                                                            .then(
-                                                                response => {
-                                                                    if (response.data.code == 0) {
-                                                                    window.location.href = './WorkMsg.html'
-                                                                    }else{
-                                                                        vant.Toast(response.data.msg);
-                                                                    }
-                                                                },
-                                                                response => {
-                                                                    console.log(response);
-                                                                }
-                                                            ).catch(function (error) {
-                                                                console.log(error);
-                                                                    if(error && error.response){
-                                                                        switch (error.response.status){
-                                                                            case 400:
-                                                                            error.message = '错误请求'
-                                                                            vant.Toast.fail(error.message)
-                                                                            break;
+                                            var usrNo = sessionStorage.getItem('usrNo');
+                                            //提交接口
+                                            axios({
+                                                    method: 'post',
+                                                    url: "https://dev.zxtouch.msxiaodai.com/app/bioAssay", 
+                                                    data: {
+                                                        usrNo: usrNo,
+                                                        currentPage: 1
+                                                    }
+                                                })
+                                                .then(
+                                                    response => {
+                                                        if (response.data.code == 0) {
+                                                            window.location.href = './WorkMsg.html'
+                                                        } else {
+                                                            vant.Toast(response.data.msg);
+                                                        }
+                                                    },
+                                                    response => {
+                                                        console.log(response);
+                                                    }
+                                                ).catch(function (error) {
+                                                    console.log(error);
+                                                    if (error && error.response) {
+                                                        switch (error.response.status) {
+                                                            case 400:
+                                                                error.message = '错误请求'
+                                                                vant.Toast.fail(error.message)
+                                                                break;
 
-                                                                            case 401:
-                                                                            error.message = '未授权，请重新登录'
-                                                                            vant.Toast.fail(error.message)
-                                                                            break;
+                                                            case 401:
+                                                                error.message = '未授权，请重新登录'
+                                                                vant.Toast.fail(error.message)
+                                                                break;
 
-                                                                            case 403:
-                                                                            error.message = '拒绝访问'
-                                                                            vant.Toast.fail(error.message)
-                                                                            break;
+                                                            case 403:
+                                                                error.message = '拒绝访问'
+                                                                vant.Toast.fail(error.message)
+                                                                break;
 
-                                                                            case 404:
-                                                                            error.message = '请求错误，未找到该资源'
-                                                                            vant.Toast.fail(error.message)
-                                                                            break;
+                                                            case 404:
+                                                                error.message = '请求错误，未找到该资源'
+                                                                vant.Toast.fail(error.message)
+                                                                break;
 
-                                                                            case 405:
-                                                                            error.message = '请求方法未允许'
-                                                                            vant.Toast.fail(error.message)
-                                                                            break;
+                                                            case 405:
+                                                                error.message = '请求方法未允许'
+                                                                vant.Toast.fail(error.message)
+                                                                break;
 
-                                                                            case 408:
-                                                                            error.message = '请求超时'
-                                                                            vant.Toast.fail(error.message)
-                                                                            break;
+                                                            case 408:
+                                                                error.message = '请求超时'
+                                                                vant.Toast.fail(error.message)
+                                                                break;
 
-                                                                            case 502:
-                                                                            error.message = '服务器错误'
-                                                                            vant.Toast.fail(error.message)
-                                                                            break;
-                                                                        }
-                                                                    }
-                                                                    })
-                                                        }).catch(() => {
-                                                            // on cancel
-                                    });
-                                }else{
-                                    
+                                                            case 502:
+                                                                error.message = '服务器错误'
+                                                                vant.Toast.fail(error.message)
+                                                                break;
+                                                        }
+                                                    }
+                                                })
+                                        }).catch(() => {
+                                            // on cancel
+                                        });
+                                    } else {
+
+                                    }
+                                } else {
+                                    this.loadshow = false;
+                                    // vant.Toast.fail(response.data.msg)
                                 }
-                            } else {
-                                this.loadshow = false;
-                                vant.Toast.fail(response.data.msg)
+                            },
+                            response => {
+
                             }
-                        },
-                        response => {
+                        ).catch(function (error) {
+                            console.log(error);
+                            this.loadshow = false;
+                            if (error && error.response) {
+                                switch (error.response.status) {
+                                    case 400:
+                                        error.message = '错误请求'
+                                        vant.Toast.fail(error.message)
+                                        break;
 
-                        }
-                    ).catch(function (error) {
-                        console.log(error);
-                        this.loadshow = false;
-                        if (error && error.response) {
-                            switch (error.response.status) {
-                                case 400:
-                                    error.message = '错误请求'
-                                    vant.Toast.fail(error.message)
-                                    break;
+                                    case 401:
+                                        error.message = '未授权，请重新登录'
+                                        vant.Toast.fail(error.message)
+                                        break;
 
-                                case 401:
-                                    error.message = '未授权，请重新登录'
-                                    vant.Toast.fail(error.message)
-                                    break;
+                                    case 403:
+                                        error.message = '拒绝访问'
+                                        vant.Toast.fail(error.message)
+                                        break;
 
-                                case 403:
-                                    error.message = '拒绝访问'
-                                    vant.Toast.fail(error.message)
-                                    break;
+                                    case 404:
+                                        error.message = '请求错误，未找到该资源'
+                                        vant.Toast.fail(error.message)
+                                        break;
 
-                                case 404:
-                                    error.message = '请求错误，未找到该资源'
-                                    vant.Toast.fail(error.message)
-                                    break;
+                                    case 405:
+                                        error.message = '请求方法未允许'
+                                        vant.Toast.fail(error.message)
+                                        break;
 
-                                case 405:
-                                    error.message = '请求方法未允许'
-                                    vant.Toast.fail(error.message)
-                                    break;
+                                    case 408:
+                                        error.message = '请求超时'
+                                        vant.Toast.fail(error.message)
+                                        break;
 
-                                case 408:
-                                    error.message = '请求超时'
-                                    vant.Toast.fail(error.message)
-                                    break;
-
-                                case 502:
-                                    error.message = '服务器错误'
-                                    vant.Toast.fail(error.message)
-                                    break;
+                                    case 502:
+                                        error.message = '服务器错误'
+                                        vant.Toast.fail(error.message)
+                                        break;
+                                }
                             }
-                        }
-                    })}else{
-                        vant.Dialog.alert({
-                                title: '提示',
-                                message: '请返回登录页面进行登录.'
-                                }).then(() => {
-                                window.location.href = './index.html'
-                                });
-                    }
+                        })
+                } else {
+                    vant.Dialog.alert({
+                        title: '提示',
+                        message: '请返回登录页面进行登录.'
+                    }).then(() => {
+                        window.location.href = './index.html'
+                    });
+                }
             },
             //上传视频
             upload(e) {
@@ -317,7 +319,7 @@
                             'Content-Type': 'multipart/form-data'
                         },
                         method: "post",
-                        url: "https://zxtouch.msxiaodai.com/app/getOssProperties"
+                        url: "https://dev.zxtouch.msxiaodai.com/app/getOssProperties"
                     }).then(
                         response => {
                             // console.log('response', response)
@@ -365,15 +367,16 @@
 
                                         _that.form.idcardName = sessionStorage.getItem('idcardName')
                                         _that.form.idcardNumber = sessionStorage.getItem('idcardNumber')
-                                        _that.form.tokenRandomNumber = sessionStorage.getItem('tokenRandomNumber')
+                                        _that.form.tokenRandomNumber = sessionStorage.getItem(
+                                            'tokenRandomNumber')
                                         _that.form.bizNo = sessionStorage.getItem('bizNo')
-                                        
+
                                         _that.form.userNo = sessionStorage.getItem('usrNo');
 
                                         //图片上传成功后调用身份识别接口
                                         axios({
                                                 method: 'post',
-                                                url: "https://zxtouch.msxiaodai.com/video/auth",
+                                                url: "https://dev.zxtouch.msxiaodai.com/video/auth",
                                                 data: _that.form
                                             })
                                             .then(
@@ -390,69 +393,119 @@
                                                             message: response.data.msg +
                                                                 ',您已完成活体检测，是否进入下一个流程？'
                                                         }).then(() => {
-                                                            
-                                                           var usrNo = sessionStorage.getItem('usrNo');
+
+                                                            var usrNo = sessionStorage.getItem(
+                                                                'usrNo');
                                                             //提交接口
                                                             axios({
-                                                                method: 'post',
-                                                                url: "https://zxtouch.msxiaodai.com/app/bioAssay",
-                                                                data: {
-                                                                    usrNo:usrNo,
-                                                                    currentPage:1
-                                                                }
-                                                            })
-                                                            .then(
-                                                                response => {
-                                                                    if (response.data.code == 0) {
-                                                                        window.location.href ='./WorkMsg.html'
-                                                                    }else{
-                                                                        vant.Toast(response.data.msg);
+                                                                    method: 'post',
+                                                                    url: "https://dev.zxtouch.msxiaodai.com/app/bioAssay",
+                                                                    data: {
+                                                                        usrNo: usrNo,
+                                                                        currentPage: 1
                                                                     }
-                                                                },
-                                                                response => {
-                                                                    console.log(response);
-                                                                }
-                                                            ).catch(function (error) {
-                                                                console.log(error);
-                                                                    if(error && error.response){
-                                                                        switch (error.response.status){
+                                                                })
+                                                                .then(
+                                                                    response => {
+                                                                        if (response.data
+                                                                            .code == 0) {
+                                                                            window.location
+                                                                                .href =
+                                                                                './WorkMsg.html'
+                                                                        } else {
+                                                                            vant.Toast(response
+                                                                                .data.msg);
+                                                                        }
+                                                                    },
+                                                                    response => {
+                                                                        console.log(response);
+                                                                    }
+                                                                ).catch(function (error) {
+                                                                    console.log(error);
+                                                                    if (error && error
+                                                                        .response) {
+                                                                        switch (error
+                                                                            .response.status
+                                                                            ) {
                                                                             case 400:
-                                                                            error.message = '错误请求'
-                                                                            vant.Toast.fail(error.message)
-                                                                            break;
+                                                                                error
+                                                                                    .message =
+                                                                                    '错误请求'
+                                                                                vant.Toast
+                                                                                    .fail(
+                                                                                        error
+                                                                                        .message
+                                                                                        )
+                                                                                break;
 
                                                                             case 401:
-                                                                            error.message = '未授权，请重新登录'
-                                                                            vant.Toast.fail(error.message)
-                                                                            break;
+                                                                                error
+                                                                                    .message =
+                                                                                    '未授权，请重新登录'
+                                                                                vant.Toast
+                                                                                    .fail(
+                                                                                        error
+                                                                                        .message
+                                                                                        )
+                                                                                break;
 
                                                                             case 403:
-                                                                            error.message = '拒绝访问'
-                                                                            vant.Toast.fail(error.message)
-                                                                            break;
+                                                                                error
+                                                                                    .message =
+                                                                                    '拒绝访问'
+                                                                                vant.Toast
+                                                                                    .fail(
+                                                                                        error
+                                                                                        .message
+                                                                                        )
+                                                                                break;
 
                                                                             case 404:
-                                                                            error.message = '请求错误，未找到该资源'
-                                                                            vant.Toast.fail(error.message)
-                                                                            break;
+                                                                                error
+                                                                                    .message =
+                                                                                    '请求错误，未找到该资源'
+                                                                                vant.Toast
+                                                                                    .fail(
+                                                                                        error
+                                                                                        .message
+                                                                                        )
+                                                                                break;
 
                                                                             case 405:
-                                                                            error.message = '请求方法未允许'
-                                                                            vant.Toast.fail(error.message)
-                                                                            break;
+                                                                                error
+                                                                                    .message =
+                                                                                    '请求方法未允许'
+                                                                                vant.Toast
+                                                                                    .fail(
+                                                                                        error
+                                                                                        .message
+                                                                                        )
+                                                                                break;
 
                                                                             case 408:
-                                                                            error.message = '请求超时'
-                                                                            vant.Toast.fail(error.message)
-                                                                            break;
+                                                                                error
+                                                                                    .message =
+                                                                                    '请求超时'
+                                                                                vant.Toast
+                                                                                    .fail(
+                                                                                        error
+                                                                                        .message
+                                                                                        )
+                                                                                break;
 
                                                                             case 502:
-                                                                            error.message = '服务器错误'
-                                                                            vant.Toast.fail(error.message)
-                                                                            break;
+                                                                                error
+                                                                                    .message =
+                                                                                    '服务器错误'
+                                                                                vant.Toast
+                                                                                    .fail(
+                                                                                        error
+                                                                                        .message
+                                                                                        )
+                                                                                break;
                                                                         }
                                                                     }
-                                                                    })
+                                                                })
                                                         }).catch(() => {
                                                             // on cancel
                                                         });
@@ -635,13 +688,13 @@
     $(".nextVideo").click(function () {
         //显示加载
         $(".load-ing").show();
-        
+
         var usrNo = sessionStorage.getItem('usrNo');
         axios({
                 method: 'post',
-                url: "https://zxtouch.msxiaodai.com/rong360/getRandomNum",
+                url: "https://dev.zxtouch.msxiaodai.com/rong360/getRandomNum",
                 data: {
-                    usrNo:usrNo
+                    usrNo: usrNo
                 }
             })
             .then(

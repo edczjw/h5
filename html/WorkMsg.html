@@ -41,8 +41,8 @@
             </van-cell-group>
 
             <van-cell-group>
-                <van-field v-model='form.companyName' right-icon="question-o" label="单位名称" type="textarea" rows="1" autosize  placeholder="请填写真实有效的单位名称"
-                    @click-right-icon="$toast('必须是真实有效的单位名称')" />
+                <van-field v-model='form.companyName' right-icon="question-o" label="单位名称" type="textarea" rows="1"
+                    autosize placeholder="请填写真实有效的单位名称" @click-right-icon="$toast('必须是真实有效的单位名称')" />
             </van-cell-group>
 
             <van-cell-group>
@@ -57,8 +57,8 @@
             </van-popup>
 
             <van-cell-group>
-                <van-field v-model='form.unitAddress' right-icon="question-o" label="单位地址" type="textarea" rows="1" autosize  placeholder="请填写真实有效的单位地址"
-                    @click-right-icon="$toast('必须是真实准确的单位地址')" />
+                <van-field v-model='form.unitAddress' right-icon="question-o" label="单位地址" type="textarea" rows="1"
+                    autosize placeholder="请填写真实有效的单位地址" @click-right-icon="$toast('必须是真实准确的单位地址')" />
             </van-cell-group>
 
             <van-cell-group>
@@ -184,106 +184,109 @@
             getoldmsg() {
                 this.loadshow = true;
                 this.form.usrNo = sessionStorage.getItem('usrNo');
-                if(this.form.usrNo != null){
-                console.log(this.form.usrNo)
-                axios({
-                        method: 'post',
-                        url: "https://zxtouch.msxiaodai.com/app/userInfo",
-                        data: this.form
-                    })
-                    .then(
-                        response => {
-                            if (response.data.code == 0) {
+                if (this.form.usrNo != null) {
+                    console.log(this.form.usrNo)
+                    axios({
+                            method: 'post',
+                            url: "https://dev.zxtouch.msxiaodai.com/app/userInfo",
+                            data: this.form
+                        })
+                        .then(
+                            response => {
+                                if (response.data.code == 0) {
                                     this.loadshow = false;
-                                if (response.data.detail.result.currentPage == 2 ||response.data.detail.result.currentPage == 1 || response.data.detail.result.currentPage == 4  || response.data.detail.result.currentPage == 3) {
+                                    if (response.data.detail.result.currentPage == 2 || response.data.detail
+                                        .result.currentPage == 1 || response.data.detail.result.currentPage ==
+                                        4 || response.data.detail.result.currentPage == 3) {
 
-                                    this.form.companyName = response.data.detail.result.companyName
+                                        this.form.companyName = response.data.detail.result.companyName
 
-                                    this.form.natureUnit = response.data.detail.result.natureUnit
-                                    this.NU = this.columns1[this.form.natureUnit]
+                                        this.form.natureUnit = response.data.detail.result.natureUnit
+                                        this.NU = this.columns1[this.form.natureUnit]
 
-                                    this.form.unitAddress = response.data.detail.result.unitAddress
-                                    this.form.incomeRange = response.data.detail.result.incomeRange
-                                    this.IR = this.columns4[this.form.incomeRange]
+                                        this.form.unitAddress = response.data.detail.result.unitAddress
+                                        this.form.incomeRange = response.data.detail.result.incomeRange
+                                        this.IR = this.columns4[this.form.incomeRange]
 
-                                    this.form.workType = response.data.detail.result.workType
-                                    this.WT = this.columns2[this.form.workType]
-                                    this.form.workPhone = response.data.detail.result.workPhone
-                                    this.form.socialIdentity = response.data.detail.result.socialIdentity
-                                    this.SI = this.columns3[this.form.socialIdentity]
+                                        this.form.workType = response.data.detail.result.workType
+                                        this.WT = this.columns2[this.form.workType]
+                                        this.form.workPhone = response.data.detail.result.workPhone
+                                        this.form.socialIdentity = response.data.detail.result.socialIdentity
+                                        this.SI = this.columns3[this.form.socialIdentity]
 
-                                    this.form.workingYears = response.data.detail.result.workingYears
+                                        this.form.workingYears = response.data.detail.result.workingYears
 
 
-                                }else{
-                                    vant.Dialog.alert({
-                                        title: '提示',
-                                        message: '请您完成填写前面几个页面的信息.'
+                                    } else {
+                                        vant.Dialog.alert({
+                                            title: '提示',
+                                            message: '请您完成填写前面几个页面的信息.'
                                         }).then(() => {
 
-                                        switch (response.data.detail.result.currentPage) {
-                                            case 0:
-                                                window.location.href = './basicPage.html'
-                                                break;
-                                        }
+                                            switch (response.data.detail.result.currentPage) {
+                                                case 0:
+                                                    window.location.href = './basicPage.html'
+                                                    break;
+                                            }
                                         });
+                                    }
+                                } else {
+                                    this.loadshow = false;
+
                                 }
-                            } else {
-                                this.loadshow = false;
-                                
                             }
-                        }
-                    ).catch(function (error) {
-                        console.log(error);
-                        this.loadshow = false;
-                        if (error && error.response) {
-                            switch (error.response.status) {
-                                case 400:
-                                    error.message = '错误请求'
-                                    vant.Toast.fail(error.message)
-                                    break;
+                        ).catch(function (error) {
+                            console.log(error);
+                            this.loadshow = false;
+                            if (error && error.response) {
+                                switch (error.response.status) {
+                                    case 400:
+                                        error.message = '错误请求'
+                                        vant.Toast.fail(error.message)
+                                        break;
 
-                                case 401:
-                                    error.message = '未授权，请重新登录'
-                                    vant.Toast.fail(error.message)
-                                    break;
+                                    case 401:
+                                        error.message = '未授权，请重新登录'
+                                        vant.Toast.fail(error.message)
+                                        break;
 
-                                case 403:
-                                    error.message = '拒绝访问'
-                                    vant.Toast.fail(error.message)
-                                    break;
+                                    case 403:
+                                        error.message = '拒绝访问'
+                                        vant.Toast.fail(error.message)
+                                        break;
 
-                                case 404:
-                                    error.message = '请求错误，未找到该资源'
-                                    vant.Toast.fail(error.message)
-                                    break;
+                                    case 404:
+                                        error.message = '请求错误，未找到该资源'
+                                        vant.Toast.fail(error.message)
+                                        break;
 
-                                case 405:
-                                    error.message = '请求方法未允许'
-                                    vant.Toast.fail(error.message)
-                                    break;
+                                    case 405:
+                                        error.message = '请求方法未允许'
+                                        vant.Toast.fail(error.message)
+                                        break;
 
-                                case 408:
-                                    error.message = '请求超时'
-                                    vant.Toast.fail(error.message)
-                                    break;
+                                    case 408:
+                                        error.message = '请求超时'
+                                        vant.Toast.fail(error.message)
+                                        break;
 
-                                case 502:
-                                    error.message = '服务器错误'
-                                    vant.Toast.fail(error.message)
-                                    break;
+                                    case 502:
+                                        error.message = '服务器错误'
+                                        vant.Toast.fail(error.message)
+                                        break;
+                                }
                             }
-                        }
-                    })}else{
-                        
-                        vant.Dialog.alert({
-                                title: '提示',
-                                message: '请返回登录页面进行登录.'
-                                }).then(() => {
-                                this.loadshow = true;
-                                window.location.href = './index.html'
-                                });
-                    }
+                        })
+                } else {
+
+                    vant.Dialog.alert({
+                        title: '提示',
+                        message: '请返回登录页面进行登录.'
+                    }).then(() => {
+                        this.loadshow = true;
+                        window.location.href = './index.html'
+                    });
+                }
             },
 
 
@@ -292,7 +295,7 @@
                 this.loadshow = true;
                 axios({
                         method: 'post',
-                        url: "https://zxtouch.msxiaodai.com/app/workInfo",
+                        url: "https://dev.zxtouch.msxiaodai.com/app/workInfo",
                         data: this.form
                     })
                     .then(
@@ -301,10 +304,10 @@
                                 this.loadshow = false;
 
                                 vant.Dialog.alert({
-                                title: '提示',
-                                message: '工作信息提交完成,进入联系人填写页面.'
+                                    title: '提示',
+                                    message: '工作信息提交完成,进入联系人填写页面.'
                                 }).then(() => {
-                                window.location.href = './Contract.html';
+                                    window.location.href = './Contract.html';
                                 });
 
                             } else {

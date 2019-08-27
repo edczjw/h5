@@ -76,7 +76,7 @@
                     account: '', //用户账号
                     userNo: "", //用户编号
                 },
-                columns: ['个人', '企业'], //信息类别选项
+                columns: ['个人'], //信息类别选项
                 columnsTwo: [], //金融产品
                 showPickerTwo: false, //金融产品显示控制
                 showPicker: false, //信息类型显示控制
@@ -96,112 +96,51 @@
             next() {
                 this.formData.account = sessionStorage.getItem('account');
                 this.loadshow = true;
-                if(this.formData.ICid != '' || this.formData.FPCid != '' ){
-                axios({
-                    method: "post",
-                    data: this.formData,
-                    url: "https://zxtouch.msxiaodai.com/data/submission"
-                }).then(
-                    response => {
-                        sessionStorage.setItem("userNo",response.data.detail.result.usrNo);//本地存储用户编号
-                        sessionStorage.setItem("usrNo",response.data.detail.result.usrNo);//本地存储用户编号
-                        var usrNo = response.data.detail.result.usrNo;
-                        axios({
-                                method: 'get',
-                                url: "https://zxtouch.msxiaodai.com/auth/status",
-                                params: {
-                                    userNo: usrNo
-                                },
-                            })
-                            .then(
-                                response => {
-                                    if (response.data.code == 0) {
-                                        this.loadshow = false;
-                                        if (response.data.detail.mobile == '04' || response.data.detail.mobile == '02') {
-                                            vant.Dialog.alert({
-                                                title: '提示',
-                                                message: '您之前已经认证成功了同一个信息类别的同一个产品，请重新登录选择其他信息类别产品.'
-                                            }).then(() => { 
-                                                // window.location.href = './index.html'
-                                            })
-                                }else{
-                                    this.loadshow = false;
-
-                                    vant.Dialog.alert({
-                                        title: '提示',
-                                        message: '提交成功,进入基本信息填写页面.'
-                                        }).then(() => {
-                                        window.location.href = './basicPage.html';
-                                        });
-                                }}}
-                )}
-                ).catch(function (error) {
-                    this.loadshow = false;
-                    console.log(error);
-                    console.log(error);
-                    if (error && error.response) {
-                        switch (error.response.status) {
-                            case 400:
-                                error.message = '错误请求'
-                                vant.Toast.fail(error.message)
-                                break;
-
-                            case 401:
-                                error.message = '未授权，请重新登录'
-                                vant.Toast.fail(error.message)
-                                break;
-
-                            case 403:
-                                error.message = '拒绝访问'
-                                vant.Toast.fail(error.message)
-                                break;
-
-                            case 404:
-                                error.message = '请求错误，未找到该资源'
-                                vant.Toast.fail(error.message)
-                                break;
-
-                            case 405:
-                                error.message = '请求方法未允许'
-                                vant.Toast.fail(error.message)
-                                break;
-
-                            case 408:
-                                error.message = '请求超时'
-                                vant.Toast.fail(error.message)
-                                break;
-
-                            case 502:
-                                error.message = '服务器错误'
-                                vant.Toast.fail(error.message)
-                                break;
-                        }
-                    }
-                })}else{
-                    this.loadshow = false;
-                    vant.Toast.fail('信息类别和金融产品不能为空.')
-                }
-            },
-
-            //获取产品
-            getproduct() {
+                if (this.formData.ICid != '' && this.formData.FPCid != '') {
                     axios({
-                        method: "get",
-                        params: {
-                            ICid: this.formData.ICid
-                        },
-                        url: "https://zxtouch.msxiaodai.com/get/financialProducts"
+                        method: "post",
+                        data: this.formData,
+                        url: "https://dev.zxtouch.msxiaodai.com/data/submission"
                     }).then(
                         response => {
-                            if (response.data.code == 0) {  
-                                this.columnsTwo = response.data.detail
-                            } else {
-                                vant.Toast.fail('产品获取失败')
-                                console.log(response.data.msg)
-                            }
+                            sessionStorage.setItem("userNo", response.data.detail.result.usrNo); //本地存储用户编号
+                            sessionStorage.setItem("usrNo", response.data.detail.result.usrNo); //本地存储用户编号
+                            var usrNo = response.data.detail.result.usrNo;
+                            axios({
+                                    method: 'get',
+                                    url: "https://dev.zxtouch.msxiaodai.com/auth/status",
+                                    params: {
+                                        userNo: usrNo
+                                    },
+                                })
+                                .then(
+                                    response => {
+                                        if (response.data.code == 0) {
+                                            this.loadshow = false;
+                                            if (response.data.detail.mobile == '04' || response.data.detail
+                                                .mobile == '02') {
+                                                vant.Dialog.alert({
+                                                    title: '提示',
+                                                    message: '您之前已经认证成功了同一个信息类别的同一个产品，请重新登录选择其他信息类别产品.'
+                                                }).then(() => {
+                                                    // window.location.href = './index.html'
+                                                })
+                                            } else {
+                                                this.loadshow = false;
+
+                                                vant.Dialog.alert({
+                                                    title: '提示',
+                                                    message: '提交成功,进入基本信息填写页面.'
+                                                }).then(() => {
+                                                    window.location.href = './basicPage.html';
+                                                });
+                                            }
+                                        }
+                                    }
+                                )
                         }
                     ).catch(function (error) {
-                        vant.Toast.fail(error)
+                        this.loadshow = false;
                         console.log(error);
                         console.log(error);
                         if (error && error.response) {
@@ -242,7 +181,73 @@
                                     break;
                             }
                         }
-                    });
+                    })
+                } else {
+                    this.loadshow = false;
+                    vant.Toast.fail('信息类别和金融产品不能为空.')
+                }
+            },
+
+            //获取产品
+            getproduct() {
+                axios({
+                    method: "get",
+                    params: {
+                        ICid: this.formData.ICid
+                    },
+                    url: "https://dev.zxtouch.msxiaodai.com/get/financialProducts"
+                }).then(
+                    response => {
+                        if (response.data.code == 0) {
+                            this.columnsTwo = response.data.detail
+                        } else {
+                            vant.Toast.fail('产品获取失败')
+                            console.log(response.data.msg)
+                        }
+                    }
+                ).catch(function (error) {
+                    vant.Toast.fail(error)
+                    console.log(error);
+                    console.log(error);
+                    if (error && error.response) {
+                        switch (error.response.status) {
+                            case 400:
+                                error.message = '错误请求'
+                                vant.Toast.fail(error.message)
+                                break;
+
+                            case 401:
+                                error.message = '未授权，请重新登录'
+                                vant.Toast.fail(error.message)
+                                break;
+
+                            case 403:
+                                error.message = '拒绝访问'
+                                vant.Toast.fail(error.message)
+                                break;
+
+                            case 404:
+                                error.message = '请求错误，未找到该资源'
+                                vant.Toast.fail(error.message)
+                                break;
+
+                            case 405:
+                                error.message = '请求方法未允许'
+                                vant.Toast.fail(error.message)
+                                break;
+
+                            case 408:
+                                error.message = '请求超时'
+                                vant.Toast.fail(error.message)
+                                break;
+
+                            case 502:
+                                error.message = '服务器错误'
+                                vant.Toast.fail(error.message)
+                                break;
+                        }
+                    }
+                });
             },
 
             // 信息类别--------------------

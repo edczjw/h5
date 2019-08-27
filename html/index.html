@@ -36,12 +36,13 @@
                 <div class="form-o">
                     <van-cell-group>
                         <van-field v-model="form.account" required type="number" right-icon="question-o"
-                            @click-right-icon="$toast('账号必须是手机号')" focus=true placeholder="请输入手机号码" @blur='checkaccount()' :error-message="account">
+                            @click-right-icon="$toast('账号必须是手机号')" focus=true placeholder="请输入手机号码"
+                            @blur='checkaccount()' :error-message="account">
                     </van-cell-group>
 
                     <van-cell-group>
-                        <van-field v-model="form.verification" required type="number" center clearable placeholder="请输入短信验证码"
-                            use-button-slot>
+                        <van-field v-model="form.verification" required type="number" center clearable
+                            placeholder="请输入短信验证码" use-button-slot>
                             <van-button slot="button" size="small" round type="info" @click="sendck()">
                                 <span v-show="show">发送验证码</span>
                                 <span v-show="!show" class="count">{{count}} s</span>
@@ -182,7 +183,7 @@
 
                         axios({
                                 method: 'post',
-                                url: "https://zxtouch.msxiaodai.com/app/user/getSmsVerification",
+                                url: "https://dev.zxtouch.msxiaodai.com/app/user/getSmsVerification",
                                 data: {
                                     account: this.form.account
                                 }
@@ -224,7 +225,7 @@
                         axios({
                             method: "post",
                             data: form,
-                            url: "https://zxtouch.msxiaodai.com/app/user/login"
+                            url: "https://dev.zxtouch.msxiaodai.com/app/user/login"
                         }).then(
                             response => {
                                 if (response.data.code == 0) {
