@@ -100,7 +100,7 @@
                     axios({
                         method: "post",
                         data: this.formData,
-                        url: "https://dev.zxtouch.msxiaodai.com/data/submission"
+                        url: "https://test.zxtouch.msxiaodai.com/data/submission"
                     }).then(
                         response => {
                             sessionStorage.setItem("userNo", response.data.detail.result.usrNo); //本地存储用户编号
@@ -108,7 +108,7 @@
                             var usrNo = response.data.detail.result.usrNo;
                             axios({
                                     method: 'get',
-                                    url: "https://dev.zxtouch.msxiaodai.com/auth/status",
+                                    url: "https://test.zxtouch.msxiaodai.com/auth/status",
                                     params: {
                                         userNo: usrNo
                                     },
@@ -195,7 +195,7 @@
                     params: {
                         ICid: this.formData.ICid
                     },
-                    url: "https://dev.zxtouch.msxiaodai.com/get/financialProducts"
+                    url: "https://test.zxtouch.msxiaodai.com/get/financialProducts"
                 }).then(
                     response => {
                         if (response.data.code == 0) {

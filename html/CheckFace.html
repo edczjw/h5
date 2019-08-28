@@ -132,12 +132,15 @@
         },
         methods: {
             getoldmsg() {
+                var idCardOld = sessionStorage.getItem('idcardNumber');
+                console.log(idCardOld)
+                if(idCardOld != null ){
                 this.loadshow = true;
                 this.form.usrNo = sessionStorage.getItem('usrNo');
                 if (this.form.usrNo != null) {
                     axios({
                             method: 'get',
-                            url: "https://dev.zxtouch.msxiaodai.com/auth/status",
+                            url: "https://test.zxtouch.msxiaodai.com/auth/status",
                             params: {
                                 userNo: this.form.usrNo
                             },
@@ -146,6 +149,11 @@
                             response => {
                                 if (response.data.code == 0) {
                                     this.loadshow = false;
+
+                                    if(response.data.detail.idCardOld != '' || response.data.detail.idCardOld != null){
+                                    var idCardOld = sessionStorage.getItem('idcardNumber');
+
+                                    if(response.data.detail.idCardOld != idCardOld){
                                     if (response.data.detail.livingBody == '04' || response.data.detail
                                         .livingBody == '02') {
                                         vant.Dialog.alert({
@@ -158,10 +166,11 @@
                                             //提交接口
                                             axios({
                                                     method: 'post',
-                                                    url: "https://dev.zxtouch.msxiaodai.com/app/bioAssay", 
+                                                    url: "https://test.zxtouch.msxiaodai.com/app/bioAssay", 
                                                     data: {
                                                         usrNo: usrNo,
-                                                        currentPage: 1
+                                                        currentPage: 1,
+                                                        idCardOld:idCardOld
                                                     }
                                                 })
                                                 .then(
@@ -222,6 +231,17 @@
                                     } else {
 
                                     }
+                                } else{
+                                    vant.Dialog.alert({
+                                        title: '提示',
+                                        message: '您已经通过活体检测识别，请进入工作信息页面.'
+                                    }).then(() => {
+                                        window.location.href = './WorkMsg.html'
+                                    });
+                                    }
+                                    }else{
+
+                                    }
                                 } else {
                                     this.loadshow = false;
                                     // vant.Toast.fail(response.data.msg)
@@ -279,6 +299,13 @@
                     }).then(() => {
                         window.location.href = './index.html'
                     });
+                }}else{
+                    vant.Dialog.alert({
+                            title: '提示',
+                            message: '请您完成填写基本信息页面.'
+                        }).then(() => {
+                            window.location.href = './basicPage.html'
+                        });
                 }
             },
             //上传视频
@@ -319,7 +346,7 @@
                             'Content-Type': 'multipart/form-data'
                         },
                         method: "post",
-                        url: "https://dev.zxtouch.msxiaodai.com/app/getOssProperties"
+                        url: "https://test.zxtouch.msxiaodai.com/app/getOssProperties"
                     }).then(
                         response => {
                             // console.log('response', response)
@@ -376,7 +403,7 @@
                                         //图片上传成功后调用身份识别接口
                                         axios({
                                                 method: 'post',
-                                                url: "https://dev.zxtouch.msxiaodai.com/video/auth",
+                                                url: "https://test.zxtouch.msxiaodai.com/video/auth",
                                                 data: _that.form
                                             })
                                             .then(
@@ -399,10 +426,10 @@
                                                             //提交接口
                                                             axios({
                                                                     method: 'post',
-                                                                    url: "https://dev.zxtouch.msxiaodai.com/app/bioAssay",
+                                                                    url: "https://test.zxtouch.msxiaodai.com/app/bioAssay",
                                                                     data: {
                                                                         usrNo: usrNo,
-                                                                        currentPage: 1
+                                                                        currentPage: 1,
                                                                     }
                                                                 })
                                                                 .then(
@@ -515,8 +542,7 @@
                                                         $(".modal-layer").hide();
                                                         _that.loadingshow = false;
                                                         window.clearTimeout(tmid);
-                                                        vant.Toast('失败.' + response.data.msg +
-                                                            '.请重新进行视频录制.');
+                                                        vant.Toast('识别失败,请重新进行视频录制.');
                                                     }
                                                 },
                                                 response => {
@@ -524,8 +550,7 @@
                                                     $(".modal-layer").hide();
                                                     _that.loadingshow = false;
                                                     console.log(response);
-                                                    vant.Toast('异常.' + response.data.msg +
-                                                        '.请重新进行视频录制.');
+                                                    vant.Toast('出现异常,请重新进行视频录制.');
                                                 }
                                             ).catch(function (error) {
                                                 vant.Toast.fail(error)
@@ -692,7 +717,7 @@
         var usrNo = sessionStorage.getItem('usrNo');
         axios({
                 method: 'post',
-                url: "https://dev.zxtouch.msxiaodai.com/rong360/getRandomNum",
+                url: "https://test.zxtouch.msxiaodai.com/rong360/getRandomNum",
                 data: {
                     usrNo: usrNo
                 }
