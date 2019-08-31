@@ -100,7 +100,7 @@
             </van-popup>
 
             <van-cell-group>
-                <van-field v-model='form.workingYears' label="工作年限" right-icon="question-o" placeholder="请填写真实的工作年限"
+                <van-field v-model='form.workingYears' label="工作年限" type="number" right-icon="question-o" placeholder="请填写真实的工作年限"
                     @click-right-icon="$toast('请填写真实年限')" />
             </van-cell-group>
 
@@ -149,7 +149,7 @@
             showsoctype: false, //社会身份弹出层
             showPickermon: false, //收入区间弹出层
 
-            columns1: ['机关事', '个体', '国有股份', '合资', '其他', '私营'], //单位性质
+            columns1: ['机关事业', '个体', '国有股份', '合资', '其他', '私营'], //单位性质
             columns2: [
                 '农、林、牧、渔业',
                 '采矿业',
@@ -177,7 +177,7 @@
             columns4: ['≤3K', '3K-5K', '5K-8K', '8K-10K', '10K-15K', '15K-20K', '≥20K'], //收入区间
         },
         mounted() {
-            this.getoldmsg(); //获取上一次登录的信息数据预览
+            // this.getoldmsg(); //获取上一次登录的信息数据预览
         },
         methods: {
 
@@ -188,7 +188,7 @@
                     console.log(this.form.usrNo)
                     axios({
                             method: 'post',
-                            url: "https://zxtouch.msxiaodai.com/app/userInfo",
+                            url: "https://dev.zxtouch.msxiaodai.com/app/userInfo",
                             data: this.form
                         })
                         .then(
@@ -295,7 +295,7 @@
                 this.loadshow = true;
                 axios({
                         method: 'post',
-                        url: "https://zxtouch.msxiaodai.com/app/workInfo",
+                        url: "https://dev.zxtouch.msxiaodai.com/app/workInfo",
                         data: this.form
                     })
                     .then(

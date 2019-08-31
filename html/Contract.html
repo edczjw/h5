@@ -195,7 +195,7 @@
                 if(this.form.usrNo != null){
                 axios({
                         method: 'post',
-                        url: "https://zxtouch.msxiaodai.com/app/userInfo",
+                        url: "https://dev.zxtouch.msxiaodai.com/app/userInfo",
                         data: this.form
                     })
                     .then(
@@ -297,14 +297,11 @@
                     console.log(e.target.value)
                 },
                 next(){
-                    if(this.checkaccount1() &&
-                    this.checkaccount2()){
-                        
                     this.form.usrNo = sessionStorage.getItem('usrNo');
                     this.loadshow = true;
                     axios({
                         method: 'post',
-                        url: "https://zxtouch.msxiaodai.com/app/contactsInfo",
+                        url: "https://dev.zxtouch.msxiaodai.com/app/contactsInfo",
                         data: this.form
                     })
                     .then(
@@ -369,9 +366,6 @@
                                 }
                             }
                             })
-                    }else{
-                        vant.Toast.fail('请仔细检查所填信息是否正确!')
-                    }
                 },
 
                 // 直系联系人---------------------|
