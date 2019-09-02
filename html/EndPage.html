@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>认证结果</title>
+    <meta name="description" content="">
+    <meta name="viewport"
+        content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0,user-scalable=no,shrink-to-fit=no">
+    <link rel="stylesheet" href="../css/EndPage.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.0/lib/index.css">
+    <link rel="icon" type="image/x-icon" href="../image/form.png">
+
+    <!-- 引入组件,注意引入顺序 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vant@2.0/lib/vant.min.js"></script>
+    <!-- <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script> -->
+    <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
+</head>
+
+<body>
+    <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+    <div id="app">
+        <div style="padding: .7rem;">
+        <div style="margin-top:20%;text-align: center;padding: .4rem;">
+            <img src="../image/yes.png" width="90" alt="">
+        </div>
+        <p style="width: 100%;text-align: center;font-weight: bolder;font-size: 1.18rem;">
+                你已成功提交该产品的信息资料!
+        </p>
+        <p style="width: 100%;text-align: justify;font-size: .98rem;">
+                我们会尽快完成审核,并将审核结果以短信的方式通知您。
+        </p>
+
+        <p style="margin-top:2rem;width: 100%;text-align: center;font-size: 18px;color: rgb(95, 145, 240);" @click="refesh">
+                刷新页面
+        </p>
+
+        <div style="margin-top: 220px;text-align: center;">
+            <a href="../html/FirstPage.html">
+                <van-button icon="star-o" size="small" type="primary">返回首页</van-button>
+            </a>
+        </div>
+        </div>
+
+
+    </div>
+</body>
+
+<!-- es6写法 type="module"-->
+<script type="module">
+    var app = new Vue({
+            el: "#app",
+            data: {
+               
+            },
+            mounted() {
+            //安全退出后，阻止浏览器返回原有页面
+                history.pushState(null, null, document.URL); 
+                window.addEventListener('popstate', function() { 
+                history.pushState(null, null, document.URL); 
+                });
+            },
+            methods: {
+                refesh(){
+                    location.reload();
+                }
+            }
+        });
+    </script>
+
+</html>

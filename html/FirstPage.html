@@ -119,12 +119,7 @@
                                             this.loadshow = false;
                                             if (response.data.detail.mobile == '04' || response.data.detail
                                                 .mobile == '02') {
-                                                vant.Dialog.alert({
-                                                    title: '提示',
-                                                    message: '您之前已经认证成功了同一个信息类别的同一个产品，请重新登录选择其他信息类别产品.'
-                                                }).then(() => {
-                                                    // window.location.href = './index.html'
-                                                })
+                                                    window.location.href = './EndPage.html'
                                             } else {
                                                 this.loadshow = false;
 

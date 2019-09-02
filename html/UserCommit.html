@@ -431,9 +431,9 @@
                                     if (response.data.code == 0) {
                                         vant.Dialog.alert({
                                             title: '提示',
-                                            message: response.data.msg + ',请返回登录页.'
+                                            message: response.data.msg + '.'
                                         }).then(() => {
-                                            window.location.href = './index.html';
+                                            window.location.href = './EndPage.html'
                                         });
 
                                     } else {
