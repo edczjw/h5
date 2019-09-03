@@ -151,15 +151,14 @@
             checkaccount1(){
                 // 手机号正则
                 var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;
-
-                // 手机格式
-                if(this.form.directContactsPhone == ''){
-                    this.account1 = '不能为空'
-                    return false
-                }
-                else if (!myreg.test(this.form.directContactsPhone)) {
+                if(this.form.directContactsPhone != '' || this.form.directContactsPhone != null){
+                    if (!myreg.test(this.form.directContactsPhone)) {
                     this.account1 = this.inputerror.phonegeshi;
                     return false
+                }else{
+                    this.account1 = "";
+                    return true
+                }
                 }
                 // 取消报错
                 else{
@@ -172,15 +171,14 @@
             checkaccount2(){
                 // 手机号正则
                 var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;
-
-                // 手机格式
-                if(this.form.otherContactsPhone == ''){
-                    this.account2 = '不能为空'
-                    return false
-                }
-                else if (!myreg.test(this.form.otherContactsPhone)) {
+                if(this.form.otherContactsPhone != '' || this.form.otherContactsPhone != null){
+                    if (!myreg.test(this.form.otherContactsPhone)) {
                     this.account2 = this.inputerror.phonegeshi;
                     return false
+                }else{
+                    this.account2 = "";
+                    return true
+                }
                 }
                 // 取消报错
                 else{
@@ -195,7 +193,7 @@
                 if(this.form.usrNo != null){
                 axios({
                         method: 'post',
-                        url: "https://test.zxtouch.msxiaodai.com/app/userInfo",
+                        url: "https://dev.zxtouch.msxiaodai.com/app/userInfo",
                         data: this.form
                     })
                     .then(
@@ -297,11 +295,12 @@
                     console.log(e.target.value)
                 },
                 next(){
+                        
                     this.form.usrNo = sessionStorage.getItem('usrNo');
                     this.loadshow = true;
                     axios({
                         method: 'post',
-                        url: "https://test.zxtouch.msxiaodai.com/app/contactsInfo",
+                        url: "https://dev.zxtouch.msxiaodai.com/app/contactsInfo",
                         data: this.form
                     })
                     .then(
