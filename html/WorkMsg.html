@@ -177,7 +177,7 @@
             columns4: ['≤3K', '3K-5K', '5K-8K', '8K-10K', '10K-15K', '15K-20K', '≥20K'], //收入区间
         },
         mounted() {
-            // this.getoldmsg(); //获取上一次登录的信息数据预览
+            this.getoldmsg(); //获取上一次登录的信息数据预览
         },
         methods: {
 
@@ -188,7 +188,7 @@
                     console.log(this.form.usrNo)
                     axios({
                             method: 'post',
-                            url: "https://dev.zxtouch.msxiaodai.com/app/userInfo",
+                            url: "https://test.zxtouch.msxiaodai.com/app/userInfo",
                             data: this.form
                         })
                         .then(
@@ -295,7 +295,7 @@
                 this.loadshow = true;
                 axios({
                         method: 'post',
-                        url: "https://dev.zxtouch.msxiaodai.com/app/workInfo",
+                        url: "https://test.zxtouch.msxiaodai.com/app/workInfo",
                         data: this.form
                     })
                     .then(
@@ -312,7 +312,8 @@
 
                             } else {
                                 this.loadshow = false;
-                                vant.Toast(response.data.msg);
+                                console.log(response.data.msg)
+                                vant.Toast('提交工作信息报错,请确认是否完成基本信息填写及活体检测.');
                             }
                         }
                     ).catch(function (error) {

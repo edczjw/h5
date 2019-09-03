@@ -335,7 +335,7 @@
                 if (this.form.usrNo != null) {
                         axios({
                                 method: 'post',
-                                url: "https://dev.zxtouch.msxiaodai.com/app/userInfo",
+                                url: "https://test.zxtouch.msxiaodai.com/app/userInfo",
                                 data: this.form
                             })
                             .then(
@@ -501,7 +501,7 @@
                     //图片上传成功后调用身份识别接口
                     axios({
                             method: 'post',
-                            url: "https://dev.zxtouch.msxiaodai.com/rong360/idCarddIscern",
+                            url: "https://test.zxtouch.msxiaodai.com/rong360/idCarddIscern",
                             data: {
                                 imageUrl: imageUrl,
                                 usrNo: usrNo,
@@ -620,7 +620,7 @@
                             'Content-Type': 'multipart/form-data'
                         },
                         method: "post",
-                        url: "https://dev.zxtouch.msxiaodai.com/app/getOssProperties"
+                        url: "https://test.zxtouch.msxiaodai.com/app/getOssProperties"
                     }).then(
                         response => {
                             // console.log('response', response)
@@ -779,7 +779,7 @@
                     //图片上传成功后调用身份识别接口
                     axios({
                             method: 'post',
-                            url: "https://dev.zxtouch.msxiaodai.com/rong360/idCarddIscern",
+                            url: "https://test.zxtouch.msxiaodai.com/rong360/idCarddIscern",
                             data: {
                                 imageUrl: imageUrl,
                                 usrNo: usrNo,
@@ -872,7 +872,7 @@
                             'Content-Type': 'multipart/form-data'
                         },
                         method: "post",
-                        url: "https://dev.zxtouch.msxiaodai.com/app/getOssProperties"
+                        url: "https://test.zxtouch.msxiaodai.com/app/getOssProperties"
                     }).then(
                         response => {
                             // console.log('response', response)
@@ -1087,7 +1087,7 @@
                 if (this.form.usrNo != null) {
                     axios({
                             method: 'get',
-                            url: "https://dev.zxtouch.msxiaodai.com/auth/status",
+                            url: "https://test.zxtouch.msxiaodai.com/auth/status",
                             params: {
                                 userNo: this.form.usrNo
                             },
@@ -1106,7 +1106,7 @@
                         this.loadshow = true;
                         axios({
                                 method: 'post',
-                                url: "https://dev.zxtouch.msxiaodai.com/basicInformation/commit",
+                                url: "https://test.zxtouch.msxiaodai.com/basicInformation/commit",
                                 data: this.formData
                             })
                             .then(

@@ -195,7 +195,7 @@
                 if(this.form.usrNo != null){
                 axios({
                         method: 'post',
-                        url: "https://dev.zxtouch.msxiaodai.com/app/userInfo",
+                        url: "https://test.zxtouch.msxiaodai.com/app/userInfo",
                         data: this.form
                     })
                     .then(
@@ -301,7 +301,7 @@
                     this.loadshow = true;
                     axios({
                         method: 'post',
-                        url: "https://dev.zxtouch.msxiaodai.com/app/contactsInfo",
+                        url: "https://test.zxtouch.msxiaodai.com/app/contactsInfo",
                         data: this.form
                     })
                     .then(
@@ -318,7 +318,8 @@
 
                             }else{
                                 this.loadshow = false
-                                vant.Toast(response.data.msg);
+                                console.log(response.data.msg)
+                                vant.Toast('提交联系人信息报错,请确认是否填完前几个信息内容.');
                             }
                         },
                         response => {
