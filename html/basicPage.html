@@ -335,7 +335,7 @@
                 if (this.form.usrNo != null) {
                         axios({
                                 method: 'post',
-                                url: "https://dev.zxtouch.msxiaodai.com/app/userInfo",
+                                url: "https://test.zxtouch.msxiaodai.com/app/userInfo",
                                 data: this.form
                             })
                             .then(
@@ -436,8 +436,8 @@
             if (this.form.usrNo != null) {
                 let files = e.target.files || e.dataTransfer.files
                 if (!files.length) return
-                this.filefrontlength = files.length;
                 this.imgPreview(files[0])
+                this.filefrontlength = files.length;
                 } else {
                     vant.Dialog.alert({
                         title: '提示',
@@ -501,7 +501,7 @@
                     //图片上传成功后调用身份识别接口
                     axios({
                             method: 'post',
-                            url: "https://dev.zxtouch.msxiaodai.com/rong360/idCarddIscern",
+                            url: "https://test.zxtouch.msxiaodai.com/rong360/idCarddIscern",
                             data: {
                                 imageUrl: imageUrl,
                                 usrNo: usrNo,
@@ -563,6 +563,7 @@
                                     //取消显示加载
                                     this.loadshow = false
                                     vant.Toast('身份证正面识别失败,请重新拍摄或提供清晰照片.');
+                                        this.filefrontlength = 0;
                                     // this.upl(fileName,file);
                                 }
                             },
@@ -620,7 +621,7 @@
                             'Content-Type': 'multipart/form-data'
                         },
                         method: "post",
-                        url: "https://dev.zxtouch.msxiaodai.com/app/getOssProperties"
+                        url: "https://test.zxtouch.msxiaodai.com/app/getOssProperties"
                     }).then(
                         response => {
                             // console.log('response', response)
@@ -779,7 +780,7 @@
                     //图片上传成功后调用身份识别接口
                     axios({
                             method: 'post',
-                            url: "https://dev.zxtouch.msxiaodai.com/rong360/idCarddIscern",
+                            url: "https://test.zxtouch.msxiaodai.com/rong360/idCarddIscern",
                             data: {
                                 imageUrl: imageUrl,
                                 usrNo: usrNo,
@@ -815,6 +816,7 @@
                                     //取消显示加载
                                     this.loadshow = false
                                     vant.Toast('身份证反面识别失败,请重新拍摄或提供清晰照片.');
+                                        this.filebacklength = 0;
                                     // this.upl1(fileName,file);
                                 }
                             },
@@ -872,7 +874,7 @@
                             'Content-Type': 'multipart/form-data'
                         },
                         method: "post",
-                        url: "https://dev.zxtouch.msxiaodai.com/app/getOssProperties"
+                        url: "https://test.zxtouch.msxiaodai.com/app/getOssProperties"
                     }).then(
                         response => {
                             // console.log('response', response)
@@ -1087,7 +1089,7 @@
                 if (this.form.usrNo != null) {
                     axios({
                             method: 'get',
-                            url: "https://dev.zxtouch.msxiaodai.com/auth/status",
+                            url: "https://test.zxtouch.msxiaodai.com/auth/status",
                             params: {
                                 userNo: this.form.usrNo
                             },
@@ -1104,28 +1106,24 @@
                         this.formData.idCard != '' &&
                         this.formData.phoneNumber != '') {
                         this.loadshow = true;
+                        
+                        vant.Dialog.confirm({
+                                            title: '提示',
+                                            message: '是否提交所填基本信息？确认则进入活体检测.'
+                                        }).then(() => {
                         axios({
                                 method: 'post',
-                                url: "https://dev.zxtouch.msxiaodai.com/basicInformation/commit",
+                                url: "https://test.zxtouch.msxiaodai.com/basicInformation/commit",
                                 data: this.formData
                             })
                             .then(
                                 response => {
                                     if (response.data.code == 0) {
                                         this.loadshow = false;
+                                        sessionStorage.setItem("idcardName", this.formData.name);
+                                        sessionStorage.setItem("idcardNumber", this.formData.idCard);
 
-                                        vant.Dialog.confirm({
-                                            title: '提示',
-                                            message: '请确认基本信息是否填写正确,点击确认进入活体检测页面，点击取消留在基本信息页面.'
-                                        }).then(() => {
-
-                                            sessionStorage.setItem("idcardName", this.formData.name);
-                                            sessionStorage.setItem("idcardNumber", this.formData.idCard);
-
-                                            window.location.href = './CheckFace.html'
-                                        }).catch(() => {
-                                                // on cancel
-                                                });;
+                                        window.location.href = './CheckFace.html'
 
                                     } else {
                                         this.loadshow = false;
@@ -1176,6 +1174,9 @@
                                     }
                                 }
                             })
+                                }).catch(() => {
+                                // on cancel
+                                });
                     } else {
                         vant.Dialog.alert({
                             title: '提示',

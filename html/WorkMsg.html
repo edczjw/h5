@@ -188,7 +188,7 @@
                     console.log(this.form.usrNo)
                     axios({
                             method: 'post',
-                            url: "https://dev.zxtouch.msxiaodai.com/app/userInfo",
+                            url: "https://test.zxtouch.msxiaodai.com/app/userInfo",
                             data: this.form
                         })
                         .then(
@@ -295,8 +295,20 @@
                 this.loadshow = true;
                 axios({
                         method: 'post',
-                        url: "https://dev.zxtouch.msxiaodai.com/app/workInfo",
-                        data: this.form
+                        url: "https://test.zxtouch.msxiaodai.com/app/workInfo",
+                        data: {
+                            account:  this.form.account,
+                            companyName:  this.form.companyName,
+                            natureUnit:  this.form.natureUnit,
+                            unitAddress:  this.form.unitAddress,
+                            incomeRange:  this.form.incomeRange,
+                            workType:  this.form.workType,
+                            workPhone:  this.form.workPhone,
+                            socialIdentity:  this.form.socialIdentity,
+                            workingYears:  this.form.workingYears,
+                            currentPage: this.form.currentPage,
+                            usrNo: this.form.usrNo,
+                        }
                     })
                     .then(
                         response => {
@@ -313,7 +325,7 @@
                             } else {
                                 this.loadshow = false;
                                 console.log(response.data.msg)
-                                vant.Toast('提交工作信息报错,请确认是否完成基本信息填写及活体检测.');
+                                vant.Toast.fail('提交工作信息报错.');
                             }
                         }
                     ).catch(function (error) {

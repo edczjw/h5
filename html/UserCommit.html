@@ -107,7 +107,7 @@
                 if (usrNo != null) {
                     axios({
                             method: 'post',
-                            url: "https://dev.zxtouch.msxiaodai.com/app/userInfo",
+                            url: "https://test.zxtouch.msxiaodai.com/app/userInfo",
                             data: {
                                 usrNo: usrNo
                             }
@@ -208,7 +208,7 @@
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded'
                         },
-                        url: "https://dev.zxtouch.msxiaodai.com/auth/status",
+                        url: "https://test.zxtouch.msxiaodai.com/auth/status",
                         params: {
                             userNo: usrNo
                         }
@@ -342,10 +342,22 @@
                 if (usrNo != null) {
                     axios({
                             method: 'get',
+                            url: "https://test.zxtouch.msxiaodai.com/auth/status",
+                            params: {
+                                userNo: usrNo
+                            },
+                        })
+                        .then(
+                            response => {
+                                if (response.data.code == 0) {
+                                    this.loadshow = false;
+                                    if (response.data.detail.livingBody == '04' || response.data.detail.livingBody == '02') {
+                    axios({
+                            method: 'get',
                             headers: {
                                 'Content-Type': 'application/x-www-form-urlencoded'
                             },
-                            url: "https://dev.zxtouch.msxiaodai.com/auth/phone",
+                            url: "https://test.zxtouch.msxiaodai.com/auth/phone",
                             params: {
                                 userNo: usrNo
                             }
@@ -407,6 +419,65 @@
                                 }
                             }
                         })
+                    }else {
+                        vant.Dialog.alert({
+                        title: '提示',
+                            message: '请完成活体检测.'
+                        }).then(() => {
+                            window.location.href = './CheckFace.html'
+                        });
+                                }
+                                } else{
+                                    this.loadshow = false;
+                                    vant.Toast.fail('查询失败.')
+                                    // console.log(response.data.msg)
+                                }
+                            },
+                            response => {
+                                console.log(response);
+                            }
+                        ).catch(function (error) {
+                            this.loadshow = false;
+                            console.log(error);
+                            if (error && error.response) {
+                                switch (error.response.status) {
+                                    case 400:
+                                        error.message = '错误请求'
+                                        vant.Toast.fail(error.message)
+                                        break;
+
+                                    case 401:
+                                        error.message = '未授权，请重新登录'
+                                        vant.Toast.fail(error.message)
+                                        break;
+
+                                    case 403:
+                                        error.message = '拒绝访问'
+                                        vant.Toast.fail(error.message)
+                                        break;
+
+                                    case 404:
+                                        error.message = '请求错误，未找到该资源'
+                                        vant.Toast.fail(error.message)
+                                        break;
+
+                                    case 405:
+                                        error.message = '请求方法未允许'
+                                        vant.Toast.fail(error.message)
+                                        break;
+
+                                    case 408:
+                                        error.message = '请求超时'
+                                        vant.Toast.fail(error.message)
+                                        break;
+
+                                    case 502:
+                                        error.message = '服务器错误'
+                                        vant.Toast.fail(error.message)
+                                        break;
+                                }
+                            }
+                        })
                 } else {
                     window.location.href = './index.html'
                 }
@@ -415,13 +486,25 @@
             submit() {
                 var usrNo = sessionStorage.getItem("usrNo");
                 if (usrNo != null) {
+                    axios({
+                            method: 'get',
+                            url: "https://test.zxtouch.msxiaodai.com/auth/status",
+                            params: {
+                                userNo: usrNo
+                            },
+                        })
+                        .then(
+                            response => {
+                                if (response.data.code == 0) {
+                                    this.loadshow = false;
+                                    if (response.data.detail.livingBody == '04' || response.data.detail.livingBody == '02') {
                     if (this.mobile == '认证成功') {
                         axios({
                                 headers: {
                                     'Content-Type': 'application/x-www-form-urlencoded'
                                 },
                                 method: 'get',
-                                url: "https://dev.zxtouch.msxiaodai.com/auth/updateTotalState",
+                                url: "https://test.zxtouch.msxiaodai.com/auth/updateTotalState",
                                 params: {
                                     userNo: usrNo
                                 }
@@ -491,7 +574,65 @@
                         }).then(() => {
                             console.log('运营商认证未成功，不得提交')
                         });
-                    }
+                    }}else {
+                        vant.Dialog.alert({
+                        title: '提示',
+                            message: '请完成活体检测.'
+                        }).then(() => {
+                            window.location.href = './CheckFace.html'
+                        });
+                                }
+                                } else{
+                                    this.loadshow = false;
+                                    vant.Toast.fail('查询失败.')
+                                    // console.log(response.data.msg)
+                                }
+                            },
+                            response => {
+                                console.log(response);
+                            }
+                        ).catch(function (error) {
+                            this.loadshow = false;
+                            console.log(error);
+                            if (error && error.response) {
+                                switch (error.response.status) {
+                                    case 400:
+                                        error.message = '错误请求'
+                                        vant.Toast.fail(error.message)
+                                        break;
+
+                                    case 401:
+                                        error.message = '未授权，请重新登录'
+                                        vant.Toast.fail(error.message)
+                                        break;
+
+                                    case 403:
+                                        error.message = '拒绝访问'
+                                        vant.Toast.fail(error.message)
+                                        break;
+
+                                    case 404:
+                                        error.message = '请求错误，未找到该资源'
+                                        vant.Toast.fail(error.message)
+                                        break;
+
+                                    case 405:
+                                        error.message = '请求方法未允许'
+                                        vant.Toast.fail(error.message)
+                                        break;
+
+                                    case 408:
+                                        error.message = '请求超时'
+                                        vant.Toast.fail(error.message)
+                                        break;
+
+                                    case 502:
+                                        error.message = '服务器错误'
+                                        vant.Toast.fail(error.message)
+                                        break;
+                                }
+                            }
+                            })
                 } else {
                     window.location.href = './index.html'
                 }
