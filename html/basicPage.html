@@ -48,7 +48,7 @@
                     </a>
                     <img :src="formData.positive" alt="" v-if="filefrontlength>0" class="id-img">
                     <img v-else src="../image/idup.png" alt="" class="id-img">
-                    <van-field required :disabled="true" label="上传证件正面" />
+                    <van-field required :disabled="true" label="点击识别上传证件正面" />
                 </div>
                 <div class="idcardup">
                     <a href="javascript:;" class="a-upload">
@@ -56,7 +56,7 @@
                     </a>
                     <img :src="formData.back" alt="" v-if="filebacklength>0" class="id-img">
                     <img v-else src="../image/iddown.png" alt="" class="id-img">
-                    <van-field required :disabled="true" label="上传证件反面" />
+                    <van-field required :disabled="true" label="点击识别上传证件反面" />
                 </div>
             </div>
             <van-cell-group>
@@ -241,8 +241,10 @@
         created() {
             this.area = area;
         },
-        mounted() {
+        beforeMount() {
             this.getoldmsg(); //获取上一次登录的信息数据预览
+        },
+        mounted() {
         },
         methods: {
 
