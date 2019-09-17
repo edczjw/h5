@@ -45,8 +45,10 @@
                 </van-cell-group>
 
                 <van-cell-group>
-                    <van-cell :is-link="mobile==='未认证' || mobile === '认证失败'" required title="移动运营商" v-model="mobile"
-                        @click="yunyinshang" />
+                    <!-- <van-cell :is-link="mobile==='未认证' || mobile === '认证失败'" required title="移动运营商" v-model="mobile"
+                        @click="yunyinshang" /> -->
+                    
+                        <van-cell :is-link="mobile==='未认证' || mobile === '认证失败'" title="移动运营商" v-model="mobile"/>
                 </van-cell-group>
             </div>
             <div class="bottom-con">
@@ -107,7 +109,7 @@
                 if (usrNo != null) {
                     axios({
                             method: 'post',
-                            url: "https://test.zxtouch.msxiaodai.com/app/userInfo",
+                            url: "https://dev.zxtouch.msxiaodai.com/app/userInfo",
                             data: {
                                 usrNo: usrNo
                             }
@@ -208,7 +210,7 @@
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded'
                         },
-                        url: "https://test.zxtouch.msxiaodai.com/auth/status",
+                        url: "https://dev.zxtouch.msxiaodai.com/auth/status",
                         params: {
                             userNo: usrNo
                         }
@@ -342,7 +344,7 @@
                 if (usrNo != null) {
                     axios({
                             method: 'get',
-                            url: "https://test.zxtouch.msxiaodai.com/auth/status",
+                            url: "https://dev.zxtouch.msxiaodai.com/auth/status",
                             params: {
                                 userNo: usrNo
                             },
@@ -351,83 +353,84 @@
                             response => {
                                 if (response.data.code == 0) {
                                     this.loadshow = false;
-                                    if (response.data.detail.livingBody == '04' || response.data.detail.livingBody == '02') {
-                    axios({
-                            method: 'get',
-                            headers: {
-                                'Content-Type': 'application/x-www-form-urlencoded'
-                            },
-                            url: "https://test.zxtouch.msxiaodai.com/auth/phone",
-                            params: {
-                                userNo: usrNo
-                            }
-                        })
-                        .then(
-                            response => {
-                                if (response.data.code == 0) {
-                                    vant.Dialog.alert({
-                                        title: '提示',
-                                        message: '进入第三方认证页面.'
-                                    }).then(() => {
-                                        window.location.href = response.data.url
-                                    });
+                                    if (response.data.detail.livingBody == '04' || response.data.detail
+                                        .livingBody == '02') {
+                                        axios({
+                                                method: 'get',
+                                                headers: {
+                                                    'Content-Type': 'application/x-www-form-urlencoded'
+                                                },
+                                                url: "https://dev.zxtouch.msxiaodai.com/auth/phone",
+                                                params: {
+                                                    userNo: usrNo
+                                                }
+                                            })
+                                            .then(
+                                                response => {
+                                                    if (response.data.code == 0) {
+                                                        vant.Dialog.alert({
+                                                            title: '提示',
+                                                            message: '进入第三方认证页面.'
+                                                        }).then(() => {
+                                                            window.location.href = response.data.url
+                                                        });
+                                                    } else {
+                                                        vant.Toast.fail(response.data.msg)
+                                                    }
+                                                },
+                                                response => {
+                                                    console.log(response);
+                                                }
+                                            ).catch(function (error) {
+                                                console.log(error);
+                                                if (error && error.response) {
+                                                    switch (error.response.status) {
+                                                        case 400:
+                                                            error.message = '错误请求'
+                                                            vant.Toast.fail(error.message)
+                                                            break;
+
+                                                        case 401:
+                                                            error.message = '未授权，请重新登录'
+                                                            vant.Toast.fail(error.message)
+                                                            break;
+
+                                                        case 403:
+                                                            error.message = '拒绝访问'
+                                                            vant.Toast.fail(error.message)
+                                                            break;
+
+                                                        case 404:
+                                                            error.message = '请求错误，未找到该资源'
+                                                            vant.Toast.fail(error.message)
+                                                            break;
+
+                                                        case 405:
+                                                            error.message = '请求方法未允许'
+                                                            vant.Toast.fail(error.message)
+                                                            break;
+
+                                                        case 408:
+                                                            error.message = '请求超时'
+                                                            vant.Toast.fail(error.message)
+                                                            break;
+
+                                                        case 502:
+                                                            error.message = '服务器错误'
+                                                            vant.Toast.fail(error.message)
+                                                            break;
+                                                    }
+                                                }
+                                            })
+                                    } else {
+                                        vant.Dialog.alert({
+                                            title: '提示',
+                                            message: '请完成活体检测.'
+                                        }).then(() => {
+                                            window.location.href = './CheckFace.html'
+                                        });
+                                    }
                                 } else {
-                                    vant.Toast.fail(response.data.msg)
-                                }
-                            },
-                            response => {
-                                console.log(response);
-                            }
-                        ).catch(function (error) {
-                            console.log(error);
-                            if (error && error.response) {
-                                switch (error.response.status) {
-                                    case 400:
-                                        error.message = '错误请求'
-                                        vant.Toast.fail(error.message)
-                                        break;
-
-                                    case 401:
-                                        error.message = '未授权，请重新登录'
-                                        vant.Toast.fail(error.message)
-                                        break;
-
-                                    case 403:
-                                        error.message = '拒绝访问'
-                                        vant.Toast.fail(error.message)
-                                        break;
-
-                                    case 404:
-                                        error.message = '请求错误，未找到该资源'
-                                        vant.Toast.fail(error.message)
-                                        break;
-
-                                    case 405:
-                                        error.message = '请求方法未允许'
-                                        vant.Toast.fail(error.message)
-                                        break;
-
-                                    case 408:
-                                        error.message = '请求超时'
-                                        vant.Toast.fail(error.message)
-                                        break;
-
-                                    case 502:
-                                        error.message = '服务器错误'
-                                        vant.Toast.fail(error.message)
-                                        break;
-                                }
-                            }
-                        })
-                    }else {
-                        vant.Dialog.alert({
-                        title: '提示',
-                            message: '请完成活体检测.'
-                        }).then(() => {
-                            window.location.href = './CheckFace.html'
-                        });
-                                }
-                                } else{
                                     this.loadshow = false;
                                     vant.Toast.fail('查询失败.')
                                     // console.log(response.data.msg)
@@ -482,13 +485,14 @@
                     window.location.href = './index.html'
                 }
             },
+
             //提交
             submit() {
                 var usrNo = sessionStorage.getItem("usrNo");
                 if (usrNo != null) {
                     axios({
                             method: 'get',
-                            url: "https://test.zxtouch.msxiaodai.com/auth/status",
+                            url: "https://dev.zxtouch.msxiaodai.com/auth/status",
                             params: {
                                 userNo: usrNo
                             },
@@ -497,92 +501,94 @@
                             response => {
                                 if (response.data.code == 0) {
                                     this.loadshow = false;
-                                    if (response.data.detail.livingBody == '04' || response.data.detail.livingBody == '02') {
-                    if (this.mobile == '认证成功') {
-                        axios({
-                                headers: {
-                                    'Content-Type': 'application/x-www-form-urlencoded'
-                                },
-                                method: 'get',
-                                url: "https://test.zxtouch.msxiaodai.com/auth/updateTotalState",
-                                params: {
-                                    userNo: usrNo
-                                }
-                            })
-                            .then(
-                                response => {
-                                    if (response.data.code == 0) {
+                                    if (response.data.detail.livingBody == '04' || response.data.detail
+                                        .livingBody == '02') {
+                                        // if (this.mobile == '认证成功') {
+                                            axios({
+                                                    headers: {
+                                                        'Content-Type': 'application/x-www-form-urlencoded'
+                                                    },
+                                                    method: 'get',
+                                                    url: "https://dev.zxtouch.msxiaodai.com/auth/updateTotalState",
+                                                    params: {
+                                                        userNo: usrNo
+                                                    }
+                                                })
+                                                .then(
+                                                    response => {
+                                                        if (response.data.code == 0) {
+                                                            vant.Dialog.alert({
+                                                                title: '提示',
+                                                                message: response.data.msg + '.'
+                                                            }).then(() => {
+                                                                window.location.href = './EndPage.html'
+                                                            });
+
+                                                        } else {
+                                                            vant.Toast.fail(response.data.msg)
+                                                        }
+                                                    },
+                                                    response => {
+                                                        console.log(response);
+                                                    }
+                                                ).catch(function (error) {
+                                                    console.log(error);
+                                                    if (error && error.response) {
+                                                        switch (error.response.status) {
+                                                            case 400:
+                                                                error.message = '错误请求'
+                                                                vant.Toast.fail(error.message)
+                                                                break;
+
+                                                            case 401:
+                                                                error.message = '未授权，请重新登录'
+                                                                vant.Toast.fail(error.message)
+                                                                break;
+
+                                                            case 403:
+                                                                error.message = '拒绝访问'
+                                                                vant.Toast.fail(error.message)
+                                                                break;
+
+                                                            case 404:
+                                                                error.message = '请求错误，未找到该资源'
+                                                                vant.Toast.fail(error.message)
+                                                                break;
+
+                                                            case 405:
+                                                                error.message = '请求方法未允许'
+                                                                vant.Toast.fail(error.message)
+                                                                break;
+
+                                                            case 408:
+                                                                error.message = '请求超时'
+                                                                vant.Toast.fail(error.message)
+                                                                break;
+
+                                                            case 502:
+                                                                error.message = '服务器错误'
+                                                                vant.Toast.fail(error.message)
+                                                                break;
+                                                        }
+                                                    }
+                                                })
+                                        // } else {
+                                        //     vant.Dialog.alert({
+                                        //         title: '提示',
+                                        //         message: '运营商认证未成功，不得提交.'
+                                        //     }).then(() => {
+                                        //         // console.log('运营商认证未成功，不得提交')
+                                        //     });
+                                        // }
+                                    } else {
                                         vant.Dialog.alert({
                                             title: '提示',
-                                            message: response.data.msg + '.'
+                                            message: '请完成活体检测.'
                                         }).then(() => {
-                                            window.location.href = './EndPage.html'
+                                            window.location.href = './CheckFace.html'
                                         });
-
-                                    } else {
-                                        vant.Toast.fail(response.data.msg)
                                     }
-                                },
-                                response => {
-                                    console.log(response);
-                                }
-                            ).catch(function (error) {
-                                console.log(error);
-                                if (error && error.response) {
-                                    switch (error.response.status) {
-                                        case 400:
-                                            error.message = '错误请求'
-                                            vant.Toast.fail(error.message)
-                                            break;
-
-                                        case 401:
-                                            error.message = '未授权，请重新登录'
-                                            vant.Toast.fail(error.message)
-                                            break;
-
-                                        case 403:
-                                            error.message = '拒绝访问'
-                                            vant.Toast.fail(error.message)
-                                            break;
-
-                                        case 404:
-                                            error.message = '请求错误，未找到该资源'
-                                            vant.Toast.fail(error.message)
-                                            break;
-
-                                        case 405:
-                                            error.message = '请求方法未允许'
-                                            vant.Toast.fail(error.message)
-                                            break;
-
-                                        case 408:
-                                            error.message = '请求超时'
-                                            vant.Toast.fail(error.message)
-                                            break;
-
-                                        case 502:
-                                            error.message = '服务器错误'
-                                            vant.Toast.fail(error.message)
-                                            break;
-                                    }
-                                }
-                            })
-                    } else {
-                        vant.Dialog.alert({
-                            title: '提示',
-                            message: '运营商认证未成功，不得提交.'
-                        }).then(() => {
-                            console.log('运营商认证未成功，不得提交')
-                        });
-                    }}else {
-                        vant.Dialog.alert({
-                        title: '提示',
-                            message: '请完成活体检测.'
-                        }).then(() => {
-                            window.location.href = './CheckFace.html'
-                        });
-                                }
-                                } else{
+                                } else {
                                     this.loadshow = false;
                                     vant.Toast.fail('查询失败.')
                                     // console.log(response.data.msg)
@@ -632,7 +638,7 @@
                                         break;
                                 }
                             }
-                            })
+                        })
                 } else {
                     window.location.href = './index.html'
                 }
