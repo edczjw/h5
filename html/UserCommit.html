@@ -47,8 +47,8 @@
                 <van-cell-group>
                     <!-- <van-cell :is-link="mobile==='未认证' || mobile === '认证失败'" required title="移动运营商" v-model="mobile"
                         @click="yunyinshang" /> -->
-                    
-                        <van-cell :is-link="mobile==='未认证' || mobile === '认证失败'" title="移动运营商" v-model="mobile"/>
+
+                    <van-cell :is-link="mobile==='未认证' || mobile === '认证失败'" title="移动运营商" v-model="mobile" />
                 </van-cell-group>
             </div>
             <div class="bottom-con">
@@ -100,7 +100,7 @@
             loadshow: false
         },
         mounted() {
-            this.load()
+            // this.load()
         },
         methods: {
             getoldmsg() {
@@ -504,74 +504,74 @@
                                     if (response.data.detail.livingBody == '04' || response.data.detail
                                         .livingBody == '02') {
                                         // if (this.mobile == '认证成功') {
-                                            axios({
-                                                    headers: {
-                                                        'Content-Type': 'application/x-www-form-urlencoded'
-                                                    },
-                                                    method: 'get',
-                                                    url: "https://dev.zxtouch.msxiaodai.com/auth/updateTotalState",
-                                                    params: {
-                                                        userNo: usrNo
+                                        axios({
+                                                headers: {
+                                                    'Content-Type': 'application/x-www-form-urlencoded'
+                                                },
+                                                method: 'get',
+                                                url: "https://dev.zxtouch.msxiaodai.com/auth/updateTotalState",
+                                                params: {
+                                                    userNo: usrNo
+                                                }
+                                            })
+                                            .then(
+                                                response => {
+                                                    if (response.data.code == 0) {
+                                                        vant.Dialog.alert({
+                                                            title: '提示',
+                                                            message: response.data.msg + '.'
+                                                        }).then(() => {
+                                                            window.location.href = './EndPage.html'
+                                                        });
+
+                                                    } else {
+                                                        vant.Toast.fail(response.data.msg)
                                                     }
-                                                })
-                                                .then(
-                                                    response => {
-                                                        if (response.data.code == 0) {
-                                                            vant.Dialog.alert({
-                                                                title: '提示',
-                                                                message: response.data.msg + '.'
-                                                            }).then(() => {
-                                                                window.location.href = './EndPage.html'
-                                                            });
+                                                },
+                                                response => {
+                                                    console.log(response);
+                                                }
+                                            ).catch(function (error) {
+                                                console.log(error);
+                                                if (error && error.response) {
+                                                    switch (error.response.status) {
+                                                        case 400:
+                                                            error.message = '错误请求'
+                                                            vant.Toast.fail(error.message)
+                                                            break;
 
-                                                        } else {
-                                                            vant.Toast.fail(response.data.msg)
-                                                        }
-                                                    },
-                                                    response => {
-                                                        console.log(response);
+                                                        case 401:
+                                                            error.message = '未授权，请重新登录'
+                                                            vant.Toast.fail(error.message)
+                                                            break;
+
+                                                        case 403:
+                                                            error.message = '拒绝访问'
+                                                            vant.Toast.fail(error.message)
+                                                            break;
+
+                                                        case 404:
+                                                            error.message = '请求错误，未找到该资源'
+                                                            vant.Toast.fail(error.message)
+                                                            break;
+
+                                                        case 405:
+                                                            error.message = '请求方法未允许'
+                                                            vant.Toast.fail(error.message)
+                                                            break;
+
+                                                        case 408:
+                                                            error.message = '请求超时'
+                                                            vant.Toast.fail(error.message)
+                                                            break;
+
+                                                        case 502:
+                                                            error.message = '服务器错误'
+                                                            vant.Toast.fail(error.message)
+                                                            break;
                                                     }
-                                                ).catch(function (error) {
-                                                    console.log(error);
-                                                    if (error && error.response) {
-                                                        switch (error.response.status) {
-                                                            case 400:
-                                                                error.message = '错误请求'
-                                                                vant.Toast.fail(error.message)
-                                                                break;
-
-                                                            case 401:
-                                                                error.message = '未授权，请重新登录'
-                                                                vant.Toast.fail(error.message)
-                                                                break;
-
-                                                            case 403:
-                                                                error.message = '拒绝访问'
-                                                                vant.Toast.fail(error.message)
-                                                                break;
-
-                                                            case 404:
-                                                                error.message = '请求错误，未找到该资源'
-                                                                vant.Toast.fail(error.message)
-                                                                break;
-
-                                                            case 405:
-                                                                error.message = '请求方法未允许'
-                                                                vant.Toast.fail(error.message)
-                                                                break;
-
-                                                            case 408:
-                                                                error.message = '请求超时'
-                                                                vant.Toast.fail(error.message)
-                                                                break;
-
-                                                            case 502:
-                                                                error.message = '服务器错误'
-                                                                vant.Toast.fail(error.message)
-                                                                break;
-                                                        }
-                                                    }
-                                                })
+                                                }
+                                            })
                                         // } else {
                                         //     vant.Dialog.alert({
                                         //         title: '提示',

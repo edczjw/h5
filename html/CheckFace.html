@@ -36,12 +36,12 @@
 <body>
     <div id="app">
         <div class="top-step">
-            <van-steps :active="active">
+            <van-steps :active="active"  active-icon="youzan-shield">
                 <van-step><a href="../html/basicPage.html">基本信息</a></van-step>
                 <van-step><a href="../html/CheckFace.html">活体检测</a></van-step>
                 <van-step><a href="../html/WorkMsg.html">工作信息</a></van-step>
                 <van-step><a href="../html/Contract.html">联系人员</a></van-step>
-                <van-step><a href="../html/UserCommit.html">用户认证</a></van-step>
+                <!-- <van-step><a href="../html/UserCommit.html">用户认证</a></van-step> -->
             </van-steps>
         </div>
         <div class="container">
@@ -133,238 +133,252 @@
         methods: {
             getoldmsg() {
                 var idCardOld = sessionStorage.getItem('idcardNumber');
-                if(idCardOld != null ){
-                this.loadshow = true;
-                this.form.usrNo = sessionStorage.getItem('usrNo');
-                if (this.form.usrNo != null) {
-                    axios({
-                            method: 'get',
-                            url: "https://dev.zxtouch.msxiaodai.com/auth/status",
-                            params: {
-                                userNo: this.form.usrNo
-                            },
-                        })
-                        .then(
-                            response => {
-                                if (response.data.code == 0) {
-                                    this.loadshow = false;
+                if (idCardOld != null) {
+                    this.loadshow = true;
+                    this.form.usrNo = sessionStorage.getItem('usrNo');
+                    if (this.form.usrNo != null) {
+                        axios({
+                                method: 'get',
+                                url: "https://dev.zxtouch.msxiaodai.com/auth/status",
+                                params: {
+                                    userNo: this.form.usrNo
+                                },
+                            })
+                            .then(
+                                response => {
+                                    if (response.data.code == 0) {
+                                        this.loadshow = false;
 
-                                    if(response.data.detail.idCardOld != '' || response.data.detail.idCardOld != null){
-                                    var idCardOld = sessionStorage.getItem('idcardNumber');
-                                    // console.log('新的：'+idCardOld)
-                                    // console.log('旧的：'+response.data.detail.idCardOld )
+                                        if (response.data.detail.idCardOld != '' || response.data.detail
+                                            .idCardOld != null) {
+                                            var idCardOld = sessionStorage.getItem('idcardNumber');
+                                            // console.log('新的：'+idCardOld)
+                                            // console.log('旧的：'+response.data.detail.idCardOld )
 
-                                    if(response.data.detail.idCardOld == idCardOld){
-                                    if (response.data.detail.livingBody == '04' || response.data.detail
-                                        .livingBody == '02') {
-                                        vant.Dialog.alert({
-                                            title: '提示',
-                                            message: '您已成功通过一次活体检测认证,请进入工作信息填写页面.'
-                                        }).then(() => {
-                                            this.loadshow = true
+                                            if (response.data.detail.idCardOld == idCardOld) {
+                                                if (response.data.detail.livingBody == '04' || response.data
+                                                    .detail
+                                                    .livingBody == '02') {
+                                                    vant.Dialog.alert({
+                                                        title: '提示',
+                                                        message: '您已成功通过一次活体检测认证,请进入工作信息填写页面.'
+                                                    }).then(() => {
+                                                        this.loadshow = true
 
-                                            var usrNo = sessionStorage.getItem('usrNo');
-                                            //提交接口
-                                            axios({
-                                                    method: 'post',
-                                                    url: "https://dev.zxtouch.msxiaodai.com/app/bioAssay", 
-                                                    data: {
-                                                        usrNo: usrNo,
-                                                        currentPage: 1,
-                                                        idCardOld:idCardOld
-                                                    }
-                                                })
-                                                .then(
-                                                    response => {
-                                                        if (response.data.code == 0) {
-                                                            window.location.href = './WorkMsg.html'
-                                                        } else {
-                                                            vant.Toast(response.data.msg);
+                                                        var usrNo = sessionStorage.getItem('usrNo');
+                                                        //提交接口
+                                                        axios({
+                                                                method: 'post',
+                                                                url: "https://dev.zxtouch.msxiaodai.com/app/bioAssay",
+                                                                data: {
+                                                                    usrNo: usrNo,
+                                                                    currentPage: 1,
+                                                                    idCardOld: idCardOld
+                                                                }
+                                                            })
+                                                            .then(
+                                                                response => {
+                                                                    if (response.data.code == 0) {
+                                                                        window.location.href =
+                                                                            './WorkMsg.html'
+                                                                    } else {
+                                                                        vant.Toast(response.data.msg);
+                                                                    }
+                                                                },
+                                                                response => {
+                                                                    console.log(response);
+                                                                }
+                                                            ).catch(function (error) {
+                                                                console.log(error);
+                                                                if (error && error.response) {
+                                                                    switch (error.response.status) {
+                                                                        case 400:
+                                                                            error.message = '错误请求'
+                                                                            vant.Toast.fail(error
+                                                                                .message)
+                                                                            break;
+
+                                                                        case 401:
+                                                                            error.message =
+                                                                                '未授权，请重新登录'
+                                                                            vant.Toast.fail(error
+                                                                                .message)
+                                                                            break;
+
+                                                                        case 403:
+                                                                            error.message = '拒绝访问'
+                                                                            vant.Toast.fail(error
+                                                                                .message)
+                                                                            break;
+
+                                                                        case 404:
+                                                                            error.message =
+                                                                                '请求错误，未找到该资源'
+                                                                            vant.Toast.fail(error
+                                                                                .message)
+                                                                            break;
+
+                                                                        case 405:
+                                                                            error.message =
+                                                                                '请求方法未允许'
+                                                                            vant.Toast.fail(error
+                                                                                .message)
+                                                                            break;
+
+                                                                        case 408:
+                                                                            error.message = '请求超时'
+                                                                            vant.Toast.fail(error
+                                                                                .message)
+                                                                            break;
+
+                                                                        case 502:
+                                                                            error.message = '服务器错误'
+                                                                            vant.Toast.fail(error
+                                                                                .message)
+                                                                            break;
+                                                                    }
+                                                                }
+                                                            })
+                                                    }).catch(() => {
+                                                        // on cancel
+                                                    });
+                                                } else {
+
+                                                }
+                                            } else {
+
+                                                var usrNo = sessionStorage.getItem('usrNo');
+                                                //提交接口
+                                                axios({
+                                                        method: 'post',
+                                                        url: "https://dev.zxtouch.msxiaodai.com/app/bioAssay",
+                                                        data: {
+                                                            usrNo: usrNo,
+                                                            currentPage: 1,
+                                                            idCardOld: idCardOld
                                                         }
-                                                    },
-                                                    response => {
-                                                        console.log(response);
-                                                    }
-                                                ).catch(function (error) {
-                                                    console.log(error);
-                                                    if (error && error.response) {
-                                                        switch (error.response.status) {
-                                                            case 400:
-                                                                error.message = '错误请求'
-                                                                vant.Toast.fail(error.message)
-                                                                break;
+                                                    })
+                                                    .then(
+                                                        response => {
+                                                            if (response.data.code == 0) {
 
-                                                            case 401:
-                                                                error.message = '未授权，请重新登录'
-                                                                vant.Toast.fail(error.message)
-                                                                break;
-
-                                                            case 403:
-                                                                error.message = '拒绝访问'
-                                                                vant.Toast.fail(error.message)
-                                                                break;
-
-                                                            case 404:
-                                                                error.message = '请求错误，未找到该资源'
-                                                                vant.Toast.fail(error.message)
-                                                                break;
-
-                                                            case 405:
-                                                                error.message = '请求方法未允许'
-                                                                vant.Toast.fail(error.message)
-                                                                break;
-
-                                                            case 408:
-                                                                error.message = '请求超时'
-                                                                vant.Toast.fail(error.message)
-                                                                break;
-
-                                                            case 502:
-                                                                error.message = '服务器错误'
-                                                                vant.Toast.fail(error.message)
-                                                                break;
+                                                            } else {
+                                                                vant.Toast(response.data.msg);
+                                                            }
+                                                        },
+                                                        response => {
+                                                            console.log(response);
                                                         }
-                                                    }
-                                                })
-                                        }).catch(() => {
-                                            // on cancel
-                                        });
+                                                    ).catch(function (error) {
+                                                        console.log(error);
+                                                        if (error && error.response) {
+                                                            switch (error.response.status) {
+                                                                case 400:
+                                                                    error.message = '错误请求'
+                                                                    vant.Toast.fail(error.message)
+                                                                    break;
+
+                                                                case 401:
+                                                                    error.message = '未授权，请重新登录'
+                                                                    vant.Toast.fail(error.message)
+                                                                    break;
+
+                                                                case 403:
+                                                                    error.message = '拒绝访问'
+                                                                    vant.Toast.fail(error.message)
+                                                                    break;
+
+                                                                case 404:
+                                                                    error.message = '请求错误，未找到该资源'
+                                                                    vant.Toast.fail(error.message)
+                                                                    break;
+
+                                                                case 405:
+                                                                    error.message = '请求方法未允许'
+                                                                    vant.Toast.fail(error.message)
+                                                                    break;
+
+                                                                case 408:
+                                                                    error.message = '请求超时'
+                                                                    vant.Toast.fail(error.message)
+                                                                    break;
+
+                                                                case 502:
+                                                                    error.message = '服务器错误'
+                                                                    vant.Toast.fail(error.message)
+                                                                    break;
+                                                            }
+                                                        }
+                                                    })
+                                            }
+                                        } else {
+
+                                        }
                                     } else {
-
+                                        this.loadshow = false;
+                                        // vant.Toast.fail(response.data.msg)
                                     }
-                                } else{
-                                    
-                                    var usrNo = sessionStorage.getItem('usrNo');
-                                            //提交接口
-                                            axios({
-                                                    method: 'post',
-                                                    url: "https://dev.zxtouch.msxiaodai.com/app/bioAssay", 
-                                                    data: {
-                                                        usrNo: usrNo,
-                                                        currentPage: 1,
-                                                        idCardOld:idCardOld
-                                                    }
-                                                })
-                                                .then(
-                                                    response => {
-                                                        if (response.data.code == 0) {
-                                                            
-                                                        } else {
-                                                            vant.Toast(response.data.msg);
-                                                        }
-                                                    },
-                                                    response => {
-                                                        console.log(response);
-                                                    }
-                                                ).catch(function (error) {
-                                                    console.log(error);
-                                                    if (error && error.response) {
-                                                        switch (error.response.status) {
-                                                            case 400:
-                                                                error.message = '错误请求'
-                                                                vant.Toast.fail(error.message)
-                                                                break;
+                                },
+                                response => {
 
-                                                            case 401:
-                                                                error.message = '未授权，请重新登录'
-                                                                vant.Toast.fail(error.message)
-                                                                break;
-
-                                                            case 403:
-                                                                error.message = '拒绝访问'
-                                                                vant.Toast.fail(error.message)
-                                                                break;
-
-                                                            case 404:
-                                                                error.message = '请求错误，未找到该资源'
-                                                                vant.Toast.fail(error.message)
-                                                                break;
-
-                                                            case 405:
-                                                                error.message = '请求方法未允许'
-                                                                vant.Toast.fail(error.message)
-                                                                break;
-
-                                                            case 408:
-                                                                error.message = '请求超时'
-                                                                vant.Toast.fail(error.message)
-                                                                break;
-
-                                                            case 502:
-                                                                error.message = '服务器错误'
-                                                                vant.Toast.fail(error.message)
-                                                                break;
-                                                        }
-                                                    }
-                                                })
-                                    }
-                                    }else{
-
-                                    }
-                                } else {
-                                    this.loadshow = false;
-                                    // vant.Toast.fail(response.data.msg)
                                 }
-                            },
-                            response => {
+                            ).catch(function (error) {
+                                console.log(error);
+                                this.loadshow = false;
+                                if (error && error.response) {
+                                    switch (error.response.status) {
+                                        case 400:
+                                            error.message = '错误请求'
+                                            vant.Toast.fail(error.message)
+                                            break;
 
-                            }
-                        ).catch(function (error) {
-                            console.log(error);
-                            this.loadshow = false;
-                            if (error && error.response) {
-                                switch (error.response.status) {
-                                    case 400:
-                                        error.message = '错误请求'
-                                        vant.Toast.fail(error.message)
-                                        break;
+                                        case 401:
+                                            error.message = '未授权，请重新登录'
+                                            vant.Toast.fail(error.message)
+                                            break;
 
-                                    case 401:
-                                        error.message = '未授权，请重新登录'
-                                        vant.Toast.fail(error.message)
-                                        break;
+                                        case 403:
+                                            error.message = '拒绝访问'
+                                            vant.Toast.fail(error.message)
+                                            break;
 
-                                    case 403:
-                                        error.message = '拒绝访问'
-                                        vant.Toast.fail(error.message)
-                                        break;
+                                        case 404:
+                                            error.message = '请求错误，未找到该资源'
+                                            vant.Toast.fail(error.message)
+                                            break;
 
-                                    case 404:
-                                        error.message = '请求错误，未找到该资源'
-                                        vant.Toast.fail(error.message)
-                                        break;
+                                        case 405:
+                                            error.message = '请求方法未允许'
+                                            vant.Toast.fail(error.message)
+                                            break;
 
-                                    case 405:
-                                        error.message = '请求方法未允许'
-                                        vant.Toast.fail(error.message)
-                                        break;
+                                        case 408:
+                                            error.message = '请求超时'
+                                            vant.Toast.fail(error.message)
+                                            break;
 
-                                    case 408:
-                                        error.message = '请求超时'
-                                        vant.Toast.fail(error.message)
-                                        break;
-
-                                    case 502:
-                                        error.message = '服务器错误'
-                                        vant.Toast.fail(error.message)
-                                        break;
+                                        case 502:
+                                            error.message = '服务器错误'
+                                            vant.Toast.fail(error.message)
+                                            break;
+                                    }
                                 }
-                            }
-                        })
+                            })
+                    } else {
+                        vant.Dialog.alert({
+                            title: '提示',
+                            message: '请返回登录页面进行登录.'
+                        }).then(() => {
+                            window.location.href = './index.html'
+                        });
+                    }
                 } else {
                     vant.Dialog.alert({
                         title: '提示',
-                        message: '请返回登录页面进行登录.'
+                        message: '请您完成填写基本信息页面.'
                     }).then(() => {
-                        window.location.href = './index.html'
+                        window.location.href = './basicPage.html'
                     });
-                }}else{
-                    vant.Dialog.alert({
-                            title: '提示',
-                            message: '请您完成填写基本信息页面.'
-                        }).then(() => {
-                            window.location.href = './basicPage.html'
-                        });
                 }
             },
             //上传视频
@@ -512,7 +526,7 @@
                                                                         .response) {
                                                                         switch (error
                                                                             .response.status
-                                                                            ) {
+                                                                        ) {
                                                                             case 400:
                                                                                 error
                                                                                     .message =
@@ -521,7 +535,7 @@
                                                                                     .fail(
                                                                                         error
                                                                                         .message
-                                                                                        )
+                                                                                    )
                                                                                 break;
 
                                                                             case 401:
@@ -532,7 +546,7 @@
                                                                                     .fail(
                                                                                         error
                                                                                         .message
-                                                                                        )
+                                                                                    )
                                                                                 break;
 
                                                                             case 403:
@@ -543,7 +557,7 @@
                                                                                     .fail(
                                                                                         error
                                                                                         .message
-                                                                                        )
+                                                                                    )
                                                                                 break;
 
                                                                             case 404:
@@ -554,7 +568,7 @@
                                                                                     .fail(
                                                                                         error
                                                                                         .message
-                                                                                        )
+                                                                                    )
                                                                                 break;
 
                                                                             case 405:
@@ -565,7 +579,7 @@
                                                                                     .fail(
                                                                                         error
                                                                                         .message
-                                                                                        )
+                                                                                    )
                                                                                 break;
 
                                                                             case 408:
@@ -576,7 +590,7 @@
                                                                                     .fail(
                                                                                         error
                                                                                         .message
-                                                                                        )
+                                                                                    )
                                                                                 break;
 
                                                                             case 502:
@@ -587,7 +601,7 @@
                                                                                     .fail(
                                                                                         error
                                                                                         .message
-                                                                                        )
+                                                                                    )
                                                                                 break;
                                                                         }
                                                                     }

@@ -1,3 +1,9 @@
 body {
   background: #f5f4f4;
 }
+a {
+  text-decoration: none;
+}
+a:active {
+  text-decoration: none;
+}

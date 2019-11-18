@@ -14,15 +14,17 @@
   padding-top: 10px;
 }
 #basic .basic-idcard .idcardup .id-img {
-  width: 86%;
-  border: 1px dashed black;
-  height: 6.6rem;
-  line-height: 6.6rem;
+  width: 9.5rem;
+  border: 1px dashed #acaaaa;
+  height: 6.1rem;
+  line-height: 6.1rem;
   margin: 0px auto;
-  border-radius: .6rem;
+  border-radius: 0.6rem;
 }
 #basic .basic-idcard .idcardup .van-cell {
-  width: 63%;
+  width: 8.2rem;
+  text-align: center;
+  font-size: 12px !important;
 }
 .login-button {
   width: 84%;
@@ -32,7 +34,7 @@
   color: aliceblue;
   font-size: 18px;
   font-weight: bold;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   background: -webkit-linear-gradient(left, #066ff8, #a3cff3);
   /* Safari 5.1 - 6.0 */
   background: -o-linear-gradient(right, #066ff8, #a3cff3);
@@ -44,6 +46,12 @@
 }
 body {
   background: #f5f4f4;
+}
+a {
+  text-decoration: none;
+}
+a:active {
+  text-decoration: none;
 }
 .a-upload {
   height: 100%;

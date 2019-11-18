@@ -117,9 +117,10 @@
                                     response => {
                                         if (response.data.code == 0) {
                                             this.loadshow = false;
-                                            if (response.data.detail.totalState == '04' || response.data.detail
+                                            if (response.data.detail.totalState == '04' || response.data
+                                                .detail
                                                 .totalState == '02') {
-                                                    window.location.href = './EndPage.html'
+                                                window.location.href = './EndPage.html'
                                             } else {
                                                 this.loadshow = false;
 
@@ -130,7 +131,7 @@
                                                     window.location.href = './basicPage.html';
                                                 });
                                             }
-                                        }else{
+                                        } else {
                                             vant.Toast.fail('查询失败.')
                                         }
                                     }
