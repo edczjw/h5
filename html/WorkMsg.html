@@ -59,7 +59,7 @@
 
             
             <van-cell-group>
-                <van-field readonly is-link label="单位地址：" v-model='DSQ' placeholder="请选择单位地址"
+                <van-field required readonly is-link label="单位地址：" v-model='DSQ' placeholder="请选择单位地址"
                 @click="showPickershengshiqu=true" />
             </van-cell-group>
             <van-popup v-model="showPickershengshiqu" position="bottom">
@@ -68,12 +68,12 @@
             </van-popup>
 
             <van-cell-group>
-                <van-field v-model='form.unitAddress' label-width="120px" label="单位详细地址：" right-icon="question-o"  type="textarea" rows="1"
+                <van-field required v-model='form.unitAddress' label-width="120px" label="单位详细地址：" right-icon="question-o"  type="textarea" rows="1"
                     autosize placeholder="请填写真实有效的单位详细地址" @click-right-icon="$toast('必须是真实有效的单位详细地址')" />
             </van-cell-group>
 
             <van-cell-group>
-                <van-field readonly is-link label="收入区间：" v-model="IR" placeholder="请选择收入区间"
+                <van-field readonly required is-link label="收入区间：" v-model="IR" placeholder="请选择收入区间"
                     @click="showPickermon=!showPickermon" />
             </van-cell-group>
 
@@ -84,7 +84,7 @@
             </van-popup>
 
             <van-cell-group>
-                <van-field readonly is-link label="工作类型：" v-model="WT" placeholder="请选择工作类型"
+                <van-field readonly required is-link label="工作类型：" v-model="WT" placeholder="请选择工作类型"
                     @click="showworktype=!showworktype" />
             </van-cell-group>
 
@@ -100,13 +100,13 @@
             </van-cell-group>
 
             <van-cell-group>
-                <van-field readonly is-link label="社会身份：" v-model="SI" placeholder="请选择社会身份"
+                <van-field readonly required is-link label="社会身份：" v-model="SI" placeholder="请选择社会身份"
                     @click="showsoctype=!showsoctype" />
             </van-cell-group>
 
             <!-- 社会身份选择弹出层 -->
             <van-popup v-model="showsoctype" position="bottom">
-                <van-picker show-toolbar title="社会身份" :columns="columns3" @cancel="showsoctype = false"
+                <van-picker show-toolbar required title="社会身份" :columns="columns3" @cancel="showsoctype = false"
                     @confirm="onConfirmsoc" @change="onChangesoc" />
             </van-popup>
 
@@ -231,7 +231,6 @@
                                         this.form.workPhone = response.data.detail.result.workPhone
                                         this.form.socialIdentity = response.data.detail.result.socialIdentity
                                         this.SI = this.columns3[this.form.socialIdentity]
-                                        this.DSQ = response.data.detail.result.unitCityCode
 
                                         this.form.workingYears = response.data.detail.result.workingYears
 
@@ -312,6 +311,9 @@
             next() {
                 this.form.usrNo = sessionStorage.getItem('usrNo');
                 this.loadshow = true;
+                if(this.form.unitCityCode !='' && this.form.unitAddress !=null 
+                && this.SI !=null && this.IR !=null
+                && this.WT !=null){
                 axios({
                         method: 'post',
                         url: "https://dev.zxtouch.msxiaodai.com/app/workInfo",
@@ -319,7 +321,7 @@
                             account: this.form.account,
                             companyName: this.form.companyName,
                             natureUnit: this.form.natureUnit,
-                            unitAddress: this.form.unitAddress,
+                            unitAddress: this.DSQ + this.form.unitAddress,
                             incomeRange: this.form.incomeRange,
                             workType: this.form.workType,
                             workPhone: this.form.workPhone,
@@ -344,7 +346,6 @@
 
                             } else {
                                 this.loadshow = false;
-                                console.log(response.data.msg)
                                 vant.Toast.fail('提交工作信息报错.');
                             }
                         }
@@ -389,6 +390,15 @@
                             }
                         }
                     })
+                    
+                }else{
+                    vant.Dialog.alert({
+                        title: '提示',
+                        message: '请检查单位地址、单位详细地址、社会身份、收入区间、工作类型是否填写完整.'
+                    }).then(() => {
+                        this.loadshow = false;
+                    });
+                }
             },
 
             // 单位性质---------------------|
@@ -406,25 +416,30 @@
             // 现居住省市区---------------------|
             //变值
             onConfirmshengshiqu(value, index) {
-                var sum = '';
+                //编码
+                var sum = value[1].code;//编码值
+
+                //值
+                var val = ''
                 value.forEach((data) => {
-                    sum += data.name
+                    val +=data.name;//值
                 });
-                this.DSQ = sum;
+                this.DSQ = val;
                 this.form.unitCityCode = sum;
-                // console.log(this.form.unitCityCode)
                 this.showPickershengshiqu = false
             },
             //弹出层确认
             onChangeshengshiqu(all, value, index) {
+                //编码
+                var sum = value[1].code;//编码值
                 if (index.length === 3) {
-                    var sum = '';
+                    //值
+                    var val = ''
                     index.forEach((data) => {
-                        sum += data.name
+                        val +=data.name;//值
                     });
-                    this.DSQ = sum;
+                    this.DSQ = val;
                     this.form.unitCityCode = sum;
-                    // console.log(this.form.unitCityCode)
                 }
             },
 

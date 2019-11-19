@@ -46,7 +46,7 @@
                 </van-cell-group>
 
                 <van-cell-group>
-                    <van-field readonly is-link label="直系联系人：" v-model="DCR" placeholder="如父母"
+                    <van-field readonly required is-link label="直系联系人：" v-model="DCR" placeholder="如父母"
                         @click="showPickerparent1=!showPickerparent1" />
                 </van-cell-group>
 
@@ -58,7 +58,7 @@
                 </van-popup>
 
                 <van-cell-group>
-                    <van-field v-model='form.directContactsName' label="姓名：" right-icon="question-o" placeholder="填写" />
+                    <van-field required v-model='form.directContactsName' label="姓名：" right-icon="question-o" placeholder="填写" />
                 </van-cell-group>
 
                 <van-cell-group>
@@ -68,7 +68,7 @@
             </div>
             <div class="bottom-con">
                 <van-cell-group>
-                    <van-field readonly is-link label="其他联系人：" v-model="ODC" placeholder="如亲属"
+                    <van-field required readonly is-link label="其他联系人：" v-model="ODC" placeholder="如亲属"
                         @click="showPickerparent2=!showPickerparent2" />
                 </van-cell-group>
 
@@ -79,7 +79,7 @@
                 </van-popup>
 
                 <van-cell-group>
-                    <van-field v-model='form.otherContactsName' label="姓名：" right-icon="question-o" placeholder="填写" />
+                    <van-field required v-model='form.otherContactsName' label="姓名：" right-icon="question-o" placeholder="填写" />
                 </van-cell-group>
 
                 <van-cell-group>
@@ -200,7 +200,7 @@
                         response => {
                             if (response.data.code == 0) {
                                     this.loadshow = false;
-                                if(response.data.detail.result.currentPage == 2  || response.data.detail.result.currentPage == 4  || response.data.detail.result.currentPage == 3){
+                                if(response.data.detail.result.currentPage == 2  || response.data.detail.result.currentPage == 4  || response.data.detail.result.currentPage == 1 || response.data.detail.result.currentPage == 3){
                                     
                                     this.form.directContactsName = response.data.detail.result.directContactsName
 
@@ -224,9 +224,6 @@
                                         switch (response.data.detail.result.currentPage) {
                                             case 0:
                                                 window.location.href = './basicPage.html'
-                                                break;
-                                            case 1:
-                                                window.location.href = './CheckFace.html'
                                                 break;
                                         }
                                         });
@@ -280,7 +277,8 @@
                                     break;
                                 }
                             }
-                            })}else{
+                            })
+                        }else{
                                 vant.Dialog.alert({
                                         title: '提示',
                                         message: '请返回登录页面进行登录.'
@@ -295,6 +293,18 @@
                     console.log(e.target.value)
                 },
                 next(){
+                    if(this.form.directContactsRelation  == null){
+                        vant.Toast.fail('直系联系人关系必填')
+                    }else if(this.form.directContactsName == null){
+                        vant.Toast.fail('直系联系人姓名必填')
+
+                    }else if(this.form.otherDirectContacts  == null){
+                        vant.Toast.fail('其他联系人关系必填')
+                        
+                    }else if(this.form.otherContactsName == null){
+                        vant.Toast.fail('其他联系人姓名必填 ')
+                    }else{
+                        
                     this.form.usrNo = sessionStorage.getItem('usrNo');
                     this.loadshow = true;
                     axios({
@@ -307,11 +317,6 @@
                             if (response.data.code == 0) {
                                 this.loadshow = false
                                 
-                                vant.Dialog.alert({
-                                title: '提示',
-                                // message: '联系人信息提交完成,进入用户认证页面.'
-                                message: '联系人信息提交完成，点击确定提交所有信息?'
-                                }).then(() => {
                                     // window.location.href='./UserCommit.html';
                                     if (this.form.usrNo != null) {
                                         axios({
@@ -344,8 +349,10 @@
                                                                                 //提交
                                                                                 vant.Dialog.alert({
                                                                                     title: '提示',
-                                                                                    message: '您所填的信息已提交成功'
+                                                                                    message: '您所填的所有信息已提交成功'
                                                                                 }).then(() => {
+                                                                                    //清除缓存
+                                                                                    sessionStorage.removeItem('idcardNumber');
                                                                                     window.location.href = './EndPage.html'
                                                                                 });
 
@@ -459,7 +466,6 @@
                                     } else {
                                         window.location.href = './index.html'
                                     }
-                                });
 
                             }else{
                                 this.loadshow = false
@@ -512,7 +518,7 @@
                                 }
                             }
                             })
-                },
+                        }},
 
                 // 直系联系人---------------------|
                 // 变值

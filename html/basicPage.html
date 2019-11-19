@@ -74,7 +74,7 @@
             </van-cell-group>
             <!-- 性别 -->
             <van-cell-group>
-                <van-field readonly is-link label="性别：" v-model="sex" placeholder="请选择"
+                <van-field required readonly is-link label="性别：" v-model="sex" placeholder="请选择"
                     @click="showPickerxinbie=true " />
             </van-cell-group>
             <van-popup v-model="showPickerxinbie" position="bottom">
@@ -82,7 +82,7 @@
                     @confirm="onConfirmxinbie" @change="onChangexinbie" />
             </van-popup>
             <van-cell-group>
-                <van-field v-model='formData.age' label="年龄：" placeholder="请手动输入" right-icon="question-o" type="number"
+                <van-field required v-model='formData.age' label="年龄：" placeholder="请手动输入" right-icon="question-o" type="number"
                     @click-right-icon="$toast('请填写真实年龄')" />
             </van-cell-group>
             <van-cell-group>
@@ -90,11 +90,11 @@
                     @click-right-icon="$toast('请填写真实民族')" />
             </van-cell-group>
             <van-cell-group>
-                <van-field v-model='formData.idCardAddress' label="身份证地址：" type="textarea" rows="1" autosize
+                <van-field required v-model='formData.idCardAddress' label="身份证地址：" type="textarea" rows="1" autosize
                     right-icon="question-o" @click-right-icon="$toast('请填写真实身份证地址')" />
             </van-cell-group>
             <van-cell-group>
-                <van-field v-model='formData.signingOffice' label="签发机关：" right-icon="question-o"
+                <van-field required v-model='formData.signingOffice' label="签发机关：" right-icon="question-o"
                     @click-right-icon="$toast('请填写真实有效的签发机关')" />
             </van-cell-group>
             <van-cell-group>
@@ -103,7 +103,7 @@
             </van-cell-group>
             <!-- 婚姻 -->
             <van-cell-group>
-                <van-field readonly is-link label="婚姻：" v-model="formData.maritalStatus" placeholder="请选择"
+                <van-field required readonly is-link label="婚姻：" v-model="formData.maritalStatus" placeholder="请选择"
                     @click="showPickerhunyin=true " />
             </van-cell-group>
             <van-popup v-model="showPickerhunyin" position="bottom">
@@ -112,7 +112,7 @@
             </van-popup>
             <!-- 学历 -->
             <van-cell-group>
-                <van-field readonly is-link label="学历：" v-model="formData.education" placeholder="请选择"
+                <van-field required readonly is-link label="学历：" v-model="formData.education" placeholder="请选择"
                     @click="showPickerxueli=true " />
             </van-cell-group>
             <van-popup v-model="showPickerxueli" position="bottom">
@@ -139,8 +139,12 @@
             </van-popup>
             <!-- 现居住省市区 -->
             <van-cell-group>
-                <van-field readonly is-link label="现居住省市区："  label-width="120px" v-model="formData.provincialAndUrbanAreas" placeholder="请选择"
+                <van-field required readonly is-link label="现居住省市区："  label-width="120px" v-model="DSQ" placeholder="请选择"
                     @click="showPickershengshiqu=true" />
+            </van-cell-group>
+            <van-cell-group>
+                <van-field required v-model='formData.detailedAddress' label="详细居住地址：" label-width="120px" right-icon="question-o"
+                    @click-right-icon="$toast('请填写真实有效的详细居住地址')" />
             </van-cell-group>
             <van-popup v-model="showPickershengshiqu" position="bottom">
                 <van-area :area-list="area" @cancel="showPickershengshiqu = false" @confirm="onConfirmshengshiqu"
@@ -193,6 +197,7 @@
                     degree: '', //学位
                     livingConditions: '', //居住状况
                     provincialAndUrbanAreas: '', //现居住省市区
+                    detailedAddress:'',     //详细居住地址
                     email: '', //电子邮箱
                     qq: '', //QQ
 
@@ -221,6 +226,7 @@
                 idcardshow: "",
                 iemail: "",
                 iqq: "",
+                DSQ:"",
 
                 filefrontlength: 0,
                 filebacklength: 0,
@@ -394,9 +400,6 @@
                                         this.formData.livingConditions = response.data
                                             .detail
                                             .result.livingConditions
-                                        this.formData.provincialAndUrbanAreas = response
-                                            .data
-                                            .detail.result.provincialAndUrbanAreas
                                         this.formData.degree = response.data.detail.result
                                             .degree
                                         this.formData.email = response.data.detail.result
@@ -1061,29 +1064,56 @@
                 this.formData.livingConditions = value
                 this.showPickerjuzhu = false
             },
+
+            
             // 现居住省市区---------------------|
             //变值
             onConfirmshengshiqu(value, index) {
-                var sum = '';
+                //编码
+                var sum = value[1].code;//编码值
+
+                //值
+                var val = ''
                 value.forEach((data) => {
-                    sum += data.name
+                    val +=data.name;//值
                 });
+                this.DSQ = val;
                 this.formData.provincialAndUrbanAreas = sum;
                 this.showPickershengshiqu = false
             },
             //弹出层确认
             onChangeshengshiqu(all, value, index) {
+                //编码
+                var sum = value[1].code;//编码值
                 if (index.length === 3) {
-                    var sum = '';
+                    //值
+                    var val = ''
                     index.forEach((data) => {
-                        sum += data.name
+                        val +=data.name;//值
                     });
+                    this.DSQ = val;
                     this.formData.provincialAndUrbanAreas = sum;
                 }
             },
             //提交
             next() {
-                if (this.checkname() &&
+                if(this.formData.sex == ''){
+                    vant.Toast.fail('性别必填')
+                }else if(this.formData.age == ''){
+                    vant.Toast.fail('年龄必填')
+                }else if(this.formData.maritalStatus == ''){
+                    vant.Toast.fail('婚姻状况必填')
+                }else if(this.formData.education == ''){
+                    vant.Toast.fail('学历必填')
+                }else if(this.formData.provincialAndUrbanAreas == ''){
+                    vant.Toast.fail('市区编码必填')
+                }else if(this.formData.idCardAddress == ''){
+                    vant.Toast.fail('身份证地址必填')
+                }else if(this.formData.detailedAddress == ''){
+                    vant.Toast.fail('详细居住地址必填')
+                }else if(this.formData.signingOffice == ''){
+                    vant.Toast.fail('签发机关必填')
+                }else if (this.checkname() &&
                     this.checkid() &&
                     this.checkaccount()) {
                     this.formData.usrNo = sessionStorage.getItem('usrNo');
@@ -1115,6 +1145,7 @@
                                                     title: '提示',
                                                     message: '是否提交所填基本信息？确认则进入活体检测.'
                                                 }).then(() => {
+                                                    this.formData.detailedAddress = this.DSQ+this.formData.detailedAddress
                                                     axios({
                                                             method: 'post',
                                                             url: "https://dev.zxtouch.msxiaodai.com/basicInformation/commit",
