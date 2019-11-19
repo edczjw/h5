@@ -248,7 +248,7 @@
             this.area = area;
         },
         beforeMount() {
-            this.getoldmsg(); //获取上一次登录的信息数据预览
+            // this.getoldmsg(); //获取上一次登录的信息数据预览
         },
         mounted() {},
         methods: {
@@ -342,7 +342,7 @@
                 if (this.form.usrNo != null) {
                     axios({
                             method: 'post',
-                            url: "https://dev.zxtouch.msxiaodai.com/app/userInfo",
+                            url: "https://test.zxtouch.msxiaodai.com/app/userInfo",
                             data: this.form
                         })
                         .then(
@@ -506,7 +506,7 @@
                 //图片上传成功后调用身份识别接口
                 axios({
                         method: 'post',
-                        url: "https://dev.zxtouch.msxiaodai.com/rong360/idCarddIscern",
+                        url: "https://test.zxtouch.msxiaodai.com/rong360/idCarddIscern",
                         data: {
                             imageUrl: imageUrl,
                             usrNo: usrNo,
@@ -626,7 +626,7 @@
                         'Content-Type': 'multipart/form-data'
                     },
                     method: "post",
-                    url: "https://dev.zxtouch.msxiaodai.com/app/getOssProperties"
+                    url: "https://test.zxtouch.msxiaodai.com/app/getOssProperties"
                 }).then(
                     response => {
                         // console.log('response', response)
@@ -786,7 +786,7 @@
                 //图片上传成功后调用身份识别接口
                 axios({
                         method: 'post',
-                        url: "https://dev.zxtouch.msxiaodai.com/rong360/idCarddIscern",
+                        url: "https://test.zxtouch.msxiaodai.com/rong360/idCarddIscern",
                         data: {
                             imageUrl: imageUrl,
                             usrNo: usrNo,
@@ -880,7 +880,7 @@
                         'Content-Type': 'multipart/form-data'
                     },
                     method: "post",
-                    url: "https://dev.zxtouch.msxiaodai.com/app/getOssProperties"
+                    url: "https://test.zxtouch.msxiaodai.com/app/getOssProperties"
                 }).then(
                     response => {
                         // console.log('response', response)
@@ -1071,7 +1071,7 @@
             onConfirmshengshiqu(value, index) {
                 //编码
                 var sum = value[1].code;//编码值
-
+                if (value[2]) {
                 //值
                 var val = ''
                 value.forEach((data) => {
@@ -1080,6 +1080,12 @@
                 this.DSQ = val;
                 this.formData.provincialAndUrbanAreas = sum;
                 this.showPickershengshiqu = false
+            }else if(!value[2]){
+                var val = value[0].name + value[1].name;//值
+                this.DSQ = val;
+                this.formData.provincialAndUrbanAreas = sum;
+                this.showPickershengshiqu = false
+            }
             },
             //弹出层确认
             onChangeshengshiqu(all, value, index) {
@@ -1122,7 +1128,7 @@
                     if (this.form.usrNo != null) {
                         axios({
                                 method: 'get',
-                                url: "https://dev.zxtouch.msxiaodai.com/auth/status",
+                                url: "https://test.zxtouch.msxiaodai.com/auth/status",
                                 params: {
                                     userNo: this.form.usrNo
                                 },
@@ -1148,7 +1154,7 @@
                                                     this.formData.detailedAddress = this.DSQ+this.formData.detailedAddress
                                                     axios({
                                                             method: 'post',
-                                                            url: "https://dev.zxtouch.msxiaodai.com/basicInformation/commit",
+                                                            url: "https://test.zxtouch.msxiaodai.com/basicInformation/commit",
                                                             data: this.formData
                                                         })
                                                         .then(

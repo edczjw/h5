@@ -193,7 +193,7 @@
                 if(this.form.usrNo != null){
                 axios({
                         method: 'post',
-                        url: "https://dev.zxtouch.msxiaodai.com/app/userInfo",
+                        url: "https://test.zxtouch.msxiaodai.com/app/userInfo",
                         data: this.form
                     })
                     .then(
@@ -293,15 +293,15 @@
                     console.log(e.target.value)
                 },
                 next(){
-                    if(this.form.directContactsRelation  == null){
+                    if(this.form.directContactsRelation  == null  ){
                         vant.Toast.fail('直系联系人关系必填')
-                    }else if(this.form.directContactsName == null){
+                    }else if(this.form.directContactsName == null || this.form.directContactsName == ''){
                         vant.Toast.fail('直系联系人姓名必填')
 
                     }else if(this.form.otherDirectContacts  == null){
                         vant.Toast.fail('其他联系人关系必填')
                         
-                    }else if(this.form.otherContactsName == null){
+                    }else if(this.form.otherContactsName == null || this.form.otherContactsName == ''){
                         vant.Toast.fail('其他联系人姓名必填 ')
                     }else{
                         
@@ -309,7 +309,7 @@
                     this.loadshow = true;
                     axios({
                         method: 'post',
-                        url: "https://dev.zxtouch.msxiaodai.com/app/contactsInfo",
+                        url: "https://test.zxtouch.msxiaodai.com/app/contactsInfo",
                         data: this.form
                     })
                     .then(
@@ -321,7 +321,7 @@
                                     if (this.form.usrNo != null) {
                                         axios({
                                                 method: 'get',
-                                                url: "https://dev.zxtouch.msxiaodai.com/auth/status",
+                                                url: "https://test.zxtouch.msxiaodai.com/auth/status",
                                                 params: {
                                                     userNo: this.form.usrNo
                                                 },
@@ -338,7 +338,7 @@
                                                                             'Content-Type': 'application/x-www-form-urlencoded'
                                                                         },
                                                                         method: 'get',
-                                                                        url: "https://dev.zxtouch.msxiaodai.com/auth/updateTotalState",
+                                                                        url: "https://test.zxtouch.msxiaodai.com/auth/updateTotalState",
                                                                         params: {
                                                                             userNo: this.form.usrNo
                                                                         }

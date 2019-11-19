@@ -195,7 +195,7 @@
             this.area = area;
         },
         mounted() {
-            this.getoldmsg(); //获取上一次登录的信息数据预览
+            // this.getoldmsg(); //获取上一次登录的信息数据预览
         },
         methods: {
 
@@ -206,7 +206,7 @@
                     // console.log(this.form.usrNo)
                     axios({
                             method: 'post',
-                            url: "https://dev.zxtouch.msxiaodai.com/app/userInfo",
+                            url: "https://test.zxtouch.msxiaodai.com/app/userInfo",
                             data: this.form
                         })
                         .then(
@@ -311,12 +311,12 @@
             next() {
                 this.form.usrNo = sessionStorage.getItem('usrNo');
                 this.loadshow = true;
-                if(this.form.unitCityCode !='' && this.form.unitAddress !=null 
-                && this.SI !=null && this.IR !=null
-                && this.WT !=null){
+                if(this.form.unitCityCode !='' && this.form.unitAddress !='' 
+                && this.SI !='' && this.IR !=''
+                && this.WT !=''){
                 axios({
                         method: 'post',
-                        url: "https://dev.zxtouch.msxiaodai.com/app/workInfo",
+                        url: "https://test.zxtouch.msxiaodai.com/app/workInfo",
                         data: {
                             account: this.form.account,
                             companyName: this.form.companyName,
@@ -418,15 +418,25 @@
             onConfirmshengshiqu(value, index) {
                 //编码
                 var sum = value[1].code;//编码值
-
+                if (value[2]) {
                 //值
                 var val = ''
+
                 value.forEach((data) => {
                     val +=data.name;//值
                 });
+
                 this.DSQ = val;
                 this.form.unitCityCode = sum;
                 this.showPickershengshiqu = false
+            }else if(!value[2]){
+                //值
+                var val = value[0].name + value[1].name;//值
+
+                this.DSQ = val;
+                this.form.unitCityCode = sum;
+                this.showPickershengshiqu = false
+            }
             },
             //弹出层确认
             onChangeshengshiqu(all, value, index) {
