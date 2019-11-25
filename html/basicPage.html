@@ -29,8 +29,8 @@
 <body>
     <div id="basic">
         <div class="top-step">
-            <van-steps :active="active"  active-icon="youzan-shield">
-                <van-step><a href="../html/basicPage.html">基本信息</a></van-step>
+            <van-steps :active="active" active-color='green' active-icon="youzan-shield">
+                <van-step><a style="color: #07c160;" href="../html/basicPage.html">基本信息</a></van-step>
                 <van-step><a href="../html/CheckFace.html">活体检测</a></van-step>
                 <van-step><a href="../html/WorkMsg.html">工作信息</a></van-step>
                 <van-step><a href="../html/Contract.html">联系人员</a></van-step>
@@ -82,8 +82,8 @@
                     @confirm="onConfirmxinbie" @change="onChangexinbie" />
             </van-popup>
             <van-cell-group>
-                <van-field required v-model='formData.age' label="年龄：" placeholder="请手动输入" right-icon="question-o" type="number"
-                    @click-right-icon="$toast('请填写真实年龄')" />
+                <van-field required v-model='formData.age' label="年龄：" placeholder="请手动输入" right-icon="question-o"
+                    type="number" @click-right-icon="$toast('请填写真实年龄')" />
             </van-cell-group>
             <van-cell-group>
                 <van-field v-model='formData.nation' label="民族：" right-icon="question-o"
@@ -98,8 +98,8 @@
                     @click-right-icon="$toast('请填写真实有效的签发机关')" />
             </van-cell-group>
             <van-cell-group>
-                <van-field v-model='formData.certificateValidityPeriod'  label-width="120px" label="身份证有效期："  rows="1" autosize right-icon="question-o" type="textarea"
-                    @click-right-icon="$toast('请填写真实的身份证有效期')" />
+                <van-field v-model='formData.certificateValidityPeriod' label-width="120px" label="身份证有效期：" rows="1"
+                    autosize right-icon="question-o" type="textarea" @click-right-icon="$toast('请填写真实的身份证有效期')" />
             </van-cell-group>
             <!-- 婚姻 -->
             <van-cell-group>
@@ -139,12 +139,12 @@
             </van-popup>
             <!-- 现居住省市区 -->
             <van-cell-group>
-                <van-field required readonly is-link label="现居住省市区："  label-width="120px" v-model="DSQ" placeholder="请选择"
+                <van-field required readonly is-link label="现居住省市区：" label-width="120px" v-model="DSQ" placeholder="请选择"
                     @click="showPickershengshiqu=true" />
             </van-cell-group>
             <van-cell-group>
-                <van-field required v-model='formData.detailedAddress' label="详细居住地址：" label-width="120px" right-icon="question-o"
-                    @click-right-icon="$toast('请填写真实有效的详细居住地址')" />
+                <van-field required v-model='formData.detailedAddress' label="详细居住地址：" label-width="120px"
+                    right-icon="question-o" @click-right-icon="$toast('请填写真实有效的详细居住地址')" />
             </van-cell-group>
             <van-popup v-model="showPickershengshiqu" position="bottom">
                 <van-area :area-list="area" @cancel="showPickershengshiqu = false" @confirm="onConfirmshengshiqu"
@@ -164,7 +164,7 @@
             </div>
 
             <div class="load-ing" v-if="loadshow">
-                <van-loading size="24px" color="#1989fa" vertical>加载中...</van-loading>
+                <van-loading size="24px" color="#1989fa" vertical>请稍等，正在上传中...</van-loading>
             </div>
             <div class="ms-msg">
                 版权公告 © 2018-2019 广州民盛互联网小额贷款有限公司<br>
@@ -197,7 +197,7 @@
                     degree: '', //学位
                     livingConditions: '', //居住状况
                     provincialAndUrbanAreas: '', //现居住省市区
-                    detailedAddress:'',     //详细居住地址
+                    detailedAddress: '', //详细居住地址
                     email: '', //电子邮箱
                     qq: '', //QQ
 
@@ -226,7 +226,7 @@
                 idcardshow: "",
                 iemail: "",
                 iqq: "",
-                DSQ:"",
+                DSQ: "",
 
                 filefrontlength: 0,
                 filebacklength: 0,
@@ -342,7 +342,7 @@
                 if (this.form.usrNo != null) {
                     axios({
                             method: 'post',
-                            url: "https://test.zxtouch.msxiaodai.com/app/userInfo",
+                            url: "https://zxtouch.msxiaodai.com/app/userInfo",
                             data: this.form
                         })
                         .then(
@@ -506,7 +506,7 @@
                 //图片上传成功后调用身份识别接口
                 axios({
                         method: 'post',
-                        url: "https://test.zxtouch.msxiaodai.com/rong360/idCarddIscern",
+                        url: "https://zxtouch.msxiaodai.com/rong360/idCarddIscern",
                         data: {
                             imageUrl: imageUrl,
                             usrNo: usrNo,
@@ -626,7 +626,7 @@
                         'Content-Type': 'multipart/form-data'
                     },
                     method: "post",
-                    url: "https://test.zxtouch.msxiaodai.com/app/getOssProperties"
+                    url: "https://zxtouch.msxiaodai.com/app/getOssProperties"
                 }).then(
                     response => {
                         // console.log('response', response)
@@ -786,7 +786,7 @@
                 //图片上传成功后调用身份识别接口
                 axios({
                         method: 'post',
-                        url: "https://test.zxtouch.msxiaodai.com/rong360/idCarddIscern",
+                        url: "https://zxtouch.msxiaodai.com/rong360/idCarddIscern",
                         data: {
                             imageUrl: imageUrl,
                             usrNo: usrNo,
@@ -880,7 +880,7 @@
                         'Content-Type': 'multipart/form-data'
                     },
                     method: "post",
-                    url: "https://test.zxtouch.msxiaodai.com/app/getOssProperties"
+                    url: "https://zxtouch.msxiaodai.com/app/getOssProperties"
                 }).then(
                     response => {
                         // console.log('response', response)
@@ -1065,37 +1065,37 @@
                 this.showPickerjuzhu = false
             },
 
-            
+
             // 现居住省市区---------------------|
             //变值
             onConfirmshengshiqu(value, index) {
                 //编码
-                var sum = value[1].code;//编码值
+                var sum = value[1].code; //编码值
                 if (value[2]) {
-                //值
-                var val = ''
-                value.forEach((data) => {
-                    val +=data.name;//值
-                });
-                this.DSQ = val;
-                this.formData.provincialAndUrbanAreas = sum;
-                this.showPickershengshiqu = false
-            }else if(!value[2]){
-                var val = value[0].name + value[1].name;//值
-                this.DSQ = val;
-                this.formData.provincialAndUrbanAreas = sum;
-                this.showPickershengshiqu = false
-            }
+                    //值
+                    var val = ''
+                    value.forEach((data) => {
+                        val += data.name; //值
+                    });
+                    this.DSQ = val;
+                    this.formData.provincialAndUrbanAreas = sum;
+                    this.showPickershengshiqu = false
+                } else if (!value[2]) {
+                    var val = value[0].name + value[1].name; //值
+                    this.DSQ = val;
+                    this.formData.provincialAndUrbanAreas = sum;
+                    this.showPickershengshiqu = false
+                }
             },
             //弹出层确认
             onChangeshengshiqu(all, value, index) {
                 //编码
-                var sum = value[1].code;//编码值
+                var sum = value[1].code; //编码值
                 if (index.length === 3) {
                     //值
                     var val = ''
                     index.forEach((data) => {
-                        val +=data.name;//值
+                        val += data.name; //值
                     });
                     this.DSQ = val;
                     this.formData.provincialAndUrbanAreas = sum;
@@ -1103,23 +1103,23 @@
             },
             //提交
             next() {
-                if(this.formData.sex == ''){
+                if (this.formData.sex == '') {
                     vant.Toast.fail('性别必填')
-                }else if(this.formData.age == ''){
+                } else if (this.formData.age == '') {
                     vant.Toast.fail('年龄必填')
-                }else if(this.formData.maritalStatus == ''){
+                } else if (this.formData.maritalStatus == '') {
                     vant.Toast.fail('婚姻状况必填')
-                }else if(this.formData.education == ''){
+                } else if (this.formData.education == '') {
                     vant.Toast.fail('学历必填')
-                }else if(this.formData.provincialAndUrbanAreas == ''){
+                } else if (this.formData.provincialAndUrbanAreas == '') {
                     vant.Toast.fail('市区编码必填')
-                }else if(this.formData.idCardAddress == ''){
+                } else if (this.formData.idCardAddress == '') {
                     vant.Toast.fail('身份证地址必填')
-                }else if(this.formData.detailedAddress == ''){
+                } else if (this.formData.detailedAddress == '') {
                     vant.Toast.fail('详细居住地址必填')
-                }else if(this.formData.signingOffice == ''){
+                } else if (this.formData.signingOffice == '') {
                     vant.Toast.fail('签发机关必填')
-                }else if (this.checkname() &&
+                } else if (this.checkname() &&
                     this.checkid() &&
                     this.checkaccount()) {
                     this.formData.usrNo = sessionStorage.getItem('usrNo');
@@ -1128,7 +1128,7 @@
                     if (this.form.usrNo != null) {
                         axios({
                                 method: 'get',
-                                url: "https://test.zxtouch.msxiaodai.com/auth/status",
+                                url: "https://zxtouch.msxiaodai.com/auth/status",
                                 params: {
                                     userNo: this.form.usrNo
                                 },
@@ -1151,10 +1151,11 @@
                                                     title: '提示',
                                                     message: '是否提交所填基本信息？确认则进入活体检测.'
                                                 }).then(() => {
-                                                    this.formData.detailedAddress = this.DSQ+this.formData.detailedAddress
+                                                    this.formData.detailedAddress = this.DSQ + this
+                                                        .formData.detailedAddress
                                                     axios({
                                                             method: 'post',
-                                                            url: "https://test.zxtouch.msxiaodai.com/basicInformation/commit",
+                                                            url: "https://zxtouch.msxiaodai.com/basicInformation/commit",
                                                             data: this.formData
                                                         })
                                                         .then(
@@ -1307,6 +1308,7 @@
                 }
             },
 
+            // 压缩图片不得大于2M
             compress(img, Orientation) {
                 let canvas = document.createElement("canvas");
                 let ctx = canvas.getContext('2d');

@@ -35,7 +35,7 @@
                 <van-step><a href="../html/basicPage.html">基本信息</a></van-step>
                 <van-step><a href="../html/CheckFace.html">活体检测</a></van-step>
                 <van-step><a href="../html/WorkMsg.html">工作信息</a></van-step>
-                <van-step><a href="../html/Contract.html">联系人员</a></van-step>
+                <van-step><a style="color: #07c160;" href="../html/Contract.html">联系人员</a></van-step>
                 <!-- <van-step><a href="../html/UserCommit.html">用户认证</a></van-step> -->
             </van-steps>
         </div>
@@ -193,7 +193,7 @@
                 if(this.form.usrNo != null){
                 axios({
                         method: 'post',
-                        url: "https://test.zxtouch.msxiaodai.com/app/userInfo",
+                        url: "https://zxtouch.msxiaodai.com/app/userInfo",
                         data: this.form
                     })
                     .then(
@@ -309,7 +309,7 @@
                     this.loadshow = true;
                     axios({
                         method: 'post',
-                        url: "https://test.zxtouch.msxiaodai.com/app/contactsInfo",
+                        url: "https://zxtouch.msxiaodai.com/app/contactsInfo",
                         data: this.form
                     })
                     .then(
@@ -321,7 +321,7 @@
                                     if (this.form.usrNo != null) {
                                         axios({
                                                 method: 'get',
-                                                url: "https://test.zxtouch.msxiaodai.com/auth/status",
+                                                url: "https://zxtouch.msxiaodai.com/auth/status",
                                                 params: {
                                                     userNo: this.form.usrNo
                                                 },
@@ -338,7 +338,7 @@
                                                                             'Content-Type': 'application/x-www-form-urlencoded'
                                                                         },
                                                                         method: 'get',
-                                                                        url: "https://test.zxtouch.msxiaodai.com/auth/updateTotalState",
+                                                                        url: "https://zxtouch.msxiaodai.com/auth/updateTotalState",
                                                                         params: {
                                                                             userNo: this.form.usrNo
                                                                         }

@@ -13,8 +13,8 @@
     <meta name="description" content="">
     <meta name="viewport"
         content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0,user-scalable=no,shrink-to-fit=no">
-    <link rel="stylesheet" href="../css/WorkMsg.css">
     <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/WorkMsg.css">
     <script src="../js/area.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.0/lib/index.css">
     <link rel="icon" type="image/x-icon" href="../image/form.png">
@@ -31,7 +31,7 @@
             <van-steps :active="active" active-icon="youzan-shield">
                 <van-step><a href="../html/basicPage.html">基本信息</a></van-step>
                 <van-step><a href="../html/CheckFace.html">活体检测</a></van-step>
-                <van-step><a href="../html/WorkMsg.html">工作信息</a></van-step>
+                <van-step><a style="color: #07c160;" href="../html/WorkMsg.html">工作信息</a></van-step>
                 <van-step><a href="../html/Contract.html">联系人员</a></van-step>
                 <!-- <van-step><a href="../html/UserCommit.html">用户认证</a></van-step> -->
             </van-steps>
@@ -206,7 +206,7 @@
                     // console.log(this.form.usrNo)
                     axios({
                             method: 'post',
-                            url: "https://test.zxtouch.msxiaodai.com/app/userInfo",
+                            url: "https://zxtouch.msxiaodai.com/app/userInfo",
                             data: this.form
                         })
                         .then(
@@ -316,7 +316,7 @@
                 && this.WT !=''){
                 axios({
                         method: 'post',
-                        url: "https://test.zxtouch.msxiaodai.com/app/workInfo",
+                        url: "https://zxtouch.msxiaodai.com/app/workInfo",
                         data: {
                             account: this.form.account,
                             companyName: this.form.companyName,

@@ -13,8 +13,8 @@
     <meta name="description" content="">
     <meta name="viewport"
         content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0,user-scalable=no,shrink-to-fit=no">
-    <link rel="stylesheet" href="../css/CheckFace.css">
     <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/CheckFace.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.0/lib/index.css">
     <link rel="icon" type="image/x-icon" href="../image/form.png">
 
@@ -23,7 +23,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vant@2.0/lib/vant.min.js"></script>
 
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet"> -->
 
     <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
@@ -36,9 +36,9 @@
 <body>
     <div id="app">
         <div class="top-step">
-            <van-steps :active="active"  active-icon="youzan-shield">
+            <van-steps :active="active" active-icon="youzan-shield">
                 <van-step><a href="../html/basicPage.html">基本信息</a></van-step>
-                <van-step><a href="../html/CheckFace.html">活体检测</a></van-step>
+                <van-step><a style="color: #07c160;" href="../html/CheckFace.html">活体检测</a></van-step>
                 <van-step><a href="../html/WorkMsg.html">工作信息</a></van-step>
                 <van-step><a href="../html/Contract.html">联系人员</a></van-step>
                 <!-- <van-step><a href="../html/UserCommit.html">用户认证</a></van-step> -->
@@ -69,7 +69,7 @@
                             <span class="prompt-box-text-content">完成录制，等待验证结果</span>
                         </div>
                     </div>
-                    <span class="prompt-next nextVideo">活体人脸认证</span>
+                    <span class="prompt-next nextVideo">开始活体认证</span>
 
                 </div>
 
@@ -94,11 +94,11 @@
                     </div>
                 </div>
                 <div class="load-ing" v-if="loadshow">
-                    <van-loading size="24px" color="#1989fa" vertical>加载中...</van-loading>
+                    <van-loading size="24px" color="#1989fa" vertical>请稍等，正在加载中...</van-loading>
                 </div>
 
                 <div class="loading" v-if="loadingshow">
-                    <div class="loading-icon">验证中...</div>
+                    <div class="loading-icon">请稍等，正在验证中...</div>
                 </div>
             </div>
         </div>
@@ -139,7 +139,7 @@
                     if (this.form.usrNo != null) {
                         axios({
                                 method: 'get',
-                                url: "https://test.zxtouch.msxiaodai.com/auth/status",
+                                url: "https://zxtouch.msxiaodai.com/auth/status",
                                 params: {
                                     userNo: this.form.usrNo
                                 },
@@ -169,7 +169,7 @@
                                                         //提交接口
                                                         axios({
                                                                 method: 'post',
-                                                                url: "https://test.zxtouch.msxiaodai.com/app/bioAssay",
+                                                                url: "https://zxtouch.msxiaodai.com/app/bioAssay",
                                                                 data: {
                                                                     usrNo: usrNo,
                                                                     currentPage: 1,
@@ -251,7 +251,7 @@
                                                 //提交接口
                                                 axios({
                                                         method: 'post',
-                                                        url: "https://test.zxtouch.msxiaodai.com/app/bioAssay",
+                                                        url: "https://zxtouch.msxiaodai.com/app/bioAssay",
                                                         data: {
                                                             usrNo: usrNo,
                                                             currentPage: 1,
@@ -383,20 +383,17 @@
             },
             //上传视频
             upload(e) {
-                // console.log(e)
+                console.log(e)
                 this.dialog = false;
                 let files = e.target.files || e.dataTransfer.files
                 if (!files.length) return
-
-
                 var fileSize = (files[0].size) / (1024 * 1024); //转换成M
                 fileSize = fileSize.toFixed(0); //保留小数点后一位
-
                 // 不得大于2M
-                if (fileSize <= 18) {
+                if (fileSize <= 10) {
                     this.imgPreview(files[0])
                 } else {
-                    vant.Toast('视频大小不得大于18M.')
+                    vant.Toast('所拍视频大小不得大于10M，请在3~6秒内完成录制，谢谢合作。')
                 }
             },
 
@@ -419,7 +416,7 @@
                             'Content-Type': 'multipart/form-data'
                         },
                         method: "post",
-                        url: "https://test.zxtouch.msxiaodai.com/app/getOssProperties"
+                        url: "https://zxtouch.msxiaodai.com/app/getOssProperties"
                     }).then(
                         response => {
                             // console.log('response', response)
@@ -447,19 +444,9 @@
 
                             //获取企业编号
                             // const enterpriseNo = sessionStorage.getItem("enterpriseNo");
-                            const storeAs =
-                                "test/appser/uservideo/" +
-                                phone +
-                                "/" +
-                                obj +
-                                "-" +
-                                obj2 +
-                                "-" +
-                                fileName;
+                            const storeAs = "test/appser/uservideo/" + phone + "/" + obj + "-" + obj2 + "-" + fileName;
                             //上传
-                            client
-                                .multipartUpload(storeAs, file, {})
-                                .then(res => {
+                            client .multipartUpload(storeAs, file, {}) .then(res => {
                                     // console.log('res', res)
                                     if (res) {
                                         _that.form.videoUrl =
@@ -476,7 +463,7 @@
                                         //图片上传成功后调用身份识别接口
                                         axios({
                                                 method: 'post',
-                                                url: "https://test.zxtouch.msxiaodai.com/video/auth",
+                                                url: "https://zxtouch.msxiaodai.com/video/auth",
                                                 data: _that.form
                                             })
                                             .then(
@@ -499,7 +486,7 @@
                                                             //提交接口
                                                             axios({
                                                                     method: 'post',
-                                                                    url: "https://test.zxtouch.msxiaodai.com/app/bioAssay",
+                                                                    url: "https://zxtouch.msxiaodai.com/app/bioAssay",
                                                                     data: {
                                                                         usrNo: usrNo,
                                                                         currentPage: 1,
@@ -674,7 +661,6 @@
                                 }).catch(function (error) {
                                     vant.Toast.fail(error)
                                     console.log(error);
-                                    console.log(error);
                                     if (error && error.response) {
                                         switch (error.response.status) {
                                             case 400:
@@ -790,7 +776,7 @@
         var usrNo = sessionStorage.getItem('usrNo');
         axios({
                 method: 'post',
-                url: "https://test.zxtouch.msxiaodai.com/rong360/getRandomNum",
+                url: "https://zxtouch.msxiaodai.com/rong360/getRandomNum",
                 data: {
                     usrNo: usrNo
                 }

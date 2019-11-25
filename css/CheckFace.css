@@ -55,21 +55,15 @@ html {
 }
 .sketch {
   background: rgba(224, 224, 224, 0.35);
-  padding: 0.8333rem 1.666rem 1.2rem;
+  padding: 1rem 1.666rem 1rem;
 }
 .sketch-img {
-  width: 9.916rem;
+  width: 12rem;
   height: 16.583rem;
   margin: 0 auto;
   background: url('../image/realface.png') 0 0 no-repeat;
   -moz-background-size: 100% auto;
   background-size: 100% auto;
-}
-a {
-  text-decoration: none;
-}
-a:active {
-  text-decoration: none;
 }
 .next-buttons {
   box-shadow: 0px 1px 0px #e2e1e1, 0px 1px 6px rgba(32, 32, 32, 0.7);
@@ -133,13 +127,13 @@ a:active {
   text-align: center;
   color: #0073eb;
   display: inline-block;
-  width: 1.234rem;
-  height: 1.233rem;
-  line-height: 1.233rem;
+  width: 1.4rem;
+  height: 1.4rem;
+  line-height: 1.32rem;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  font-size: 12px;
+  font-size: 8px;
   margin-right: 0.883rem;
   letter-spacing: 0;
   vertical-align: top;
@@ -148,6 +142,7 @@ a:active {
   color: #333;
   letter-spacing: 0;
   white-space: nowrap;
+  font-family: '苹方';
   display: inline-block;
   font-size: 1.233rem;
 }
@@ -176,9 +171,11 @@ a:active {
   color: #fff;
   display: block;
   width: 7.75rem;
+  font-family: '苹方';
   font-size: 12px;
   outline: none;
   border: none;
+  box-shadow: 0 0 0 4px #ffffff;
 }
 .prompt-next-disabled {
   background-color: #ccc;

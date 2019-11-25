@@ -184,7 +184,7 @@
 
                         axios({
                                 method: 'post',
-                                url: "https://test.zxtouch.msxiaodai.com/app/user/getSmsVerification",
+                                url: "https://zxtouch.msxiaodai.com/app/user/getSmsVerification",
                                 data: {
                                     account: this.form.account
                                 }
@@ -226,7 +226,7 @@
                         axios({
                             method: "post",
                             data: form,
-                            url: "https://test.zxtouch.msxiaodai.com/app/user/login"
+                            url: "https://zxtouch.msxiaodai.com/app/user/login"
                         }).then(
                             response => {
                                 if (response.data.code == 0) {
